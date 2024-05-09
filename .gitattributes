@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+*.md text diff=markdown
+
+*.cs text diff=csharp
+*.sln text
+*.csproj text diff=html
+*.props text diff=html
+nuget.config text diff=html
+
+*.png lfs
+*.gif lfs
