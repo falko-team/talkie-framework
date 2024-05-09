@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup Label="Assembly">
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\..\Sources\Falko.Unibot.Core\Falko.Unibot.Core.csproj" />
+        <PackageReference Include="BenchmarkDotNet" />
+    </ItemGroup>
+</Project>

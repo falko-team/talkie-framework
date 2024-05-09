@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\Falko.Unibot.Signals.Adapters\Falko.Unibot.Signals.Adapters.csproj" />
+        <ProjectReference Include="..\Falko.Unibot.Signals.Extensions\Falko.Unibot.Signals.Extensions.csproj" />
+        <ProjectReference Include="..\Falko.Unibot.Signals.Connections\Falko.Unibot.Signals.Connections.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,15 @@
+# IDE
+.idea/
+.vs/
+.vscode/
+
+# BUILD
+[Bb]uilds/
+[Bb]in/
+[Oo]bj/
+
+# SYSTEM
+.DS_Store
+
+# USER
+*.DotSettings.user
