@@ -1,7 +1,5 @@
 # <img src="Icon.png" width="24" hspace="5" /> Unibot
 
-<img align="right" src="Logo.png" width="184" height="192" hspace="24" />
-
 Unibot is a comprehensive framework designed to simplify the development of bots across multiple messengers platforms.
 
 With its functional interfaces, developers can write code once and deploy it on various platforms
