@@ -12,7 +12,7 @@ public sealed class TelegramPlatform : IPlatform
         Self = self;
 
         ControllerCreator = ControllerCreatorBuilder.Create()
-            .Add<IOutgoingMessageController, IMessage>(message => new OutgoingMessageTelegramController(client, message))
+            .Add<IOutgoingMessageController, IMessage>(message => new TelegramOutgoingMessageController(client, message))
             .Build();
     }
 

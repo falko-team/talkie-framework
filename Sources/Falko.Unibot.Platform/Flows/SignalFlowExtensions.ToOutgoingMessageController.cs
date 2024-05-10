@@ -7,7 +7,7 @@ namespace Falko.Unibot.Flows;
 
 public static partial class SignalFlowExtensions
 {
-    public static IOutgoingMessageController ToOutgoingMessageController(this ISignalContext<IncomingMessageSignal> context)
+    public static IOutgoingMessageController ToMessageController(this ISignalContext<IncomingMessageSignal> context)
     {
         return context.To<OutgoingMessageControllerAdapter, IOutgoingMessageController>();
     }
