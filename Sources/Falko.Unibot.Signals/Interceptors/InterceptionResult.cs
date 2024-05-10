@@ -4,33 +4,23 @@ namespace Falko.Unibot.Interceptors;
 
 public readonly struct InterceptionResult
 {
+    public readonly bool CanContinue;
+
+    public readonly Signal? ReplacedSignal;
+
     private InterceptionResult(bool canContinue, Signal? replacedSignal = null)
     {
         CanContinue = canContinue;
         ReplacedSignal = replacedSignal;
     }
 
-    internal bool CanContinue { get; } = true;
+    public static InterceptionResult ContinueWith(Signal signal) => new(true, signal);
 
-    internal Signal? ReplacedSignal { get; }
+    public static InterceptionResult Continue() => new(true);
 
-    public static InterceptionResult ContinueWith(Signal signal)
-    {
-        return new InterceptionResult(true, signal);
-    }
+    public static InterceptionResult Break() => new(false);
 
-    public static InterceptionResult Continue()
-    {
-        return new InterceptionResult(true);
-    }
+    public static implicit operator InterceptionResult(bool boolean) => boolean ? Continue() : Break();
 
-    public static InterceptionResult Break()
-    {
-        return new InterceptionResult(false);
-    }
-
-    public static implicit operator InterceptionResult(bool boolean)
-    {
-        return boolean ? Continue() : Break();
-    }
+    public static implicit operator InterceptionResult(Signal signal) => ContinueWith(signal);
 }
