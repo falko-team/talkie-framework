@@ -1,14 +1,16 @@
 ﻿using Falko.Unibot.Collections;
+using Falko.Unibot.Common;
 using Falko.Unibot.Disposables;
 using Falko.Unibot.Controllers;
 using Falko.Unibot.Flows;
 using Falko.Unibot.Models.Messages;
 using Falko.Unibot.Models.Profiles;
 using Falko.Unibot.Pipelines;
+using Falko.Unibot.Platforms;
 using Falko.Unibot.Signals;
 using Microsoft.Extensions.Logging;
 
-var telegramToken = args[0];
+var telegramToken = args[0].Trim();
 
 // Used stacked for disposing last to first disposables.
 // At this example first disposed flow and then disposed telegram connection.
@@ -49,22 +51,20 @@ flow.Subscribe(builder => builder
     .OfType<IncomingMessageSignal>()
     .Where(signal => signal.Message.Content?.Trim().StartsWith("/hello") is true)
     .Handle(context => context
-        .ToOutgoingMessageController()
-        .SendAsync(b => b
+        .ToMessageController()
+        .PublishMessageAsync(b => b
             .AddText("hi"))
         .Wait()));
 
-// Create subscription for incoming message signal with not empty content.
-// When message received, send message with same content.
+// Echo message text back to the sender only in private chats example pipeline.
 flow.Subscribe(builder => builder
-    .OfType<IncomingMessageSignal>()
-    .Where(signal => signal.Message.WithEntry()?.Receiver is IUserProfile)
-    .Where(signal => string.IsNullOrWhiteSpace(signal.Message.Content) is false)
-    .Handle(context => context
-        .ToOutgoingMessageController()
-        .SendAsync(b => b
-            .AddText(context.Signal.Message.Content!))
-        .Wait()));
+    .OfType<IncomingMessageSignal>() // new messages only
+    .Where(signal => signal.Message.OfPlatform<TelegramPlatform>()) // telegram messages only
+    .Where(signal => signal.Message.WithEntry()?.Receiver is IUserProfile) // only in telegram chat with user
+    .Where(signal => signal.Message.Content.IsNullOrWhiteSpace() is false) // only where message text is not empty
+    .HandleAsync(context => context
+        .ToMessageController()
+        .PublishMessageAsync(context.Signal.Message.Content!))); // send message with same text to the chat of sender
 
 // Connect to telegram with empty token and dispose it with disposables.
 // Added you token to connect to telegram!
