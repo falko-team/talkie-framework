@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Signals.Connec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Signals.Adapters", "Sources\Falko.Unibot.Signals.Adapters\Falko.Unibot.Signals.Adapters.csproj", "{32351F71-4633-41A3-81CE-1BD70C5028C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Bridges.Telegram", "Sources\Falko.Unibot.Bridges.Telegram\Falko.Unibot.Bridges.Telegram.csproj", "{1BAA0E4A-072F-4DEA-9820-17D796542F01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,7 @@ Global
 		{70165E7E-EA74-4F28-8E63-89F181C76CC7} = {DE9BDD77-C26B-4618-9723-E176586CFBCC}
 		{61BAF50C-1232-4694-9374-A4930A0EC111} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
 		{32351F71-4633-41A3-81CE-1BD70C5028C6} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
+		{1BAA0E4A-072F-4DEA-9820-17D796542F01} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -96,5 +99,9 @@ Global
 		{32351F71-4633-41A3-81CE-1BD70C5028C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32351F71-4633-41A3-81CE-1BD70C5028C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32351F71-4633-41A3-81CE-1BD70C5028C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\Falko.Unibot.Bridges.Telegram\Falko.Unibot.Bridges.Telegram.csproj" />
         <ProjectReference Include="..\Falko.Unibot.Platform\Falko.Unibot.Platform.csproj" />
-        <PackageReference Include="Telegram.Bot" />
     </ItemGroup>
 </Project>
