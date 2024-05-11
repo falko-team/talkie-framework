@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup Label="Description">
+        <RootNamespace>Falko.Unibot.Bridges.Telegram</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\Falko.Unibot.Signals.Connections\Falko.Unibot.Signals.Connections.csproj" />
+    </ItemGroup>
+</Project>
