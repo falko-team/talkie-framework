@@ -15,6 +15,7 @@ namespace Falko.Unibot.Bridges.Telegram.Serialization;
     Converters = [typeof(DateTimeUnixConverter)])]
 [JsonSerializable(typeof(Response<Update[]>))]
 [JsonSerializable(typeof(Response<User>))]
+[JsonSerializable(typeof(Response<Message>))]
 [JsonSerializable(typeof(GetUpdates))]
 [JsonSerializable(typeof(SendMessage))]
 internal sealed partial class ModelsJsonSerializerContext : JsonSerializerContext;
