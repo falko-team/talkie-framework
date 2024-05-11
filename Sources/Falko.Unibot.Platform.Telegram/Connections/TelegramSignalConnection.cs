@@ -1,154 +1,141 @@
+using Falko.Unibot.Bridges.Telegram.Clients;
+using Falko.Unibot.Bridges.Telegram.Models;
 using Falko.Unibot.Flows;
 using Falko.Unibot.Models.Messages;
 using Falko.Unibot.Models.Profiles;
 using Falko.Unibot.Platforms;
 using Falko.Unibot.Signals;
-using Telegram.Bot;
-using Telegram.Bot.Polling;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace Falko.Unibot.Connections;
 
 public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : ISignalConnection
 {
-    private CancellationTokenSource? _cts;
+    private CancellationTokenSource? _globalCancellationTokenSource;
 
-    private IPlatform? _platform;
-
-    private DateTime _startedDate;
-
-    private TelegramBotClient? _client;
+    private Task? _processUpdatesTask;
 
     public async ValueTask InitializeAsync(CancellationToken cancellationToken = default)
     {
-        if (_cts is not null)
-        {
-            throw new InvalidOperationException("The connection is already initialized.");
-        }
+        _globalCancellationTokenSource = new();
 
-        _startedDate = DateTime.UtcNow;
+        var client = new TelegramBotApiClient(token);
 
-        _cts = new CancellationTokenSource();
+        var self = GetSelf(await client.GetMeAsync(cancellationToken));
 
-        _client = new TelegramBotClient(token);
+        var platform = new TelegramPlatform(client, self);
 
-        using var scopedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, cancellationToken);
-
-        var me = CreateBotProfile(await _client.GetMeAsync(scopedCts.Token));
-
-        _platform = new TelegramPlatform(_client, me);
-
-        var options = new ReceiverOptions
-        {
-            AllowedUpdates = [ UpdateType.Message ]
-        };
-
-        _client.StartReceiving(
-            updateHandler: UpdateHandler,
-            pollingErrorHandler: PollingErrorHandler,
-            receiverOptions: options,
-            cancellationToken: _cts.Token
-        );
+        _processUpdatesTask = client.ProcessUpdatesAsync((update, scopedCancellationToken) =>
+                ProcessUpdate(platform, update, scopedCancellationToken),
+            _globalCancellationTokenSource.Token);
     }
 
-    private async Task PollingErrorHandler(ITelegramBotClient client, Exception ex, CancellationToken cancellationToken)
-    {
-        await flow.PublishAsync(new UnhandledExceptionSignal(this, ex), cancellationToken);
-    }
-
-    private async Task UpdateHandler(ITelegramBotClient client, Update update, CancellationToken cancellationToken)
+    private void ProcessUpdate(IPlatform platform,
+        Update update, CancellationToken cancellationToken)
     {
         if (update.Message is not { } message) return;
 
-        if (message.Date < _startedDate) return;
+        if (message.Text is not { } text) return;
 
-        if (message.Text is not { } messageText) return;
+        var sender = GetMessageSender(message);
+
+        var receiver = GetReceiver(message);
+
+        if (sender is null || receiver is null) return;
 
         var incomingMessage = new TelegramIncomingMessage
         {
             Id = message.MessageId,
-            Receiver = Receiver(message),
-            Sender = GetProfile(message.From!),
-            Sent = message.Date,
-            Received = DateTime.UtcNow,
-            Content = messageText,
-            Platform = _platform!
+            Content = text,
+            Sender = sender,
+            Receiver = receiver,
+            Platform = platform,
+            Sent = message.Date ?? DateTime.MinValue,
+            Received = DateTime.UtcNow
         };
 
-        await flow.PublishAsync(new IncomingMessageSignal(incomingMessage), cancellationToken);
+        _ = flow.PublishAsync(new IncomingMessageSignal(incomingMessage), cancellationToken);
     }
 
-    public ValueTask DisposeAsync()
+    private static IBotProfile GetSelf(User self)
     {
-        _cts?.Cancel();
-
-        return ValueTask.CompletedTask;
-    }
-
-    private IProfile Receiver(Message message)
-    {
-        var chat = _client!.GetChatAsync(message.Chat).Result;
-
-        if (chat is { Type: ChatType.Private } chat1)
+        return new TelegramBotProfile
         {
-            return GetProfile(chat1);
+            Id = self.Id,
+            FirstName = self.FirstName,
+            LastName = self.LastName,
+            NickName = self.Username
+        };
+    }
+
+    private static IProfile? GetReceiver(Message message)
+    {
+        if (message.Chat is not { } chat) return null;
+
+        if (chat.Type is ChatType.Private)
+        {
+            return new TelegramUserProfile
+            {
+                Id = chat.Id,
+                NickName = chat.Username,
+                FirstName = chat.FirstName,
+                LastName = chat.LastName
+            };
         }
 
-        if (chat is { Type: ChatType.Group or ChatType.Supergroup } chat2)
-        {
-            return GetChatProfile(chat2);
-        }
-
-        throw new NotSupportedException("Unsupported chat type.");
-    }
-
-    private static IChatProfile GetChatProfile(Chat chat)
-    {
         return new TelegramChatProfile
         {
             Id = chat.Id,
             Title = chat.Title,
-            Description = chat.Description,
         };
     }
 
-    private static IProfile GetProfile(Chat chat)
+    private static IProfile? GetMessageSender(Message message)
     {
-        return new TelegramUserProfile
+        if (message.From is { } sender)
         {
-            Id = chat.Id,
-            NickName = chat.Username,
-            FirstName = chat.FirstName,
-            LastName = chat.LastName,
-            Description = chat.Bio
-        };
-    }
+            if (sender.IsBot)
+            {
+                return new TelegramBotProfile
+                {
+                    Id = sender.Id,
+                    NickName = sender.Username,
+                    FirstName = sender.FirstName,
+                    LastName = sender.LastName
+                };
+            }
 
-    private static IProfile GetProfile(User user)
-    {
-        return user.IsBot ? CreateBotProfile(user) : CreateUserProfile(user);
-    }
+            return new TelegramUserProfile
+            {
+                Id = sender.Id,
+                NickName = sender.Username,
+                FirstName = sender.FirstName,
+                LastName = sender.LastName
+            };
+        }
 
-    private static IBotProfile CreateBotProfile(User me)
-    {
-        return new TelegramBotProfile
+        if (message.Chat is { } chat)
         {
-            Id = me.Id,
-            NickName = me.Username,
-            FirstName = me.FirstName,
-            LastName = me.LastName
-        };
+            return new TelegramChatProfile
+            {
+                Id = chat.Id,
+                Title = chat.Title,
+            };
+        }
+
+        return null;
     }
 
-    private static IUserProfile CreateUserProfile(User me)
+    public async ValueTask DisposeAsync()
     {
-        return new TelegramUserProfile
+        if (_globalCancellationTokenSource is not null)
         {
-            Id = me.Id,
-            NickName = me.Username,
-            FirstName = me.FirstName,
-            LastName = me.LastName
-        };
+            await _globalCancellationTokenSource.CancelAsync();
+            _globalCancellationTokenSource.Dispose();
+        }
+
+        if (_processUpdatesTask is not null)
+        {
+            await _processUpdatesTask;
+        }
     }
 }

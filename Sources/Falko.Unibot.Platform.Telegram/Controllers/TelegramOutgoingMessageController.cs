@@ -1,23 +1,22 @@
+using Falko.Unibot.Bridges.Telegram.Clients;
+using Falko.Unibot.Bridges.Telegram.Models;
 using Falko.Unibot.Models.Messages;
-using Telegram.Bot;
+using Falko.Unibot.Platforms;
 
 namespace Falko.Unibot.Controllers;
 
-public sealed class TelegramOutgoingMessageController(ITelegramBotClient client, IMessage incomingMessage) : IOutgoingMessageController
+public sealed class TelegramOutgoingMessageController(ITelegramBotApiClient client, IMessage incomingMessage) : IOutgoingMessageController
 {
     public async Task PublishMessageAsync(IMessage message, CancellationToken cancellationToken = default)
     {
-        if (incomingMessage is not XMessage.IWithEntry withEntry)
-        {
-            return;
-        }
+        if (incomingMessage.OfPlatform<TelegramPlatform>() is false) return;
 
-        if (message.Content is null)
-        {
-            return;
-        }
+        if (message.Content is null) return;
 
-        await client.SendTextMessageAsync(withEntry.Receiver.Id.GetValueOrDefault<long?>() ?? 0, message.Content!,
-            cancellationToken: cancellationToken);
+        if (incomingMessage.WithEntry()?.Receiver.Id.TryGetValue(out long id) is true)
+        {
+            await client.SendMessageAsync(new SendMessage(id, message.Content),
+                cancellationToken: cancellationToken);
+        }
     }
 }

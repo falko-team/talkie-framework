@@ -13,6 +13,22 @@ public static class ThrowIf
         }
     }
 
+    public static void NullOrEmpty(string? argument, [CallerArgumentExpression(nameof(argument))] string? argumentName = null)
+    {
+        if (string.IsNullOrEmpty(argument))
+        {
+            throw new ArgumentException("Value cannot be null or empty.", argumentName);
+        }
+    }
+
+    public static void NullOrWhiteSpace(string? argument, [CallerArgumentExpression(nameof(argument))] string? argumentName = null)
+    {
+        if (string.IsNullOrWhiteSpace(argument))
+        {
+            throw new ArgumentException("Value cannot be null or whitespace.", argumentName);
+        }
+    }
+
     public static void Disposed(bool disposed, string? objectName = null)
     {
         if (disposed)

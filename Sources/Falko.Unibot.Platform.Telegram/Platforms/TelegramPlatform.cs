@@ -1,13 +1,13 @@
+using Falko.Unibot.Bridges.Telegram.Clients;
 using Falko.Unibot.Controllers;
 using Falko.Unibot.Models.Messages;
 using Falko.Unibot.Models.Profiles;
-using Telegram.Bot;
 
 namespace Falko.Unibot.Platforms;
 
 public sealed class TelegramPlatform : IPlatform
 {
-    public TelegramPlatform(ITelegramBotClient client, IBotProfile self)
+    public TelegramPlatform(ITelegramBotApiClient client, IBotProfile self)
     {
         Self = self;
 
