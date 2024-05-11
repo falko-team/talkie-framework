@@ -50,11 +50,10 @@ flow.Subscribe(builder => builder
 flow.Subscribe(builder => builder
     .OfType<IncomingMessageSignal>()
     .Where(signal => signal.Message.Content?.Trim().StartsWith("/hello") is true)
-    .Handle(context => context
+    .HandleAsync(context => context
         .ToMessageController()
         .PublishMessageAsync(b => b
-            .AddText("hi"))
-        .Wait()));
+            .AddText("hi"))));
 
 // Echo message text back to the sender only in private chats example pipeline.
 flow.Subscribe(builder => builder
