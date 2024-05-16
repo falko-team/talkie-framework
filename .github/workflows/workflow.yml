@@ -30,9 +30,9 @@ jobs:
           if [[ -d "$dir" ]]; then
             cd "$dir"
             if [[ "${{ github.ref_name }}" == "stable" ]]; then
-              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -o ../../Build
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
             else
-              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev -o ../../Build
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
             fi
             cd -
           fi
@@ -40,4 +40,4 @@ jobs:
     - name: Publishing
       if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
       run: |
-        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json ./Build/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json ./Sources/*/Packages/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
