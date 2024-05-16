@@ -26,11 +26,26 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Packing
       run: |
-        if [[ "${{ github.ref_name }}" == "stable" ]]; then
-          dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
-        else
-          dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
-        fi
+        # Find all project directories in Sources
+        projectDirs=(./Sources/*)
+    
+        # Loop through each project directory
+        for dir in "${projectDirs[@]}"; do
+          if [[ -d "$dir" ]]; then
+            # Change directory to the project
+            cd "$dir"
+            
+            # Publish the project based on branch name (same logic as before)
+            if [[ "${{ github.ref_name }}" == "stable" ]]; then
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
+            else
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
+            fi
+            
+            # Move back to the original directory (optional)
+            cd -
+          fi
+        done
     - name: Publishing
       if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
       run: |
