@@ -13,7 +13,6 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Description">
-        <Version>0.0.0</Version>
         <Company>Falko</Company>
         <Authors>Rimu Falko; Timur Falko</Authors>
         <Description>Comprehensive framework designed to simplify the development of bots across multiple messengers platforms</Description>
@@ -25,12 +24,12 @@
     </PropertyGroup>
 
     <ItemGroup Label="Assets">
-        <None Include="$(SolutionDir)Logo512.png">
+        <None Include="../../Logo512.png">
             <Pack>true</Pack>
             <Visible>false</Visible>
             <PackagePath>Assets</PackagePath>
         </None>
-        <None Include="$(SolutionDir)ReadMe.md">
+        <None Include="../../ReadMe.md">
             <Pack>true</Pack>
             <Visible>false</Visible>
             <PackagePath>Assets</PackagePath>

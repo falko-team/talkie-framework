@@ -14,9 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{A9CB45
 		Logo512.png = Logo512.png
 		Sources.Build.props = Sources.Build.props
 		Tests.Build.props = Tests.Build.props
-		Tests.Packages.props = Tests.Packages.props
-		Benchmarks.Packages.props = Benchmarks.Packages.props
-		Examples.Packages.props = Examples.Packages.props
+		Directory.Packages.props = Directory.Packages.props
 		.github/Funding.yml = .github/Funding.yml
 		Icon64.png = Icon64.png
 	EndProjectSection

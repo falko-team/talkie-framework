@@ -1,8 +1,6 @@
 <Project>
     <Import Project="Common.Build.props" />
 
-    <Import Project="Examples.Packages.props" />
-
     <PropertyGroup Label="Assembly">
         <PublishAot>True</PublishAot>
         <OutputType>Exe</OutputType>
