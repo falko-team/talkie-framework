@@ -37,9 +37,9 @@ jobs:
             
             # Publish the project based on branch name (same logic as before)
             if [[ "${{ github.ref_name }}" == "stable" ]]; then
-              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
+              dotnet build -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
             else
-              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
+              dotnet build -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
             fi
             
             # Move back to the original directory (optional)
