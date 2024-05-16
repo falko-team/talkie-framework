@@ -32,4 +32,4 @@ jobs:
     - name: Publishing
       if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
       run: |
-        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.event.repo.name }}/index.json ./Packages/*.nupkg
+        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.repository }}/index.json ./Packages/*.nupkg
