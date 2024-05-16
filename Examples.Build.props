@@ -1,0 +1,15 @@
+<Project>
+    <Import Project="Common.Build.props" />
+
+    <Import Project="Examples.Packages.props" />
+
+    <PropertyGroup Label="Assembly">
+        <PublishAot>True</PublishAot>
+        <OutputType>Exe</OutputType>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Language">
+        <RootNamespace>Falko.Unibot.Examples</RootNamespace>
+    </PropertyGroup>
+</Project>
