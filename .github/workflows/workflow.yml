@@ -23,9 +23,9 @@ jobs:
     - name: Building
       run: |
           if [[ "${{ github.ref_name }}" == "stable" ]]; then
-            dotnet build -c Release --no-restore -p:Version=${{ env.UNIBOT_VERSION }}.${{ github.event.run_number }} -P:PackageVersion=${{ env.UNIBOT_VERSION }}.${{ github.event.run_number }}
+            dotnet build -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_id }} -P:PackageVersion=${{ env.UNIBOT_VERSION }}.${{ github.run_id }}
           else
-            dotnet build -c Release --no-restore -p:Version=${{ env.UNIBOT_VERSION }}.${{ github.event.run_number }} -P:PackageVersion=${{ env.UNIBOT_VERSION }}.${{ github.event.run_number }}-dev
+            dotnet build -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_id }} -P:PackageVersion=${{ env.UNIBOT_VERSION }}.${{ github.run_id }}-dev
           fi
     - name: Testing
       run: dotnet test --no-build --verbosity normal
