@@ -1,4 +1,4 @@
-name: .NET
+name: Publishing
 
 on:
   push:
@@ -21,14 +21,16 @@ jobs:
     - name: Restoring
       run: dotnet restore
     - name: Building
-      run: |
-          if [[ "${{ github.ref_name }}" == "stable" ]]; then
-            dotnet build -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -P:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
-          else
-            dotnet build -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -P:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
-          fi
+      run: dotnet build --no-restore
     - name: Testing
       run: dotnet test --no-build --verbosity normal
+    - name: Packing
+      run: |
+        if [[ "${{ github.ref_name }}" == "stable" ]]; then
+          dotnet pack -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
+        else
+          dotnet pack -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
+        fi
     - name: Publishing
       if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
       run: |
