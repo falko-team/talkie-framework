@@ -1,0 +1,43 @@
+name: Publishing
+
+on:
+  push:
+    branches: [ "development", "stable" ]
+  pull_request:
+    branches: [ "development" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - name: Preparing
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restoring
+      run: dotnet restore
+    - name: Building
+      run: dotnet build --no-restore
+    - name: Testing
+      run: dotnet test --no-build --verbosity normal
+    - name: Packing
+      run: |
+        for dir in ./Sources/*; do
+          if [[ -d "$dir" ]]; then
+            cd "$dir"
+            if [[ "${{ github.ref_name }}" == "stable" ]]; then
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
+            else
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
+            fi
+            cd -
+          fi
+        done
+    - name: Publishing
+      if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
+      run: |
+        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json ./Sources/*/Packages/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
