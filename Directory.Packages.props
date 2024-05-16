@@ -1,5 +1,8 @@
 <Project>
     <ItemGroup Label="Dependencies">
+        <PackageVersion Include="BenchmarkDotNet" Version="0.13.12" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
         <PackageVersion Include="NUnit" Version="4.1.0" />
         <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
