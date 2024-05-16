@@ -28,6 +28,9 @@ jobs:
       run: |
         # Find all project directories in Sources
         projectDirs=(./Sources/*)
+        
+        # Remove the Packages directory
+        rm -rf ./Packages
     
         # Loop through each project directory
         for dir in "${projectDirs[@]}"; do
