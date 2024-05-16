@@ -26,17 +26,13 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Packing
       run: |
-        ls
-        if [ -d "./Packages" ]; then
-          rm -r "./Packages"
-        fi
         for dir in ./Sources/*; do
           if [[ -d "$dir" ]]; then
             cd "$dir"
             if [[ "${{ github.ref_name }}" == "stable" ]]; then
-              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -o ../../Build
             else
-              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev -o ../../Build
             fi
             cd -
           fi
@@ -44,4 +40,4 @@ jobs:
     - name: Publishing
       if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
       run: |
-        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json ./Packages/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json ./Build/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
