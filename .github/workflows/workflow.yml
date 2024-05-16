@@ -22,7 +22,7 @@ jobs:
       run: dotnet restore
     - name: Building
       run: |
-          if [[ "${{ github.event.ref.branch }}" == "stable" ]]; then
+          if [[ "${{ github.ref_name }}" == "stable" ]]; then
             dotnet build --no-restore /p:BuildNumber=${{ github.event.run_number }}
           else
             dotnet build --no-restore /p:BuildNumber=${{ github.event.run_number }} --version-suffix dev
@@ -30,6 +30,6 @@ jobs:
     - name: Testing
       run: dotnet test --no-build --verbosity normal
     - name: Publishing
-      if: ${{ github.event.ref.branch == 'development' || github.event.ref.branch == 'stable' }}
+      if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
       run: |
         dotnet nuget push --source https://nuget.pkg.github.com/${{ github.event.repo.name }}/index.json ./Packages/*.nupkg
