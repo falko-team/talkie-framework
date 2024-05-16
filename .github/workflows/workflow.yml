@@ -33,7 +33,7 @@ jobs:
         for dir in ./Sources/*; do
           if [[ -d "$dir" ]]; then
             cd "$dir"
-            if [[ "$REF_NAME" == "stable" ]]; then
+            if [[ "${{ github.ref_name }}" == "stable" ]]; then
               dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
             else
               dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
