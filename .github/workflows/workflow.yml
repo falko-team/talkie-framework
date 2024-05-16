@@ -26,26 +26,18 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Packing
       run: |
-        # Find all project directories in Sources
-        projectDirs=(./Sources/*)
-        
-        # Remove the Packages directory
-        rm -r ./Packages
-    
-        # Loop through each project directory
-        for dir in "${projectDirs[@]}"; do
+        ls
+        if [ -d "./Packages" ]; then
+          rm -r "./Packages"
+        fi
+        for dir in ./Sources/*; do
           if [[ -d "$dir" ]]; then
-            # Change directory to the project
             cd "$dir"
-            
-            # Publish the project based on branch name (same logic as before)
-            if [[ "${{ github.ref_name }}" == "stable" ]]; then
+            if [[ "$REF_NAME" == "stable" ]]; then
               dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
             else
               dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
             fi
-            
-            # Move back to the original directory (optional)
             cd -
           fi
         done
