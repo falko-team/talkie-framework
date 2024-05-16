@@ -4,9 +4,9 @@
 
 *.cs text diff=csharp
 *.sln text
-*.csproj text diff=html
-*.props text diff=html
-nuget.config text diff=html
+*.csproj text
+*.props text
+nuget.config
 
 *.png lfs
 *.gif lfs

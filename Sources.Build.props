@@ -1,0 +1,12 @@
+<Project>
+    <Import Project="Common.Build.props" />
+
+    <PropertyGroup Label="Assembly">
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Language">
+        <RootNamespace>Falko.Unibot.Tests</RootNamespace>
+    </PropertyGroup>
+</Project>

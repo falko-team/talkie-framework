@@ -1,0 +1,13 @@
+<Project>
+    <Import Project="Common.Build.props" />
+
+    <Import Project="Benchmarks.Packages.props" />
+
+    <PropertyGroup Label="Assembly">
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Language">
+        <RootNamespace>Falko.Unibot.Benchmarks</RootNamespace>
+    </PropertyGroup>
+</Project>

@@ -4,12 +4,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{7199
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{A9CB452E-D878-4F88-B390-78310EF6ED47}"
 	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
-		Directory.Packages.props = Directory.Packages.props
+		Common.Build.props = Common.Build.props
 		nuget.config = nuget.config
 		.gitignore = .gitignore
 		.gitattributes = .gitattributes
 		ReadMe.md = ReadMe.md
+		Benchmarks.Build.props = Benchmarks.Build.props
+		Examples.Build.props = Examples.Build.props
+		Logo512.png = Logo512.png
+		Sources.Build.props = Sources.Build.props
+		Tests.Build.props = Tests.Build.props
+		Tests.Packages.props = Tests.Packages.props
+		Benchmarks.Packages.props = Benchmarks.Packages.props
+		Examples.Packages.props = Examples.Packages.props
+		.github/Funding.yml = .github/Funding.yml
+		Icon64.png = Icon64.png
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Core", "Sources\Falko.Unibot.Core\Falko.Unibot.Core.csproj", "{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}"
