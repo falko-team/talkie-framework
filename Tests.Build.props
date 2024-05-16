@@ -1,8 +1,6 @@
 <Project>
     <Import Project="Common.Build.props" />
 
-    <Import Project="Tests.Packages.props" />
-
     <PropertyGroup Label="Assembly">
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
