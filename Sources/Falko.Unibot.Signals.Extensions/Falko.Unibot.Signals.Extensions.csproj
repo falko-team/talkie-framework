@@ -1,4 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Sources.Build.props" />
+
     <ItemGroup Label="Dependencies">
         <ProjectReference Include="..\Falko.Unibot.Signals\Falko.Unibot.Signals.csproj" />
     </ItemGroup>
