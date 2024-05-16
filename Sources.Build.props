@@ -1,0 +1,15 @@
+<Project>
+    <Import Project="Common.Build.props" />
+
+    <PropertyGroup Label="Assembly">
+        <IsPackable>true</IsPackable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <OutputType>Library</OutputType>
+        <PackageOutputPath>$(SolutionDir)Packages</PackageOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Language">
+        <RootNamespace>Falko.Unibot</RootNamespace>
+    </PropertyGroup>
+</Project>

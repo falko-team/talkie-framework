@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup Label="Assembly">
-        <IsPackable>false</IsPackable>
-        <IsTestProject>true</IsTestProject>
-    </PropertyGroup>
+    <Import Project="../../Tests.Build.props" />
 
     <ItemGroup Label="Dependencies">
         <ProjectReference Include="..\..\Sources\Falko.Unibot.Core\Falko.Unibot.Core.csproj" />

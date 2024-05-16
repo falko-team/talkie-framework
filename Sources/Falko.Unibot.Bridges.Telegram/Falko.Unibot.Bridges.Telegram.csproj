@@ -1,4 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Sources.Build.props" />
+
     <PropertyGroup Label="Description">
         <RootNamespace>Falko.Unibot.Bridges.Telegram</RootNamespace>
     </PropertyGroup>
