@@ -1,8 +1,6 @@
 <Project>
     <Import Project="Common.Build.props" />
 
-    <Import Project="Benchmarks.Packages.props" />
-
     <PropertyGroup Label="Assembly">
         <OutputType>Exe</OutputType>
     </PropertyGroup>
