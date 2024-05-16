@@ -26,9 +26,9 @@ jobs:
     - name: Building
       run: |
           if [[ "${{ github.event.ref.branch }}" == "stable" ]]; then
-            dotnet build --no-restore /p:BuildNumber= ${{ github.event.run_number }}
+            dotnet build --no-restore /p:BuildNumber=${{ github.event.run_number }}
           else
-            dotnet build --no-restore /p:BuildNumber= ${{ github.event.run_number }} --version-suffix dev
+            dotnet build --no-restore /p:BuildNumber=${{ github.event.run_number }} --version-suffix dev
           fi
     - name: Testing
       run: dotnet test --no-build --verbosity normal
