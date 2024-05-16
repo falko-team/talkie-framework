@@ -1,0 +1,38 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "development", "stable" ]
+  pull_request:
+    branches: [ "development" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - name: Preparing
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        source-url: https://nuget.pkg.github.com/${{ github.event.repo.name }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Restoring
+      run: dotnet restore
+    - name: Building
+      run: |
+          if [[ "${{ github.event.ref.branch }}" == "stable" ]]; then
+            dotnet build --no-restore /p:BuildNumber= ${{ github.event.run_number }}
+          else
+            dotnet build --no-restore /p:BuildNumber= ${{ github.event.run_number }} --version-suffix dev
+          fi
+    - name: Testing
+      run: dotnet test --no-build --verbosity normal
+    - name: Publishing
+      if: ${{ github.event.ref.branch == 'development' || github.event.ref.branch == 'stable' }}
+      run: |
+        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.event.repo.name }}/index.json ./Packages/*.nupkg
