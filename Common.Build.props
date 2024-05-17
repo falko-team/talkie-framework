@@ -17,6 +17,7 @@
         <Authors>Rimu Falko; Timur Falko</Authors>
         <Description>Comprehensive framework designed to simplify the development of bots across multiple messengers platforms</Description>
         <PackageIcon>Assets/Logo512.png</PackageIcon>
+        <PackageIconUrl>https://raw.githubusercontent.com/falko-team/unibot-framework/stable/Logo512.png</PackageIconUrl>
         <PackageProjectUrl>https://github.com/falko-team/unibot-framework</PackageProjectUrl>
         <RepositoryUrl>https://github.com/falko-team/unibot-framework.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
