@@ -23,21 +23,22 @@ jobs:
     - name: Building
       run: dotnet build --no-restore
     - name: Testing
-      run: dotnet test --no-build --verbosity normal
-    - name: Packing
+      run: dotnet test --verbosity normal
+    - name: Publishing
+      if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
       run: |
         for dir in ./Sources/*; do
           if [[ -d "$dir" ]]; then
             cd "$dir"
             if [[ "${{ github.ref_name }}" == "stable" ]]; then
-              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-beta
             else
-              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-dev
+              dotnet publish -c Release --no-restore -p:Version=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ vars.UNIBOT_VERSION }}.${{ github.run_number }}-alpha
             fi
             cd -
           fi
         done
-    - name: Publishing
+    - name: Deploying
       if: ${{ github.ref_name == 'development' || github.ref_name == 'stable' }}
       run: |
         dotnet nuget push --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json ./Sources/*/Packages/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}

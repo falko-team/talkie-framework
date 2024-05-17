@@ -17,9 +17,10 @@
         <Authors>Rimu Falko; Timur Falko</Authors>
         <Description>Comprehensive framework designed to simplify the development of bots across multiple messengers platforms</Description>
         <PackageIcon>Assets/Logo512.png</PackageIcon>
-        <RepositoryUrl>https://github.com/essy-ecosystem/dependency-management.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/falko-team/unibot-framework</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/falko-team/unibot-framework.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>framework;not;telegram;unibot;falko</PackageTags>
+        <PackageTags>framework;bot;telegram;unibot;falko</PackageTags>
         <PackageReadmeFile>Assets/ReadMe.md</PackageReadmeFile>
     </PropertyGroup>
 
