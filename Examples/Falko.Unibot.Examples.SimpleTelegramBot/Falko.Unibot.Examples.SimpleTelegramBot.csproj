@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup Label="Dependencies">
-        <ProjectReference Include="..\..\Sources\Falko.Unibot.Platform.Telegram\Falko.Unibot.Platform.Telegram.csproj" />
+        <ProjectReference Include="..\..\Sources\Falko.Unibot.Platforms.Telegram\Falko.Unibot.Platforms.Telegram.csproj" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     </ItemGroup>
