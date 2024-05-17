@@ -35,9 +35,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Tests.Sequence
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Signals.Extensions", "Sources\Falko.Unibot.Signals.Extensions\Falko.Unibot.Signals.Extensions.csproj", "{4F6613AA-A7DE-43BB-81BA-700F8A2DE765}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Platform", "Sources\Falko.Unibot.Platform\Falko.Unibot.Platform.csproj", "{DFB41BB0-49E7-4F7C-968D-282E92A46D3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Platforms", "Sources\Falko.Unibot.Platforms\Falko.Unibot.Platforms.csproj", "{DFB41BB0-49E7-4F7C-968D-282E92A46D3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Platform.Telegram", "Sources\Falko.Unibot.Platform.Telegram\Falko.Unibot.Platform.Telegram.csproj", "{791B0028-509B-41CA-AA0C-08630A0D397A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Platforms.Telegram", "Sources\Falko.Unibot.Platforms.Telegram\Falko.Unibot.Platforms.Telegram.csproj", "{791B0028-509B-41CA-AA0C-08630A0D397A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Examples.SimpleTelegramBot", "Examples\Falko.Unibot.Examples.SimpleTelegramBot\Falko.Unibot.Examples.SimpleTelegramBot.csproj", "{70165E7E-EA74-4F28-8E63-89F181C76CC7}"
 EndProject
