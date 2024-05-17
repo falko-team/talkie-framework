@@ -26,7 +26,7 @@
     </PropertyGroup>
 
     <ItemGroup Label="Assets">
-        <None Include="../../Logo512.png">
+        <None Include="../../Icon512.png">
             <Pack>true</Pack>
             <Visible>false</Visible>
             <PackagePath>Assets</PackagePath>
