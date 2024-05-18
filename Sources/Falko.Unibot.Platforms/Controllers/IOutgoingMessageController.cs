@@ -2,7 +2,7 @@ using Falko.Unibot.Models.Messages;
 
 namespace Falko.Unibot.Controllers;
 
-public interface IOutgoingMessageController : IController<IMessage>
+public interface IOutgoingMessageController : IController<IIncomingMessage>
 {
-    Task PublishMessageAsync(IMessage message, CancellationToken cancellationToken = default);
+    Task<IMessage> PublishMessageAsync(IMessage message, CancellationToken cancellationToken = default);
 }

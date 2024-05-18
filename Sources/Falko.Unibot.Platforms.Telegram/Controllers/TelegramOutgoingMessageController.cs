@@ -1,22 +1,28 @@
 using Falko.Unibot.Bridges.Telegram.Clients;
 using Falko.Unibot.Bridges.Telegram.Models;
+using Falko.Unibot.Converters;
 using Falko.Unibot.Models.Messages;
 using Falko.Unibot.Platforms;
+using Falko.Unibot.Validations;
 
 namespace Falko.Unibot.Controllers;
 
-public sealed class TelegramOutgoingMessageController(ITelegramBotApiClient client, IMessage incomingMessage) : IOutgoingMessageController
+public sealed class TelegramOutgoingMessageController(TelegramPlatform platform, IIncomingMessage incomingMessage) : IOutgoingMessageController
 {
-    public async Task PublishMessageAsync(IMessage message, CancellationToken cancellationToken = default)
+    public async Task<IMessage> PublishMessageAsync(IMessage message, CancellationToken cancellationToken = default)
     {
-        if (incomingMessage.OfPlatform<TelegramPlatform>() is false) return;
+        message.Content.ThrowIf().Null();
+        incomingMessage.ThrowIf().NotPlatform<TelegramPlatform>();
 
-        if (message.Content is null) return;
-
-        if (incomingMessage.WithEntry()?.Receiver.Id.TryGetValue(out long id) is true)
+        if (incomingMessage.Entry.Environment.Id.TryGetValue(out long receiverId) is not true)
         {
-            await client.SendMessageAsync(new SendMessage(id, message.Content),
-                cancellationToken: cancellationToken);
+            throw new ArgumentException("Environment id is required.");
         }
+
+        var sentMessage = await platform.Client.SendMessageAsync(new SendMessage(receiverId, message.Content!),
+            cancellationToken: cancellationToken);
+
+        return IncomingMessageConverter.Convert(platform, sentMessage)
+            ?? throw new InvalidOperationException("Failed to convert sent message.");
     }
 }

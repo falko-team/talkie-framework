@@ -16,7 +16,7 @@ public sealed class TelegramBotApiClient(string token) : ITelegramBotApiClient
     public async Task<TResult> SendAsync<TResult, TRequest>(string method, TRequest request,
         CancellationToken cancellationToken = default) where TResult : class where TRequest : class
     {
-        ThrowIf.NullOrWhiteSpace(method);
+        method.ThrowIf().NullOrWhiteSpace();
 
         using var scopedCancellationTokenSource = CancellationTokenSource
             .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);

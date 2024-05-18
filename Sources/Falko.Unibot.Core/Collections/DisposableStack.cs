@@ -9,7 +9,7 @@ public sealed class DisposableStack : IEnumerableDisposable
 
     public void Push(IDisposable disposable)
     {
-        ThrowIf.Null(disposable, nameof(disposable));
+        disposable.ThrowIf().Null();
 
         _disposables.Push(disposable);
     }
@@ -18,7 +18,7 @@ public sealed class DisposableStack : IEnumerableDisposable
 
     public void Push(IAsyncDisposable asyncDisposable)
     {
-        ThrowIf.Null(asyncDisposable, nameof(asyncDisposable));
+        asyncDisposable.ThrowIf().Null();
 
         _disposables.Push(asyncDisposable);
     }
