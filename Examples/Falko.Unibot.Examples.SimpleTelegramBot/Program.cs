@@ -58,8 +58,8 @@ flow.Subscribe(builder => builder
 // Echo message text back to the sender only in private chats example pipeline.
 flow.Subscribe(builder => builder
     .OfType<IncomingMessageSignal>() // new messages only
-    .Where(signal => signal.Message.OfPlatform<TelegramPlatform>()) // telegram messages only
-    .Where(signal => signal.Message.WithEntry()?.Receiver is IUserProfile) // only in telegram chat with user
+    .Where(signal => signal.Message.Platform is TelegramPlatform) // telegram messages only
+    .Where(signal => signal.Message.Entry.Environment is IUserProfile) // only in telegram chat with user
     .Where(signal => signal.Message.Content.IsNullOrWhiteSpace() is false) // only where message text is not empty
     .HandleAsync(context => context
         .ToMessageController()

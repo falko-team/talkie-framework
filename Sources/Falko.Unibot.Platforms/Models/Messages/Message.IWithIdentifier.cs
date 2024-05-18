@@ -1,6 +1,6 @@
 namespace Falko.Unibot.Models.Messages;
 
-public static partial class XMessage
+public static partial class Message
 {
     public interface IWithIdentifier : IMessage
     {
