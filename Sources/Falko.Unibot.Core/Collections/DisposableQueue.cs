@@ -9,7 +9,7 @@ public sealed class DisposableQueue : IEnumerableDisposable
 
     public void Enqueue(IDisposable disposable)
     {
-        ThrowIf.Null(disposable, nameof(disposable));
+        disposable.ThrowIf().Null();
 
         _disposables.Enqueue(disposable);
     }
@@ -18,7 +18,7 @@ public sealed class DisposableQueue : IEnumerableDisposable
 
     public void Enqueue(IAsyncDisposable asyncDisposable)
     {
-        ThrowIf.Null(asyncDisposable, nameof(asyncDisposable));
+        asyncDisposable.ThrowIf().Null();
 
         _disposables.Enqueue(asyncDisposable);
     }
