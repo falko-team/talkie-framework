@@ -116,7 +116,7 @@ public readonly struct Identifier
     /// <exception cref="ArgumentNullException">The value is <b>Null</b>.</exception>
     public static Identifier FromValue<T>(T value) where T : notnull
     {
-        ThrowIf.Null(value, nameof(value));
+        value.ThrowIf().Null();
 
         return new Identifier(value);
     }

@@ -9,11 +9,8 @@ public sealed class OutgoingMessageControllerAdapter : SignalContextAdapter<Inco
 {
     public override IOutgoingMessageController Adapt(ISignalContext<IncomingMessageSignal> context)
     {
-        if (context.Signal.Message is XMessage.IWithPlatform platformMessage is false)
-        {
-            throw new InvalidCastException();
-        }
+        var message = context.Signal.Message;
 
-        return platformMessage.Platform.ControllerCreator.Create<IOutgoingMessageController, IMessage>(platformMessage);
+        return message.Platform.ControllerCreator.Create<IOutgoingMessageController, IIncomingMessage>(message);
     }
 }

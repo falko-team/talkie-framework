@@ -2,4 +2,7 @@ using Falko.Unibot.Models.Messages;
 
 namespace Falko.Unibot.Signals;
 
-public sealed record IncomingMessageSignal(IMessage Message) : Signal;
+public abstract record IncomingMessageSignal : Signal
+{
+    public abstract IIncomingMessage Message { get; }
+}

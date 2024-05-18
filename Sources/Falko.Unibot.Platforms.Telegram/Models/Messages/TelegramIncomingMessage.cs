@@ -1,21 +1,19 @@
-using Falko.Unibot.Models.Profiles;
+using Falko.Unibot.Models.Entries;
 using Falko.Unibot.Platforms;
 
 namespace Falko.Unibot.Models.Messages;
 
-public sealed record TelegramIncomingMessage : IMessage, XMessage.IWithIdentifier, XMessage.IWithPlatform, XMessage.IWithEntry
+public sealed record TelegramIncomingMessage : IIncomingMessage
 {
     public required Identifier Id { get; init; }
 
-    public required IPlatform Platform { get; init; }
+    public required TelegramEntry Entry { get; init; }
 
-    public required IProfile Sender { get; init; }
+    IEntry Message.IWithEntry.Entry => Entry;
 
-    public required DateTime Sent { get; init; }
+    public required TelegramPlatform Platform { get; init; }
 
-    public required IProfile Receiver { get; init; }
-
-    public required DateTime? Received { get; init; }
+    IPlatform Message.IWithPlatform.Platform => Platform;
 
     public string? Content { get; init; }
 }
