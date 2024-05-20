@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{A9CB45
 		Directory.Packages.props = Directory.Packages.props
 		.github/Funding.yml = .github/Funding.yml
 		Icon64.png = Icon64.png
+		License.md = License.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Unibot.Core", "Sources\Falko.Unibot.Core\Falko.Unibot.Core.csproj", "{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}"
