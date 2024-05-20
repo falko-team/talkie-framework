@@ -23,7 +23,7 @@ jobs:
     - name: Preparing
       id: get_version
       run: |
-        VERSION=$(xmllint --xpath "string(//Version)" Common.Build.props)
+        VERSION=$(xmlstarlet sel -t -v '//Version' Common.Build.props)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Publishing
       run: |
