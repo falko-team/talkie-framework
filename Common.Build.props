@@ -1,5 +1,6 @@
 <Project>
     <PropertyGroup Label="Assembly">
+        <Version>1.0.1</Version>
         <TargetFramework>net8.0</TargetFramework>
         <IsAotCompatible>true</IsAotCompatible>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
@@ -13,27 +14,8 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Description">
-        <Company>Falko</Company>
+        <Company>Falko Team</Company>
         <Authors>Rimu Falko; Timur Falko</Authors>
         <Description>Comprehensive framework designed to simplify the development of bots across multiple messengers platforms</Description>
-        <PackageIcon>Assets/Logo512.png</PackageIcon>
-        <PackageProjectUrl>https://github.com/falko-team/unibot-framework</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/falko-team/unibot-framework.git</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <PackageTags>framework;bot;telegram;unibot;falko</PackageTags>
-        <PackageReadmeFile>Assets/ReadMe.md</PackageReadmeFile>
     </PropertyGroup>
-
-    <ItemGroup Label="Assets">
-        <None Include="../../Logo512.png">
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-            <PackagePath>Assets</PackagePath>
-        </None>
-        <None Include="../../ReadMe.md">
-            <Pack>true</Pack>
-            <Visible>false</Visible>
-            <PackagePath>Assets</PackagePath>
-        </None>
-    </ItemGroup>
 </Project>

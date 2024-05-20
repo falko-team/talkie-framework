@@ -20,7 +20,7 @@ public sealed class SignalFlow : ISignalFlow
 
     public Subscription Subscribe(ISignalPipeline pipeline)
     {
-        ThrowIf.Disposed<SignalFlow>(_disposed);
+        _disposed.ThrowIf().Disposed<SignalFlow>();
 
         lock (_locker)
         {
