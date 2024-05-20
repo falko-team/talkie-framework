@@ -5,16 +5,19 @@ using Falko.Unibot.Models.Profiles;
 
 namespace Falko.Unibot.Platforms;
 
-public sealed class TelegramPlatform : IPlatform
+public sealed record TelegramPlatform : IPlatform
 {
     public TelegramPlatform(ITelegramBotApiClient client, IBotProfile self)
     {
+        Client = client;
         Self = self;
 
         ControllerCreator = ControllerCreatorBuilder.Create()
-            .Add<IOutgoingMessageController, IMessage>(message => new TelegramOutgoingMessageController(client, message))
+            .Add<IOutgoingMessageController, IIncomingMessage>(message => new TelegramOutgoingMessageController(this, message))
             .Build();
     }
+
+    public ITelegramBotApiClient Client { get; }
 
     public IBotProfile Self { get; }
 

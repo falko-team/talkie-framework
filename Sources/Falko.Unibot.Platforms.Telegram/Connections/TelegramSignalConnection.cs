@@ -1,10 +1,12 @@
 using Falko.Unibot.Bridges.Telegram.Clients;
 using Falko.Unibot.Bridges.Telegram.Models;
+using Falko.Unibot.Converters;
 using Falko.Unibot.Flows;
 using Falko.Unibot.Models.Messages;
 using Falko.Unibot.Models.Profiles;
 using Falko.Unibot.Platforms;
 using Falko.Unibot.Signals;
+using Message = Falko.Unibot.Bridges.Telegram.Models.Message;
 
 namespace Falko.Unibot.Connections;
 
@@ -29,31 +31,16 @@ public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : I
             _globalCancellationTokenSource.Token);
     }
 
-    private void ProcessUpdate(IPlatform platform,
+    private void ProcessUpdate(TelegramPlatform platform,
         Update update, CancellationToken cancellationToken)
     {
         if (update.Message is not { } message) return;
 
-        if (message.Text is not { } text) return;
+        var incomingMessage = IncomingMessageConverter.Convert(platform, message);
 
-        var sender = GetMessageSender(message);
+        if (incomingMessage is null) return;
 
-        var receiver = GetReceiver(message);
-
-        if (sender is null || receiver is null) return;
-
-        var incomingMessage = new TelegramIncomingMessage
-        {
-            Id = message.MessageId,
-            Content = text,
-            Sender = sender,
-            Receiver = receiver,
-            Platform = platform,
-            Sent = message.Date ?? DateTime.MinValue,
-            Received = DateTime.UtcNow
-        };
-
-        _ = flow.PublishAsync(new IncomingMessageSignal(incomingMessage), cancellationToken);
+        _ = flow.PublishAsync(new TelegramIncomingMessageSignal(incomingMessage), cancellationToken);
     }
 
     private static IBotProfile GetSelf(User self)
@@ -65,64 +52,6 @@ public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : I
             LastName = self.LastName,
             NickName = self.Username
         };
-    }
-
-    private static IProfile? GetReceiver(Message message)
-    {
-        if (message.Chat is not { } chat) return null;
-
-        if (chat.Type is ChatType.Private)
-        {
-            return new TelegramUserProfile
-            {
-                Id = chat.Id,
-                NickName = chat.Username,
-                FirstName = chat.FirstName,
-                LastName = chat.LastName
-            };
-        }
-
-        return new TelegramChatProfile
-        {
-            Id = chat.Id,
-            Title = chat.Title,
-        };
-    }
-
-    private static IProfile? GetMessageSender(Message message)
-    {
-        if (message.From is { } sender)
-        {
-            if (sender.IsBot)
-            {
-                return new TelegramBotProfile
-                {
-                    Id = sender.Id,
-                    NickName = sender.Username,
-                    FirstName = sender.FirstName,
-                    LastName = sender.LastName
-                };
-            }
-
-            return new TelegramUserProfile
-            {
-                Id = sender.Id,
-                NickName = sender.Username,
-                FirstName = sender.FirstName,
-                LastName = sender.LastName
-            };
-        }
-
-        if (message.Chat is { } chat)
-        {
-            return new TelegramChatProfile
-            {
-                Id = chat.Id,
-                Title = chat.Title,
-            };
-        }
-
-        return null;
     }
 
     public async ValueTask DisposeAsync()

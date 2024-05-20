@@ -6,10 +6,34 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <OutputType>Library</OutputType>
-        <PackageOutputPath>$(SolutionDir)Packages</PackageOutputPath>
     </PropertyGroup>
 
     <PropertyGroup Label="Language">
         <RootNamespace>Falko.Unibot</RootNamespace>
     </PropertyGroup>
+
+    <PropertyGroup Label="Description">
+        <PackageOutputPath>$(SolutionDir)Packages</PackageOutputPath>
+        <PackageIconUrl>https://raw.githubusercontent.com/falko-team/unibot-framework/development/Icon512.png</PackageIconUrl>
+        <PackageProjectUrl>https://github.com/falko-team/unibot-framework</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/falko-team/unibot-framework.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>framework;bot;telegram;unibot;falko</PackageTags>
+        <PackageReadmeFile>Assets/ReadMe.md</PackageReadmeFile>
+        <PackageLicenseFile>Assets/License.md</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+
+    <ItemGroup Label="Assets">
+        <None Include="../../License.md">
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+            <PackagePath>Assets</PackagePath>
+        </None>
+        <None Include="../../ReadMe.md">
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+            <PackagePath>Assets</PackagePath>
+        </None>
+    </ItemGroup>
 </Project>
