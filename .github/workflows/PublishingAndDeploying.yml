@@ -31,7 +31,7 @@ jobs:
           if [[ -d "$dir" ]]; then
             cd "$dir"
             if [[ ${{ github.event_name }} == "release" ]]; then
-              dotnet publish -c Release --no-restore -p:Version=${{ env.VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ env.VERSION }}.${{ github.run_number }}
+              dotnet publish -c Release --no-restore -p:Version=${{ env.VERSION }} -p:PackageVersion=${{ env.VERSION }}
             elif [[ "${{ github.ref_name }}" == "stable" ]]; then
               dotnet publish -c Release --no-restore -p:Version=${{ env.VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ env.VERSION }}.${{ github.run_number }}-beta
             else
