@@ -23,7 +23,7 @@ jobs:
     - name: Preparing
       id: get_version
       run: |
-        VERSION=$(xmlstarlet sel -t -v '//Version' Common.Build.props)
+        VERSION=$(cat Common.Build.props | grep -oP '(?<=<Version>)[^<]+')
         echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Publishing
       run: |
