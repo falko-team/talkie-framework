@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Benchmarks.Build.props" />
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\..\Sources\Falko.Talkie.Core\Falko.Talkie.Core.csproj" />
+        <PackageReference Include="BenchmarkDotNet" />
+    </ItemGroup>
+</Project>
