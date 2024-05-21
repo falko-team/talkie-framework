@@ -1,6 +1,6 @@
-# <img src="Icon64.png" width="24" hspace="5" /> Unibot
+# <img src="Icon64.png" width="24" hspace="5" /> Talkie
 
-Unibot is a comprehensive framework designed to simplify the development of bots across multiple messengers platforms.
+Talkie is a comprehensive framework designed to simplify the development of bots across multiple messengers platforms.
 
 With its functional interfaces, developers can write code once and deploy it on various platforms
 such as Telegram, Discord, and more.

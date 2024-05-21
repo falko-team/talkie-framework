@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Sources.Build.props" />
+
+    <PropertyGroup Label="Description">
+        <RootNamespace>Falko.Talkie.Bridges.Telegram</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\Falko.Talkie.Signals.Connections\Falko.Talkie.Signals.Connections.csproj" />
+    </ItemGroup>
+</Project>

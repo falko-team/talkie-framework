@@ -1,13 +1,13 @@
 <Project>
     <PropertyGroup Label="Assembly">
-        <Version>1.0.1</Version>
+        <Version>1.0.0</Version>
         <TargetFramework>net8.0</TargetFramework>
         <IsAotCompatible>true</IsAotCompatible>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
 
     <PropertyGroup Label="Language">
-        <RootNamespace>Falko.Unibot</RootNamespace>
+        <RootNamespace>Falko.Talkie</RootNamespace>
         <LangVersion>12</LangVersion>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
