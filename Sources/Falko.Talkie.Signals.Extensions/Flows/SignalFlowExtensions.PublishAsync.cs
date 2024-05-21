@@ -1,6 +1,6 @@
-using Falko.Talkie.Signals;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Flows;
+namespace Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {

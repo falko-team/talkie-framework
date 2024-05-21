@@ -1,13 +1,13 @@
-﻿using Falko.Talkie.Collections;
-using Falko.Talkie.Common;
-using Falko.Talkie.Controllers;
-using Falko.Talkie.Disposables;
-using Falko.Talkie.Flows;
-using Falko.Talkie.Models.Profiles;
-using Falko.Talkie.Pipelines;
-using Falko.Talkie.Platforms;
-using Falko.Talkie.Signals;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using Talkie.Collections;
+using Talkie.Common;
+using Talkie.Controllers;
+using Talkie.Disposables;
+using Talkie.Flows;
+using Talkie.Models.Profiles;
+using Talkie.Pipelines;
+using Talkie.Platforms;
+using Talkie.Signals;
 
 var telegramToken = args[0].Trim();
 

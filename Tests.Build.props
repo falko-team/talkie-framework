@@ -7,6 +7,6 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Language">
-        <RootNamespace>Falko.Talkie.Tests</RootNamespace>
+        <RootNamespace>Talkie.Tests</RootNamespace>
     </PropertyGroup>
 </Project>

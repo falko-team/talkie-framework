@@ -1,11 +1,11 @@
-using Falko.Talkie.Collections;
-using Falko.Talkie.Concurrent;
-using Falko.Talkie.Flows;
-using Falko.Talkie.Handlers;
-using Falko.Talkie.Interceptors;
-using Falko.Talkie.Signals;
+using Talkie.Collections;
+using Talkie.Concurrent;
+using Talkie.Flows;
+using Talkie.Handlers;
+using Talkie.Interceptors;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Pipelines;
+namespace Talkie.Pipelines;
 
 public sealed class SignalPipeline(IEnumerable<ISignalInterceptor> interceptors, IEnumerable<ISignalHandler> handlers)
     : ISignalPipeline

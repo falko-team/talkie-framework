@@ -1,7 +1,7 @@
-using Falko.Talkie.Connections;
-using Falko.Talkie.Flows;
+using Talkie.Connections;
+using Talkie.Flows;
 
-namespace Falko.Talkie.Connectors;
+namespace Talkie.Connectors;
 
 public sealed class TelegramSignalConnector(string token) : ISignalConnector
 {

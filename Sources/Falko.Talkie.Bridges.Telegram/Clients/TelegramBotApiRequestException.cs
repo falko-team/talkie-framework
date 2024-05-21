@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Falko.Talkie.Bridges.Telegram.Clients;
+namespace Talkie.Bridges.Telegram.Clients;
 
 public sealed class TelegramBotApiRequestException : Exception
 {

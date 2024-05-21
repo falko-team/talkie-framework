@@ -1,7 +1,7 @@
 using System.Text;
-using Falko.Talkie.Models.Messages;
+using Talkie.Models.Messages;
 
-namespace Falko.Talkie.Builders;
+namespace Talkie.Builders;
 
 public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 {

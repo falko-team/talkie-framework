@@ -1,6 +1,6 @@
-using Falko.Talkie.Controllers;
+using Talkie.Controllers;
 
-namespace Falko.Talkie.Platforms;
+namespace Talkie.Platforms;
 
 public interface IPlatform
 {

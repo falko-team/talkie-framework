@@ -1,9 +1,9 @@
-using Falko.Talkie.Collections;
-using Falko.Talkie.Handlers;
-using Falko.Talkie.Interceptors;
-using Falko.Talkie.Signals;
+using Talkie.Collections;
+using Talkie.Handlers;
+using Talkie.Interceptors;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Pipelines;
+namespace Talkie.Pipelines;
 
 public sealed class SignalHandlingPipelineBuilder<T> : ISignalHandlingPipelineBuilder<T> where T : Signal
 {

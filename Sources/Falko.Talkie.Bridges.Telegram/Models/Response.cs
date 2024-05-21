@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
 
-namespace Falko.Talkie.Bridges.Telegram.Models;
+namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class Response<T>(
     bool ok,

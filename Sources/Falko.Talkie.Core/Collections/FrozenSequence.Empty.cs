@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Collections;
+namespace Talkie.Collections;
 
 public partial class FrozenSequence<T>
 {

@@ -1,6 +1,6 @@
-using Falko.Talkie.Platforms;
+using Talkie.Platforms;
 
-namespace Falko.Talkie.Models.Messages;
+namespace Talkie.Models.Messages;
 
 public static partial class Message
 {

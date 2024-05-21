@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Running;
-using Falko.Talkie.Benchmarks.Benchmarks;
+using Talkie.Benchmarks.Benchmarks;
 
 BenchmarkRunner.Run<AddBenchmark>();
 BenchmarkRunner.Run<RemoveBenchmark>();

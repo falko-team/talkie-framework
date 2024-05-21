@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Falko.Talkie.Validations;
+namespace Talkie.Validations;
 
 public static class ThrowableExtensions
 {

@@ -1,12 +1,12 @@
-using Falko.Talkie.Bridges.Telegram.Models;
-using Falko.Talkie.Models.Entries;
-using Falko.Talkie.Models.Messages;
-using Falko.Talkie.Models.Profiles;
-using Falko.Talkie.Platforms;
-using Falko.Talkie.Validations;
-using Message = Falko.Talkie.Bridges.Telegram.Models.Message;
+using Talkie.Bridges.Telegram.Models;
+using Talkie.Models.Entries;
+using Talkie.Models.Messages;
+using Talkie.Models.Profiles;
+using Talkie.Platforms;
+using Talkie.Validations;
+using Message = Talkie.Bridges.Telegram.Models.Message;
 
-namespace Falko.Talkie.Converters;
+namespace Talkie.Converters;
 
 internal static class IncomingMessageConverter
 {

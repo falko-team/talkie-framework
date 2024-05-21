@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Validations;
+namespace Talkie.Validations;
 
 public readonly ref struct Throwable<T>(T value, string? name = null)
 {

@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Concurrent;
+namespace Talkie.Concurrent;
 
 public static class IteratorExtensions
 {

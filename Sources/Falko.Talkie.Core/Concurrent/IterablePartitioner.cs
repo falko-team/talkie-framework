@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace Falko.Talkie.Concurrent;
+namespace Talkie.Concurrent;
 
 internal sealed partial class IterablePartitioner<T>(IIterable<T> iterable) : Partitioner<T>
 {

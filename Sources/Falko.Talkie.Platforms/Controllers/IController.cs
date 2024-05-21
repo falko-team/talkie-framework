@@ -1,3 +1,3 @@
-namespace Falko.Talkie.Controllers;
+namespace Talkie.Controllers;
 
 public interface IController<T> where T : notnull;
