@@ -2,8 +2,8 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Serialization;
 using Talkie.Validations;
-using ModelsJsonSerializerContext = Falko.Talkie.Bridges.Telegram.Serialization.ModelsJsonSerializerContext;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
