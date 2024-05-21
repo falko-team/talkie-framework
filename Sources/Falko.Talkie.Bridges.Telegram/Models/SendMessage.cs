@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Bridges.Telegram.Models;
+namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class SendMessage(
     long chatId,

@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Bridges.Telegram.Models;
+namespace Talkie.Bridges.Telegram.Models;
 
 public abstract class MessageOrigin(
     MessageOriglongype type,

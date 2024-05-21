@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Handlers;
+namespace Talkie.Handlers;
 
 public interface ISignalHandler
 {

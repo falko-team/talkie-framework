@@ -1,9 +1,9 @@
-using Falko.Talkie.Adapters;
-using Falko.Talkie.Controllers;
-using Falko.Talkie.Handlers;
-using Falko.Talkie.Signals;
+using Talkie.Adapters;
+using Talkie.Controllers;
+using Talkie.Handlers;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Flows;
+namespace Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {

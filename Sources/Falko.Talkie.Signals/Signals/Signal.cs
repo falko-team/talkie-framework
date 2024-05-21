@@ -1,3 +1,3 @@
-namespace Falko.Talkie.Signals;
+namespace Talkie.Signals;
 
 public abstract record Signal;

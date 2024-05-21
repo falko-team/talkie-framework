@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
 
-namespace Falko.Talkie.Controllers;
+namespace Talkie.Controllers;
 
 /// <inheritdoc />
 public sealed class ControllerCreatorBuilder : IControllerCreatorBuilder

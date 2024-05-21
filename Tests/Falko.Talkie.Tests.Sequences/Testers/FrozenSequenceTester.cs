@@ -1,7 +1,7 @@
-using Falko.Talkie.Collections;
 using NUnit.Framework;
+using Talkie.Collections;
 
-namespace Falko.Talkie.Tests.Testers;
+namespace Talkie.Tests.Testers;
 
 public class FrozenSequenceTester
 {

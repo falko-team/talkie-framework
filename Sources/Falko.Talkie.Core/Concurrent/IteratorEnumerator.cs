@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Falko.Talkie.Concurrent;
+namespace Talkie.Concurrent;
 
 internal sealed class IteratorEnumerator<T>(IIterator<T> iterator) : IEnumerator<T>
 {

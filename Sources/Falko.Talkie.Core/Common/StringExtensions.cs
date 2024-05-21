@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Common;
+namespace Talkie.Common;
 
 public static class StringExtensions
 {

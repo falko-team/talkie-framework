@@ -1,6 +1,6 @@
-using Falko.Talkie.Builders;
+using Talkie.Builders;
 
-namespace Falko.Talkie.Controllers;
+namespace Talkie.Controllers;
 
 public static class OutgoingMessageControllerExtensions
 {

@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Signals;
+namespace Talkie.Signals;
 
 public static class SignalCache<T> where T : Signal, new()
 {

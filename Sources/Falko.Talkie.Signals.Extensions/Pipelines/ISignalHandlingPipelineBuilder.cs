@@ -1,6 +1,6 @@
-using Falko.Talkie.Handlers;
+using Talkie.Handlers;
 
-namespace Falko.Talkie.Pipelines;
+namespace Talkie.Pipelines;
 
 public interface ISignalHandlingPipelineBuilder : ISignalPipelineBuilder
 {

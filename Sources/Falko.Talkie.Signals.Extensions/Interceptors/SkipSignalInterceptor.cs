@@ -1,6 +1,6 @@
-using Falko.Talkie.Signals;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Interceptors;
+namespace Talkie.Interceptors;
 
 public sealed class SkipSignalInterceptor<T>(int count) : ISignalInterceptor<T> where T : Signal
 {

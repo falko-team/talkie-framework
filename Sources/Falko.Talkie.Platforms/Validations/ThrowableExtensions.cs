@@ -1,7 +1,7 @@
-using Falko.Talkie.Models.Messages;
-using Falko.Talkie.Platforms;
+using Talkie.Models.Messages;
+using Talkie.Platforms;
 
-namespace Falko.Talkie.Validations;
+namespace Talkie.Validations;
 
 public static class ThrowableExtensions
 {

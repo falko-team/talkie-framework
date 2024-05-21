@@ -1,9 +1,9 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using Falko.Talkie.Collections;
-using Falko.Talkie.Models;
+using Talkie.Models;
+using Talkie.Collections;
 
-namespace Falko.Talkie.Benchmarks.Benchmarks;
+namespace Talkie.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [SimpleJob(RunStrategy.Throughput)]

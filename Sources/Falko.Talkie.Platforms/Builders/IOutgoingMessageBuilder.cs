@@ -1,6 +1,6 @@
-using Falko.Talkie.Models.Messages;
+using Talkie.Models.Messages;
 
-namespace Falko.Talkie.Builders;
+namespace Talkie.Builders;
 
 public interface IOutgoingMessageBuilder
 {

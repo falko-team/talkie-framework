@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Bridges.Telegram.Clients;
+namespace Talkie.Bridges.Telegram.Clients;
 
 public interface ITelegramBotApiClient : IDisposable
 {

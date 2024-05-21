@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Controllers;
+namespace Talkie.Controllers;
 
 /// <summary>
 /// Represents a builder for creating a controller creator.

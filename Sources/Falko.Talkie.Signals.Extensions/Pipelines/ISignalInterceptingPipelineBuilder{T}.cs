@@ -1,8 +1,8 @@
-using Falko.Talkie.Handlers;
-using Falko.Talkie.Interceptors;
-using Falko.Talkie.Signals;
+using Talkie.Handlers;
+using Talkie.Interceptors;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Pipelines;
+namespace Talkie.Pipelines;
 
 public interface ISignalInterceptingPipelineBuilder<out T> : ISignalPipelineBuilder where T : Signal
 {

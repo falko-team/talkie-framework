@@ -1,7 +1,7 @@
-using Falko.Talkie.Handlers;
-using Falko.Talkie.Signals;
+using Talkie.Handlers;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Pipelines;
+namespace Talkie.Pipelines;
 
 public static partial class SignalPipelineBuilderExtensions
 {

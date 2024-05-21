@@ -1,7 +1,7 @@
-using Falko.Talkie.Models.Entries;
-using Falko.Talkie.Platforms;
+using Talkie.Models.Entries;
+using Talkie.Platforms;
 
-namespace Falko.Talkie.Models.Messages;
+namespace Talkie.Models.Messages;
 
 public static class MessageExtensions
 {

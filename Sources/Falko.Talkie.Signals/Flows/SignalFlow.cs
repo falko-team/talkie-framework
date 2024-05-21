@@ -1,10 +1,10 @@
-using Falko.Talkie.Collections;
-using Falko.Talkie.Concurrent;
-using Falko.Talkie.Pipelines;
-using Falko.Talkie.Signals;
-using Falko.Talkie.Validations;
+using Talkie.Collections;
+using Talkie.Concurrent;
+using Talkie.Pipelines;
+using Talkie.Signals;
+using Talkie.Validations;
 
-namespace Falko.Talkie.Flows;
+namespace Talkie.Flows;
 
 public sealed class SignalFlow : ISignalFlow
 {

@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Handlers;
+namespace Talkie.Handlers;
 
 public sealed class DelegatedSignalHandler(Action<ISignalContext, CancellationToken> handle) : ISignalHandler
 {

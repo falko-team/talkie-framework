@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using Falko.Talkie.Validations;
+using Talkie.Validations;
 
-namespace Falko.Talkie.Models;
+namespace Talkie.Models;
 
 /// <summary>
 /// Represents an identifier that contains not type strongly value and provides a <b>type-safe</b> way to work with it.

@@ -1,11 +1,11 @@
-using Falko.Talkie.Bridges.Telegram.Clients;
-using Falko.Talkie.Bridges.Telegram.Models;
-using Falko.Talkie.Converters;
-using Falko.Talkie.Models.Messages;
-using Falko.Talkie.Platforms;
-using Falko.Talkie.Validations;
+using Talkie.Bridges.Telegram.Clients;
+using Talkie.Bridges.Telegram.Models;
+using Talkie.Converters;
+using Talkie.Models.Messages;
+using Talkie.Platforms;
+using Talkie.Validations;
 
-namespace Falko.Talkie.Controllers;
+namespace Talkie.Controllers;
 
 public sealed class TelegramOutgoingMessageController(TelegramPlatform platform, IIncomingMessage incomingMessage) : IOutgoingMessageController
 {

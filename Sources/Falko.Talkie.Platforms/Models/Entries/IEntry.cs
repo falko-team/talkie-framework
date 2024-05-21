@@ -1,6 +1,6 @@
-using Falko.Talkie.Models.Profiles;
+using Talkie.Models.Profiles;
 
-namespace Falko.Talkie.Models.Entries;
+namespace Talkie.Models.Entries;
 
 public interface IEntry
 {

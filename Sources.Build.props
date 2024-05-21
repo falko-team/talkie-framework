@@ -8,10 +8,6 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
-    <PropertyGroup Label="Language">
-        <RootNamespace>Falko.Talkie</RootNamespace>
-    </PropertyGroup>
-
     <PropertyGroup Label="Description">
         <PackageOutputPath>$(SolutionDir)Packages</PackageOutputPath>
         <PackageIconUrl>https://raw.githubusercontent.com/falko-team/talkie/development/Icon512.png</PackageIconUrl>

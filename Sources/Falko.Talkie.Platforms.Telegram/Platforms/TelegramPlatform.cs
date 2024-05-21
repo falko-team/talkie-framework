@@ -1,9 +1,9 @@
-using Falko.Talkie.Bridges.Telegram.Clients;
-using Falko.Talkie.Controllers;
-using Falko.Talkie.Models.Messages;
-using Falko.Talkie.Models.Profiles;
+using Talkie.Bridges.Telegram.Clients;
+using Talkie.Controllers;
+using Talkie.Models.Messages;
+using Talkie.Models.Profiles;
 
-namespace Falko.Talkie.Platforms;
+namespace Talkie.Platforms;
 
 public sealed record TelegramPlatform : IPlatform
 {

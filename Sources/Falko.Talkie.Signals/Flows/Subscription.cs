@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Flows;
+namespace Talkie.Flows;
 
 public readonly struct Subscription(Action remove)
 {

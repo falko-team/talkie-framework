@@ -1,6 +1,6 @@
-using Falko.Talkie.Collections;
+using Talkie.Collections;
 
-namespace Falko.Talkie.Disposables;
+namespace Talkie.Disposables;
 
 public static class DisposableExtensions
 {
