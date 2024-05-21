@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Connections;
+namespace Talkie.Connections;
 
 public interface ISignalConnection : IAsyncDisposable
 {

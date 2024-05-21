@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Disposables;
+namespace Talkie.Disposables;
 
 public sealed class DelegatedDisposable(Action dispose) : IDisposable
 {

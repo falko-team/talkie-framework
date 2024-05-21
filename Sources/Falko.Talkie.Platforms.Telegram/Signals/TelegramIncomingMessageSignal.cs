@@ -1,6 +1,6 @@
-using Falko.Talkie.Models.Messages;
+using Talkie.Models.Messages;
 
-namespace Falko.Talkie.Signals;
+namespace Talkie.Signals;
 
 public sealed record TelegramIncomingMessageSignal(TelegramIncomingMessage Message) : IncomingMessageSignal
 {

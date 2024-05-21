@@ -1,9 +1,9 @@
-using Falko.Talkie.Controllers;
-using Falko.Talkie.Handlers;
-using Falko.Talkie.Models.Messages;
-using Falko.Talkie.Signals;
+using Talkie.Controllers;
+using Talkie.Handlers;
+using Talkie.Models.Messages;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Adapters;
+namespace Talkie.Adapters;
 
 public sealed class OutgoingMessageControllerAdapter : SignalContextAdapter<IncomingMessageSignal, IOutgoingMessageController>
 {

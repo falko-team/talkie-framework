@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Falko.Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Models;
 
-namespace Falko.Talkie.Bridges.Telegram.Serialization;
+namespace Talkie.Bridges.Telegram.Serialization;
 
 [JsonSourceGenerationOptions(WriteIndented = false,
     GenerationMode = JsonSourceGenerationMode.Metadata,

@@ -1,7 +1,7 @@
-using Falko.Talkie.Handlers;
-using Falko.Talkie.Signals;
+using Talkie.Handlers;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Adapters;
+namespace Talkie.Adapters;
 
 public interface ISignalContextAdapter<in TSignal, out TAdapted> : ISignalContextAdapter<TAdapted>
     where TSignal : Signal

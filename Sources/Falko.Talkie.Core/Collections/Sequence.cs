@@ -1,7 +1,7 @@
 using System.Collections;
-using Falko.Talkie.Concurrent;
+using Talkie.Concurrent;
 
-namespace Falko.Talkie.Collections;
+namespace Talkie.Collections;
 
 public partial class Sequence<T> : ISequence<T>
 {

@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
-using Falko.Talkie.Collections;
+using Talkie.Collections;
 
-namespace Falko.Talkie.Concurrent;
+namespace Talkie.Concurrent;
 
 public static class IterableExtensions
 {

@@ -1,11 +1,11 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
-using Falko.Talkie.Bridges.Telegram.Models;
-using Falko.Talkie.Bridges.Telegram.Serialization;
-using Falko.Talkie.Validations;
+using Talkie.Bridges.Telegram.Models;
+using Talkie.Validations;
+using ModelsJsonSerializerContext = Falko.Talkie.Bridges.Telegram.Serialization.ModelsJsonSerializerContext;
 
-namespace Falko.Talkie.Bridges.Telegram.Clients;
+namespace Talkie.Bridges.Telegram.Clients;
 
 public sealed class TelegramBotApiClient(string token) : ITelegramBotApiClient
 {

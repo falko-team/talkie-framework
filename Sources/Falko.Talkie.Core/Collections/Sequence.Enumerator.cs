@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
 
-namespace Falko.Talkie.Collections;
+namespace Talkie.Collections;
 
 public partial class Sequence<T>
 {

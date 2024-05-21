@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Controllers;
+namespace Talkie.Controllers;
 
 /// <inheritdoc />
 public sealed class ControllerCreator(IReadOnlyDictionary<Type, Func<object, object>> factories) : IControllerCreator

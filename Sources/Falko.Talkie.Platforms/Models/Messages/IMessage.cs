@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Models.Messages;
+namespace Talkie.Models.Messages;
 
 public partial interface IMessage
 {

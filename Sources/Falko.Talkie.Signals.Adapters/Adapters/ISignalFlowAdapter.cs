@@ -1,6 +1,6 @@
-using Falko.Talkie.Flows;
+using Talkie.Flows;
 
-namespace Falko.Talkie.Adapters;
+namespace Talkie.Adapters;
 
 public interface ISignalFlowAdapter<out T> where T : notnull
 {

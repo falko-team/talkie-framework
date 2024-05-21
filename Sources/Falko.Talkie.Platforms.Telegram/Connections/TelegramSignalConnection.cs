@@ -1,12 +1,12 @@
-using Falko.Talkie.Bridges.Telegram.Clients;
-using Falko.Talkie.Bridges.Telegram.Models;
-using Falko.Talkie.Converters;
-using Falko.Talkie.Flows;
-using Falko.Talkie.Models.Profiles;
-using Falko.Talkie.Platforms;
-using Falko.Talkie.Signals;
+using Talkie.Bridges.Telegram.Clients;
+using Talkie.Bridges.Telegram.Models;
+using Talkie.Converters;
+using Talkie.Flows;
+using Talkie.Models.Profiles;
+using Talkie.Platforms;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Connections;
+namespace Talkie.Connections;
 
 public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : ISignalConnection
 {

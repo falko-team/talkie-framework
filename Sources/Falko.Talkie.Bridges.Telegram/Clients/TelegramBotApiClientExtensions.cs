@@ -1,8 +1,8 @@
-using Falko.Talkie.Bridges.Telegram.Models;
-using Falko.Talkie.Collections;
-using Falko.Talkie.Concurrent;
+using Talkie.Bridges.Telegram.Models;
+using Talkie.Collections;
+using Talkie.Concurrent;
 
-namespace Falko.Talkie.Bridges.Telegram.Clients;
+namespace Talkie.Bridges.Telegram.Clients;
 
 public static class TelegramBotApiClientExtensions
 {

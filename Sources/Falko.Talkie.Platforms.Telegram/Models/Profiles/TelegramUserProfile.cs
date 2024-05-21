@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Models.Profiles;
+namespace Talkie.Models.Profiles;
 
 public sealed record TelegramUserProfile : IUserProfile
 {

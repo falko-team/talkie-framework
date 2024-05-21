@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Models;
+namespace Talkie.Models;
 
 public sealed class Reference
 {

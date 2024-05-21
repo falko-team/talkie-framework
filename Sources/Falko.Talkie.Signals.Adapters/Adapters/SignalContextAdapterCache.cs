@@ -1,4 +1,4 @@
-namespace Falko.Talkie.Adapters;
+namespace Talkie.Adapters;
 
 public static class SignalContextAdapterCache<TAdapter, TAdapted>
     where TAdapter : class, ISignalContextAdapter<TAdapted>, new()

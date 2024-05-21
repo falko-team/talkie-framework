@@ -1,6 +1,6 @@
-using Falko.Talkie.Models.Messages;
+using Talkie.Models.Messages;
 
-namespace Falko.Talkie.Controllers;
+namespace Talkie.Controllers;
 
 public interface IOutgoingMessageController : IController<IIncomingMessage>
 {

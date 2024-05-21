@@ -1,6 +1,6 @@
-using Falko.Talkie.Signals;
+using Talkie.Signals;
 
-namespace Falko.Talkie.Handlers;
+namespace Talkie.Handlers;
 
 public interface ISignalContext<out T> : ISignalContext where T : Signal
 {

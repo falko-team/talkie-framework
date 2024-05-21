@@ -1,7 +1,7 @@
 using System.Collections;
-using Falko.Talkie.Validations;
+using Talkie.Validations;
 
-namespace Falko.Talkie.Collections;
+namespace Talkie.Collections;
 
 public sealed class DisposableStack : IEnumerableDisposable
 {
