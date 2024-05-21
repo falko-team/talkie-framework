@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Sources.Build.props" />
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\Falko.Talkie.Core\Falko.Talkie.Core.csproj" />
+    </ItemGroup>
+</Project>
