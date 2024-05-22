@@ -27,7 +27,11 @@ Whether you're building a simple chatbot or a complex bot, Talkie's lightweight 
 Open your terminal and execute the following command, replacing placeholders with your GitHub credentials:
 
 ```bash
-dotnet nuget add source "https://nuget.pkg.github.com/falko-team/index.json" --name falko-team --store-password-in-clear-text --username $YOUR_GITHUB_USERNAME --password $YOUR_GITHUB_ACCESS_TOKEN
+dotnet nuget add source "https://nuget.pkg.github.com/falko-team/index.json"
+    --name falko-team
+    --store-password-in-clear-text
+    --username $YOUR_GITHUB_USERNAME
+    --password $YOUR_GITHUB_ACCESS_TOKEN
 ```
 
 ### <img src="Icon64.png" width="14" hspace="5" /> Install the Talkie Platforms Package:
