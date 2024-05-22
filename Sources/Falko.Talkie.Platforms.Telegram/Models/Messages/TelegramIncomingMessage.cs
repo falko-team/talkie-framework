@@ -16,4 +16,14 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
     IPlatform Message.IWithPlatform.Platform => Platform;
 
     public string? Content { get; init; }
+
+    public TelegramIncomingMessage Mutate(Func<IIncomingMessageMutator, IIncomingMessageMutator> mutation)
+    {
+        return new TelegramIncomingMessageMutator(this).Mutate();
+    }
+
+    IIncomingMessage IIncomingMessage.Mutate(Func<IIncomingMessageMutator, IIncomingMessageMutator> mutation)
+    {
+        return Mutate(mutation);
+    }
 }
