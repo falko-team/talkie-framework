@@ -6,6 +6,6 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Language">
-        <RootNamespace>Falko.Unibot.Benchmarks</RootNamespace>
+        <RootNamespace>Talkie.Benchmarks</RootNamespace>
     </PropertyGroup>
 </Project>

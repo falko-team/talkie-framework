@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="../../Sources.Build.props" />
-
-    <ItemGroup Label="Dependencies">
-        <ProjectReference Include="..\Falko.Unibot.Bridges.Telegram\Falko.Unibot.Bridges.Telegram.csproj" />
-        <ProjectReference Include="..\Falko.Unibot.Platforms\Falko.Unibot.Platforms.csproj" />
-    </ItemGroup>
-</Project>
