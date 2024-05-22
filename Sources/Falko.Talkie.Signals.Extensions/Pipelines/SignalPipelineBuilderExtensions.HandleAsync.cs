@@ -6,54 +6,50 @@ namespace Talkie.Pipelines;
 public static partial class SignalPipelineBuilderExtensions
 {
     public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalInterceptingPipelineBuilder builder,
-        Func<ISignalContext, CancellationToken, Task> handle)
+        Func<ISignalContext, CancellationToken, ValueTask> handleAsync)
     {
-        return builder.Handle((signal, cancellationToken) => handle(signal, cancellationToken).Wait(cancellationToken));
+        return builder.HandleAsync(new DelegatedSignalHandler(handleAsync));
     }
 
     public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalInterceptingPipelineBuilder builder,
-        Func<ISignalContext, Task> handle)
+        Func<ISignalContext, ValueTask> handleAsync)
     {
-        return builder.Handle(signal => handle(signal).Wait());
+        return builder.HandleAsync((signal, _) => handleAsync(signal));
     }
 
     public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalHandlingPipelineBuilder builder,
-        Func<ISignalContext, CancellationToken, Task> handle)
+        Func<ISignalContext, CancellationToken, ValueTask> handleAsync)
     {
-        return builder.Handle((signal, cancellationToken) => handle(signal, cancellationToken).Wait(cancellationToken));
+        return builder.HandleAsync(new DelegatedSignalHandler(handleAsync));
     }
 
     public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalHandlingPipelineBuilder builder,
-        Func<ISignalContext, Task> handle)
+        Func<ISignalContext, ValueTask> handleAsync)
     {
-        return builder.Handle(signal => handle(signal).Wait());
+        return builder.HandleAsync((signal, _) => handleAsync(signal));
     }
 
     public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalInterceptingPipelineBuilder<T> builder,
-        Func<ISignalContext<T>, CancellationToken, Task> handle)
-        where T : Signal
+        Func<ISignalContext<T>, CancellationToken, ValueTask> handleAsync) where T : Signal
     {
-        return builder.Handle((signal, cancellationToken) => handle(signal, cancellationToken).Wait(cancellationToken));
+        return builder.HandleAsync(new DelegatedSignalHandler<T>(handleAsync));
     }
 
     public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalInterceptingPipelineBuilder<T> builder,
-        Func<ISignalContext<T>, Task> handle)
-        where T : Signal
+        Func<ISignalContext<T>, ValueTask> handleAsync) where T : Signal
     {
-        return builder.Handle(signal => handle(signal).Wait());
+        return builder.HandleAsync((signal, _) => handleAsync(signal));
     }
 
     public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalHandlingPipelineBuilder<T> builder,
-        Func<ISignalContext<T>, CancellationToken, Task> handle)
-        where T : Signal
+        Func<ISignalContext<T>, CancellationToken, ValueTask> handleAsync) where T : Signal
     {
-        return builder.Handle((signal, cancellationToken) => handle(signal, cancellationToken).Wait(cancellationToken));
+        return builder.HandleAsync(new DelegatedSignalHandler<T>(handleAsync));
     }
 
     public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalHandlingPipelineBuilder<T> builder,
-        Func<ISignalContext<T>, Task> handle)
-        where T : Signal
+        Func<ISignalContext<T>, ValueTask> handleAsync) where T : Signal
     {
-        return builder.Handle(signal => handle(signal).Wait());
+        return builder.HandleAsync((signal, _) => handleAsync(signal));
     }
 }

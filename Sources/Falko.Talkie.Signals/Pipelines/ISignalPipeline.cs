@@ -5,5 +5,5 @@ namespace Talkie.Pipelines;
 
 public interface ISignalPipeline
 {
-    void Transfer(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default);
+    ValueTask TransferAsync(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default);
 }

@@ -8,5 +8,5 @@ public interface ISignalInterceptingPipelineBuilder<out T> : ISignalPipelineBuil
 {
     ISignalInterceptingPipelineBuilder<T> Intercept(ISignalInterceptor<T> interceptor);
 
-    ISignalHandlingPipelineBuilder<T> Handle(ISignalHandler<T> handler);
+    ISignalHandlingPipelineBuilder<T> HandleAsync(ISignalHandler<T> handler);
 }

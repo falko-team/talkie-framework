@@ -26,9 +26,9 @@ public sealed class SignalInterceptingPipelineBuilder<T> : ISignalInterceptingPi
         return this;
     }
 
-    public ISignalHandlingPipelineBuilder<T> Handle(ISignalHandler<T> handler)
+    public ISignalHandlingPipelineBuilder<T> HandleAsync(ISignalHandler<T> handler)
     {
-        return new SignalHandlingPipelineBuilder<T>(_interceptors).Handle(handler);
+        return new SignalHandlingPipelineBuilder<T>(_interceptors).HandleAsync(handler);
     }
 
     public ISignalPipeline Build()
