@@ -43,10 +43,42 @@ dotnet add package Falko.Talkie.Platforms.Telegram
 To get started quickly, check out the [Examples](Examples) folder in the Talkie repository
 for illustrative code samples and usage demonstrations.
 
+Simple example of code:
+
+```C#
+using Talkie.Concurrent;
+using Talkie.Controllers;
+using Talkie.Flows;
+using Talkie.Models.Profiles;
+using Talkie.Pipelines;
+using Talkie.Signals;
+
+var flow = new SignalFlow();
+
+flow.Subscribe(signals => signals
+    .OfType<IncomingMessageSignal>()
+    .Where(signal => signal
+        .Message
+        .Entry
+        .Environment is IUserProfile)
+    .Where(signal => signal
+        .Message
+        .Content
+        ?.Contains("hello", StringComparison.InvariantCultureIgnoreCase) is true)
+    .HandleAsync(context => context
+        .ToMessageController()
+        .PublishMessageAsync("hi")
+        .AsValueTask()));
+
+await flow.ConnectTelegramAsync("6742405496:AAH3guI1aYsGTu7mir72mR8CTcaYq9DyntA");
+
+await Task.Delay(-1);
+```
+
 ## <img src="Icon64.png" width="18" hspace="5" /> License
 
 This project is licensed under the [BSD 2-Clause License](License.md).
 
-Contributions are welcome!
+_Contributions are welcome!_
 
 **© 2024, Falko Team**
