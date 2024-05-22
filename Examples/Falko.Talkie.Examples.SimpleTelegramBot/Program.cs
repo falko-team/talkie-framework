@@ -61,6 +61,8 @@ flow.Subscribe(builder => builder
     .OfType<IncomingMessageSignal>() // new messages only
     .Where(signal => signal.Message.Entry.Environment is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Content.IsNullOrWhiteSpace() is false) // only where message text is not empty
+    .Select(signal => signal.Mutate(mutator => mutator
+        .ContentMutation(content => content?.Trim().ToLowerInvariant())))
     .HandleAsync(context => context
         .ToMessageController() // get message controller
         .PublishMessageAsync(context.Signal.Message.Content!) // send message with same text to the chat of sender
