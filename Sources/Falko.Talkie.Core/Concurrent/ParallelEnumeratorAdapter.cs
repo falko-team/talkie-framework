@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace Talkie.Concurrent;
 
-internal sealed class IteratorEnumerator<T>(IIterator<T> iterator) : IEnumerator<T>
+internal sealed class ParallelEnumeratorAdapter<T>(IParallelEnumerator<T> parallelEnumerator) : IEnumerator<T>
 {
     private T? _current;
 
@@ -10,7 +10,7 @@ internal sealed class IteratorEnumerator<T>(IIterator<T> iterator) : IEnumerator
 
     object IEnumerator.Current => _current!;
 
-    public bool MoveNext() => iterator.TryMoveNext(out _current);
+    public bool MoveNext() => parallelEnumerator.TryMoveNext(out _current);
 
     public void Reset() => throw new NotSupportedException();
 
