@@ -8,7 +8,7 @@ namespace Talkie.Collections;
 public partial class FrozenSequence<T>
 {
     [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private sealed class Iterator(T[] items, int itemsCount) : IIterator<T>
+    private sealed class ParallelEnumerator(T[] items, int itemsCount) : IParallelEnumerator<T>
     {
         private int _lastItemIndex = -1;
 
