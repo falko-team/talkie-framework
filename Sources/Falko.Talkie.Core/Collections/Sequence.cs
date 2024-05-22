@@ -35,5 +35,5 @@ public partial class Sequence<T> : ISequence<T>
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public IIterator<T> GetIterator() => new Iterator(_first);
+    public IParallelEnumerator<T> GetParallelEnumerator() => new ParallelEnumerator(_first);
 }
