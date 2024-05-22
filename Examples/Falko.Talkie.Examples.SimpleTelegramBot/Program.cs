@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Talkie.Collections;
 using Talkie.Common;
+using Talkie.Concurrent;
 using Talkie.Controllers;
 using Talkie.Disposables;
 using Talkie.Flows;
@@ -51,8 +52,8 @@ flow.Subscribe(builder => builder
     .Where(signal => signal.Message.Content?.Trim().StartsWith("/hello") is true)
     .HandleAsync(context => context
         .ToMessageController()
-        .PublishMessageAsync(b => b
-            .AddText("hi"))));
+        .PublishMessageAsync("hi")
+        .AsValueTask()));
 
 // Echo message text back to the sender only in private chats example pipeline.
 flow.Subscribe(builder => builder
@@ -62,7 +63,8 @@ flow.Subscribe(builder => builder
     .Where(signal => signal.Message.Content.IsNullOrWhiteSpace() is false) // only where message text is not empty
     .HandleAsync(context => context
         .ToMessageController()
-        .PublishMessageAsync(context.Signal.Message.Content!))); // send message with same text to the chat of sender
+        .PublishMessageAsync(context.Signal.Message.Content!)
+        .AsValueTask())); // send message with same text to the chat of sender
 
 // Connect to telegram with empty token and dispose it with disposables.
 // Added you token to connect to telegram!

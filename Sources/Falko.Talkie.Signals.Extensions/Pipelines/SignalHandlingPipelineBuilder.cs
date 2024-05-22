@@ -22,7 +22,7 @@ public sealed class SignalHandlingPipelineBuilder : ISignalHandlingPipelineBuild
         _handlers = new Sequence<ISignalHandler>();
     }
 
-    public ISignalHandlingPipelineBuilder Handle(ISignalHandler handler)
+    public ISignalHandlingPipelineBuilder HandleAsync(ISignalHandler handler)
     {
         _handlers.Add(handler);
 

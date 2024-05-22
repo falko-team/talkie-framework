@@ -44,7 +44,7 @@ public sealed class SignalFlow : ISignalFlow
 
         // ReSharper disable once InconsistentlySynchronizedField
         return _pipelines.Parallelize(_pipelinesParallelismMeter)
-            .ForEachAsync((pipeline, scopedCancellationToken) => pipeline.Transfer(this, signal, scopedCancellationToken),
+            .ForEachAsync((pipeline, scopedCancellationToken) => pipeline.TransferAsync(this, signal, scopedCancellationToken),
                 cancellationToken: publishCancellationToken);
     }
 
