@@ -10,15 +10,21 @@ public sealed class SignalHandlingPipelineBuilder : ISignalHandlingPipelineBuild
 
     private readonly Sequence<ISignalHandler> _handlers;
 
-    public SignalHandlingPipelineBuilder(IEnumerable<ISignalInterceptor> interceptors, IEnumerable<ISignalHandler> handlers)
+    internal SignalHandlingPipelineBuilder(IEnumerable<ISignalInterceptor> interceptors, IEnumerable<ISignalHandler> handlers)
     {
         _interceptors = interceptors.ToFrozenSequence();
         _handlers = handlers.ToSequence();
     }
 
-    public SignalHandlingPipelineBuilder(IEnumerable<ISignalInterceptor> interceptors)
+    internal SignalHandlingPipelineBuilder(IEnumerable<ISignalInterceptor> interceptors)
     {
         _interceptors = interceptors.ToFrozenSequence();
+        _handlers = new Sequence<ISignalHandler>();
+    }
+
+    public SignalHandlingPipelineBuilder()
+    {
+        _interceptors = FrozenSequence<ISignalInterceptor>.Empty;
         _handlers = new Sequence<ISignalHandler>();
     }
 
@@ -29,18 +35,9 @@ public sealed class SignalHandlingPipelineBuilder : ISignalHandlingPipelineBuild
         return this;
     }
 
-    public ISignalPipeline Build()
-    {
-        return new SignalPipeline(_interceptors, _handlers);
-    }
+    public ISignalPipeline Build() => new SignalPipeline(_interceptors, _handlers);
 
-    public FrozenSequence<ISignalInterceptor> ToInterceptors()
-    {
-        return _interceptors;
-    }
+    public FrozenSequence<ISignalInterceptor> CopyInterceptors() => _interceptors;
 
-    public FrozenSequence<ISignalHandler> ToHandlers()
-    {
-        return _handlers.ToFrozenSequence();
-    }
+    public FrozenSequence<ISignalHandler> CopyHandlers() => _handlers.ToFrozenSequence();
 }
