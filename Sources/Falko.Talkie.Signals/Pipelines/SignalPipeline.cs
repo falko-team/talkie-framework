@@ -24,7 +24,10 @@ public sealed class SignalPipeline(IEnumerable<ISignalInterceptor> interceptors,
         {
             var result = interceptor.Intercept(currentSignal, cancellationToken);
 
-            if (result.CanContinue is false) return ValueTask.CompletedTask;
+            if (result.CanContinue is false)
+            {
+                return ValueTask.CompletedTask;
+            }
 
             if (result.ReplacedSignal is not null)
             {
@@ -32,7 +35,7 @@ public sealed class SignalPipeline(IEnumerable<ISignalInterceptor> interceptors,
             }
         }
 
-        var context = new SignalContext(flow, signal);
+        var context = new SignalContext(flow, currentSignal);
 
         return _handlers.Parallelize(_handlersParallelismMeter)
             .ForEachAsync((handler, scopedCancellationToken) => handler.HandleAsync(context, scopedCancellationToken),
