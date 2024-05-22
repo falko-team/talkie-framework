@@ -74,7 +74,7 @@ flow.Subscribe(signals => signals
         .PublishMessageAsync("hi")
         .AsValueTask()));
 
-await flow.ConnectTelegramAsync("6742405496:AAH3guI1aYsGTu7mir72mR8CTcaYq9DyntA");
+await flow.ConnectTelegramAsync("YOUR_TOKEN");
 
 await Task.Delay(-1);
 ```
