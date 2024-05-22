@@ -16,6 +16,6 @@
     <PropertyGroup Label="Description">
         <Company>Falko Team</Company>
         <Authors>Rimu Falko; Timur Falko</Authors>
-        <Description>Comprehensive framework designed to simplify the development of bots across multiple messengers platforms</Description>
+        <Description>Versatile framework designed to streamline the development of bots across various messaging platforms</Description>
     </PropertyGroup>
 </Project>
