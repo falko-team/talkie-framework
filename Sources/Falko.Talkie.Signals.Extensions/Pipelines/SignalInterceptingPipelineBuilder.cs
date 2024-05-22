@@ -8,7 +8,7 @@ public sealed class SignalInterceptingPipelineBuilder : ISignalInterceptingPipel
 {
     private readonly Sequence<ISignalInterceptor> _interceptors;
 
-    public SignalInterceptingPipelineBuilder(IEnumerable<ISignalInterceptor> interceptors)
+    internal SignalInterceptingPipelineBuilder(IEnumerable<ISignalInterceptor> interceptors)
     {
         _interceptors = interceptors.ToSequence();
     }
@@ -30,18 +30,11 @@ public sealed class SignalInterceptingPipelineBuilder : ISignalInterceptingPipel
         return new SignalHandlingPipelineBuilder(_interceptors).HandleAsync(handler);
     }
 
-    public ISignalPipeline Build()
-    {
-        return EmptySignalPipeline.Instance;
-    }
+    public ISignalPipeline Build() => EmptySignalPipeline.Instance;
 
-    public FrozenSequence<ISignalInterceptor> ToInterceptors()
-    {
-        return _interceptors.ToFrozenSequence();
-    }
+    public FrozenSequence<ISignalInterceptor> CopyInterceptors() => _interceptors.ToFrozenSequence();
 
-    public FrozenSequence<ISignalHandler> ToHandlers()
-    {
-        return FrozenSequence<ISignalHandler>.Empty;
-    }
+    public FrozenSequence<ISignalHandler> CopyHandlers() => FrozenSequence<ISignalHandler>.Empty;
+
+    public ISignalInterceptingPipelineBuilder CopyPipeline() => new SignalInterceptingPipelineBuilder(_interceptors);
 }
