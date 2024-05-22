@@ -10,7 +10,8 @@ using Talkie.Models.Profiles;
 using Talkie.Pipelines;
 using Talkie.Signals;
 
-var telegramToken = args[0].Trim();
+// Get telegram token from command line arguments.
+var telegramToken = string.Join(' ', args).Trim();
 
 // Used stacked for disposing last to first disposables.
 // At this example first disposed flow and then disposed telegram connection.
