@@ -24,7 +24,7 @@ public static partial class SignalPipelineBuilderExtensions
     {
         return new SignalInterceptingPipelineBuilder<TTo>(builder
             .Intercept(new SelectSignalInterceptor<TFrom, TTo>(select))
-            .ToInterceptors());
+            .CopyInterceptors());
     }
 
     public static ISignalInterceptingPipelineBuilder<TTo> Select<TFrom, TTo>(this ISignalInterceptingPipelineBuilder<TFrom> builder,

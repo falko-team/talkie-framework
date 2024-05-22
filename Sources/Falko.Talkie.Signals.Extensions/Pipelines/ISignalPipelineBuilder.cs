@@ -8,7 +8,7 @@ public interface ISignalPipelineBuilder
 {
     ISignalPipeline Build();
 
-    FrozenSequence<ISignalInterceptor> ToInterceptors();
+    FrozenSequence<ISignalInterceptor> CopyInterceptors();
 
-    FrozenSequence<ISignalHandler> ToHandlers();
+    FrozenSequence<ISignalHandler> CopyHandlers();
 }
