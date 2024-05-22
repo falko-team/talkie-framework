@@ -63,10 +63,6 @@ flow.Subscribe(signals => signals
     .OfType<IncomingMessageSignal>()
     .Where(signal => signal
         .Message
-        .Entry
-        .Environment is IUserProfile)
-    .Where(signal => signal
-        .Message
         .Content
         ?.Contains("hello", StringComparison.InvariantCultureIgnoreCase) is true)
     .HandleAsync(context => context
