@@ -16,7 +16,7 @@ public sealed class SignalPipeline(IEnumerable<ISignalInterceptor> interceptors,
 
     private readonly ParallelismMeter _handlersParallelismMeter = new();
 
-    public void Transfer(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default)
+    public ValueTask TransferAsync(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default)
     {
         var currentSignal = signal;
 
@@ -24,7 +24,7 @@ public sealed class SignalPipeline(IEnumerable<ISignalInterceptor> interceptors,
         {
             var result = interceptor.Intercept(currentSignal, cancellationToken);
 
-            if (result.CanContinue is false) return;
+            if (result.CanContinue is false) return ValueTask.CompletedTask;
 
             if (result.ReplacedSignal is not null)
             {
@@ -34,8 +34,9 @@ public sealed class SignalPipeline(IEnumerable<ISignalInterceptor> interceptors,
 
         var context = new SignalContext(flow, signal);
 
-        _handlers.Parallelize(_handlersParallelismMeter)
-            .ForEach((handler, scopedCancellationToken) => handler.Handle(context, scopedCancellationToken),
-                cancellationToken: cancellationToken);
+        return _handlers.Parallelize(_handlersParallelismMeter)
+            .ForEachAsync((handler, scopedCancellationToken) => handler.HandleAsync(context, scopedCancellationToken),
+                cancellationToken: cancellationToken)
+            .AsValueTask();
     }
 }

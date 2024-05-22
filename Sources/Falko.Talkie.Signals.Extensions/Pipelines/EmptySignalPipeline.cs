@@ -9,5 +9,8 @@ public sealed class EmptySignalPipeline : ISignalPipeline
 
     private EmptySignalPipeline() { }
 
-    public void Transfer(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default) { }
+    public ValueTask TransferAsync(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default)
+    {
+        return ValueTask.CompletedTask;
+    }
 }

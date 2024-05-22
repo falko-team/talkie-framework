@@ -5,5 +5,5 @@ namespace Talkie.Pipelines;
 
 public interface ISignalHandlingPipelineBuilder<out T> : ISignalPipelineBuilder where T : Signal
 {
-    ISignalHandlingPipelineBuilder<T> Handle(ISignalHandler<T> handler);
+    ISignalHandlingPipelineBuilder<T> HandleAsync(ISignalHandler<T> handler);
 }

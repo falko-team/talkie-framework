@@ -7,5 +7,5 @@ public interface ISignalInterceptingPipelineBuilder : ISignalPipelineBuilder
 {
     ISignalInterceptingPipelineBuilder Intercept(ISignalInterceptor interceptor);
 
-    ISignalHandlingPipelineBuilder Handle(ISignalHandler handler);
+    ISignalHandlingPipelineBuilder HandleAsync(ISignalHandler handler);
 }
