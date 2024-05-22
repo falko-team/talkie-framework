@@ -17,13 +17,13 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
 
     public string? Content { get; init; }
 
-    public TelegramIncomingMessage Mutate(Func<IIncomingMessageMutator, IIncomingMessageMutator> mutation)
+    public TelegramIncomingMessage Mutate(Func<TelegramIncomingMessageMutator, TelegramIncomingMessageMutator> mutation)
     {
-        return new TelegramIncomingMessageMutator(this).Mutate();
+        return mutation(new TelegramIncomingMessageMutator(this)).Mutate();
     }
 
     IIncomingMessage IIncomingMessage.Mutate(Func<IIncomingMessageMutator, IIncomingMessageMutator> mutation)
     {
-        return Mutate(mutation);
+        return Mutate(mutator => (TelegramIncomingMessageMutator)mutation(mutator));
     }
 }
