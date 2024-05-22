@@ -3,11 +3,11 @@ using Talkie.Collections;
 
 namespace Talkie.Concurrent;
 
-public static class IterableExtensions
+public static class ParallelEnumerableExtensions
 {
-    public static Partitioner<T> ToPartitioner<T>(this IIterable<T> iterable)
+    public static Partitioner<T> ToPartitioner<T>(this IParallelEnumerable<T> parallelEnumerable)
     {
-        return new IterablePartitioner<T>(iterable);
+        return new ParallelEnumerablePartitioner<T>(parallelEnumerable);
     }
 
     public static SequenceParallelismCoordinator<T>.Static Parallelize<T>(this IReadOnlySequence<T> sequence)

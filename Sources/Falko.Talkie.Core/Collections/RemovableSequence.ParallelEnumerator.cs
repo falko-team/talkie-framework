@@ -7,8 +7,9 @@ namespace Talkie.Collections;
 public partial class RemovableSequence<T>
 {
     [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private sealed class Iterator(Node? first) : IIterator<T>
+    private sealed class ParallelEnumerator(Node? first) : IParallelEnumerator<T>
     {
+        // ReSharper disable once ReplaceWithPrimaryConstructorParameter
         private Node? _current = first;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
