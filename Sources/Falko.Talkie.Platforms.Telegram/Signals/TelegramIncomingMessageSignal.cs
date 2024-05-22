@@ -8,6 +8,6 @@ public sealed record TelegramIncomingMessageSignal(TelegramIncomingMessage Messa
 
     public override IncomingMessageSignal Mutate(Func<IIncomingMessageMutator, IIncomingMessageMutator> mutation)
     {
-        return new TelegramIncomingMessageSignal(Message.Mutate(mutation));
+        return new TelegramIncomingMessageSignal(Message.Mutate(mutator => (TelegramIncomingMessageMutator)mutation(mutator)));
     }
 }
