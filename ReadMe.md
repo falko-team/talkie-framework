@@ -50,7 +50,10 @@ for illustrative code samples and usage demonstrations.
 Simple example of code:
 
 ```C#
-using var flow = new SignalFlow();
+await using var disposables = new DisposableStack();
+
+var flow = new SignalFlow()
+    .DisposeWith(disposables);
 
 var unobservedExceptionTask = flow.Take<UnobservedPublishingExceptionSignal>();
 
@@ -64,7 +67,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
         .PublishMessageAsync("hi")
         .AsValueTask()));
 
-await using var telegram = await flow.ConnectTelegramAsync("YOUR_TOKEN");
+await flow.ConnectTelegramAsync("YOUR_TOKEN")
+    .DisposeAsyncWith(disposables);
 
 throw await unobservedExceptionTask;
 ```
