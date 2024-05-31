@@ -6,5 +6,5 @@ public abstract record IncomingMessageSignal : Signal
 {
     public abstract IIncomingMessage Message { get; }
 
-    public abstract IncomingMessageSignal Mutate(Func<IIncomingMessageMutator, IIncomingMessageMutator> mutation);
+    public abstract IncomingMessageSignal MutateMessage(Func<IIncomingMessageMutator, IIncomingMessageMutator> mutation);
 }

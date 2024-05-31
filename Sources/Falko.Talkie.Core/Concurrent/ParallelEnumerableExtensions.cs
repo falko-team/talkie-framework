@@ -20,18 +20,15 @@ public static class ParallelEnumerableExtensions
         return new SequenceParallelismCoordinator<T>.Dynamic(sequence, meter);
     }
 
-    public static Task ForEachAsync<T>(this SequenceParallelismCoordinator<T>.Static parallel, Action<T, CancellationToken> @do,
+    public static Task ForEachAsync<T>(this SequenceParallelismCoordinator<T>.Static parallel,
+        Func<T, CancellationToken, ValueTask> @do,
         CancellationToken cancellationToken = default)
     {
-        return Parallel.ForEachAsync(parallel.Sequence, cancellationToken, (item, scopedCancellationToken) =>
-        {
-            @do(item, scopedCancellationToken);
-
-            return ValueTask.CompletedTask;
-        });
+        return Parallel.ForEachAsync(parallel.Sequence, cancellationToken, @do);
     }
 
-    public static async Task ForEachAsync<T>(this SequenceParallelismCoordinator<T>.Dynamic parallel, Action<T, CancellationToken> @do,
+    public static async Task ForEachAsync<T>(this SequenceParallelismCoordinator<T>.Dynamic parallel,
+        Func<T, CancellationToken, ValueTask> @do,
         CancellationToken cancellationToken = default)
     {
         var startTicks = Environment.TickCount64;
@@ -42,7 +39,7 @@ public static class ParallelEnumerableExtensions
         {
             foreach (var item in parallel.Sequence)
             {
-                @do(item, cancellationToken);
+                await @do(item, cancellationToken);
             }
         }
         else
@@ -53,12 +50,7 @@ public static class ParallelEnumerableExtensions
                 CancellationToken = cancellationToken
             };
 
-            await Parallel.ForEachAsync(parallel.Sequence, options, (item, scopedCancellationToken) =>
-            {
-                @do(item, scopedCancellationToken);
-
-                return ValueTask.CompletedTask;
-            });
+            await Parallel.ForEachAsync(parallel.Sequence, options, @do);
         }
 
         var endTicks = Environment.TickCount64;
