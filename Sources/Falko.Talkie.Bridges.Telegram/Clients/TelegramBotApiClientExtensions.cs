@@ -6,7 +6,7 @@ namespace Talkie.Bridges.Telegram.Clients;
 
 public static class TelegramBotApiClientExtensions
 {
-    public static Task ProcessUpdatesAsync(this ITelegramBotApiClient client, Action<Update, CancellationToken> process,
+    public static Task ProcessUpdatesAsync(this ITelegramBotApiClient client, Func<Update, CancellationToken, ValueTask> process,
         CancellationToken cancellationToken = default)
     {
         return Task.Factory.StartNew(async () =>
