@@ -12,7 +12,7 @@ public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
         _content = message.Content;
     }
 
-    public IIncomingMessageMutator ContentMutation(Func<string?, string?> content)
+    public IIncomingMessageMutator MutateContent(Func<string?, string?> content)
     {
         _content = content(_content);
 
