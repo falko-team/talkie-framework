@@ -50,17 +50,9 @@ for illustrative code samples and usage demonstrations.
 Simple example of code:
 
 ```C#
-using Talkie.Concurrent;
-using Talkie.Controllers;
-using Talkie.Flows;
-using Talkie.Models.Profiles;
-using Talkie.Pipelines;
-using Talkie.Signals;
-
 var flow = new SignalFlow();
 
-flow.Subscribe(signals => signals
-    .OfType<IncomingMessageSignal>()
+flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal
         .Message
         .Content
@@ -70,9 +62,12 @@ flow.Subscribe(signals => signals
         .PublishMessageAsync("hi")
         .AsValueTask()));
 
-await flow.ConnectTelegramAsync("YOUR_TOKEN");
+var telegram = await flow.ConnectTelegramAsync("YOUR_TOKEN");
 
-await Task.Delay(-1);
+WaitApplicationShutdown();
+
+await telegram.DisposeAsync();
+flow.Dispose();
 ```
 
 ## <img src="Icon64.png" width="18" hspace="5" /> License
