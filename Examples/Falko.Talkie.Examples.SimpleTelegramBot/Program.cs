@@ -41,15 +41,13 @@ var flowWaiter = new TaskCompletionSource();
 
 // Create subscription for unhanded exception signal.
 // When exception received, set flow as exception state.
-flow.Subscribe(builder => builder
-    .OfType<UnhandledExceptionSignal>()
+flow.Subscribe<UnhandledExceptionSignal>(builder => builder
     .Handle(context => flowWaiter
         .SetException(context.Signal.Exception))); // set exception to waiter
 
 // Create subscription for incoming message signal with command "/hello".
 // When command received, send message "hi".
-flow.Subscribe(builder => builder
-    .OfType<TelegramIncomingMessageSignal>() // telegram messages only
+flow.Subscribe<TelegramIncomingMessageSignal>(builder => builder
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
     .HandleAsync(context => context
         .ToMessageController() // get message controller
@@ -57,8 +55,7 @@ flow.Subscribe(builder => builder
         .AsValueTask()));
 
 // Echo message text back to the sender only in private chats example pipeline.
-flow.Subscribe(builder => builder
-    .OfType<IncomingMessageSignal>() // new messages only
+flow.Subscribe<IncomingMessageSignal>(builder => builder
     .Where(signal => signal.Message.Entry.Environment is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Content.IsNullOrWhiteSpace() is false) // only where message text is not empty
     .Select(signal => signal.Mutate(mutator => mutator
