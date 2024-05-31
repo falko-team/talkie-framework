@@ -1,5 +1,6 @@
 using Talkie.Collections;
 using Talkie.Concurrent;
+using Talkie.Exceptions;
 using Talkie.Pipelines;
 using Talkie.Signals;
 using Talkie.Validations;
@@ -18,6 +19,11 @@ public sealed class SignalFlow : ISignalFlow
 
     private bool _disposed;
 
+    public SignalFlow()
+    {
+        TaskScheduler.UnobservedTaskException += OnUnobservedSignalPublishingException;
+    }
+
     public Subscription Subscribe(ISignalPipeline pipeline)
     {
         _disposed.ThrowIf().Disposed<SignalFlow>();
@@ -33,19 +39,38 @@ public sealed class SignalFlow : ISignalFlow
         }
     }
 
-    public Task PublishAsync(Signal signal, CancellationToken cancellationToken = default)
+    public async Task PublishAsync(Signal signal, CancellationToken cancellationToken = default)
     {
-        if (_disposed) return Task.CompletedTask;
+        if (_disposed) return;
 
         using var publishCancellationTokenSource = CancellationTokenSource
             .CreateLinkedTokenSource(_flowCancellationTokenSource.Token, cancellationToken);
 
         var publishCancellationToken = publishCancellationTokenSource.Token;
 
-        // ReSharper disable once InconsistentlySynchronizedField
-        return _pipelines.Parallelize(_pipelinesParallelismMeter)
-            .ForEachAsync((pipeline, scopedCancellationToken) => pipeline.TransferAsync(this, signal, scopedCancellationToken),
-                cancellationToken: publishCancellationToken);
+        try
+        {
+            // ReSharper disable once InconsistentlySynchronizedField
+            await _pipelines.Parallelize(_pipelinesParallelismMeter)
+                .ForEachAsync((pipeline, scopedCancellationToken) => pipeline.TransferAsync(this, signal, scopedCancellationToken),
+                    cancellationToken: publishCancellationToken);
+        }
+        catch (Exception exception)
+        {
+            throw new SignalPublishingException(this, signal, exception);
+        }
+    }
+
+    private void OnUnobservedSignalPublishingException(object? sender, UnobservedTaskExceptionEventArgs args)
+    {
+        var signalPublishingException = args.Exception.InnerExceptions.SingleOrDefault() as SignalPublishingException;
+
+        if (signalPublishingException is null) return;
+        if (signalPublishingException.Flow != this) return;
+
+        _ = signalPublishingException.Flow.PublishAsync(new UnobservedPublishingExceptionSignal(signalPublishingException));
+
+        args.SetObserved();
     }
 
     public void Dispose()
@@ -54,6 +79,8 @@ public sealed class SignalFlow : ISignalFlow
 
         _flowCancellationTokenSource.Cancel();
         _flowCancellationTokenSource.Dispose();
+
+        TaskScheduler.UnobservedTaskException -= OnUnobservedSignalPublishingException;
 
         _disposed = true;
     }
