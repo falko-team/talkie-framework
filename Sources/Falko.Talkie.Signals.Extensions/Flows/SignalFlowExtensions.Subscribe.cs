@@ -16,6 +16,12 @@ public static partial class SignalFlowExtensions
         return flow.Subscribe(builderFactory(new SignalInterceptingPipelineBuilder()));
     }
 
+    public static Subscription Subscribe<T>(this ISignalFlow flow, Func<ISignalInterceptingPipelineBuilder<T>,
+        ISignalPipelineBuilder> builderFactory) where T : Signal
+    {
+        return flow.Subscribe(builderFactory(new SignalInterceptingPipelineBuilder<T>()));
+    }
+
     public static Subscription Subscribe(this ISignalFlow flow, ISignalInterceptingPipelineBuilder builder,
         Func<ISignalInterceptingPipelineBuilder, ISignalPipelineBuilder> builderFactory)
     {
