@@ -50,7 +50,9 @@ for illustrative code samples and usage demonstrations.
 Simple example of code:
 
 ```C#
-var flow = new SignalFlow();
+using var flow = new SignalFlow();
+
+var unobservedExceptionTask = flow.Take<UnobservedPublishingExceptionSignal>();
 
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal
@@ -62,12 +64,9 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
         .PublishMessageAsync("hi")
         .AsValueTask()));
 
-var telegram = await flow.ConnectTelegramAsync("YOUR_TOKEN");
+await using var telegram = await flow.ConnectTelegramAsync("YOUR_TOKEN");
 
-WaitApplicationShutdown();
-
-await telegram.DisposeAsync();
-flow.Dispose();
+throw await unobservedExceptionTask;
 ```
 
 ## <img src="Icon64.png" width="18" hspace="5" /> License
