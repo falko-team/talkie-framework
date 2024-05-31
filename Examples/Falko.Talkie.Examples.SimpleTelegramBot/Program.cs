@@ -21,8 +21,11 @@ await using var disposables = new DisposableStack();
 var flow = new SignalFlow()
     .DisposeWith(disposables);
 
+// Create unobserved task for publishing exceptions.
+var unobservedPublishingExceptionTask = flow.TakeAsync<UnobservedPublishingExceptionSignal>();
+
 // Create Microsoft Logger Factory.
-var loggerFactory = LoggerFactory.Create(builder => builder
+var loggerFactory = LoggerFactory.Create(signals => signals
         .AddConsole() // Add console as logging target
         .AddDebug() // Add debug output as logging target
         .SetMinimumLevel(LogLevel.Debug)) // set minimum level to log
@@ -32,22 +35,13 @@ var loggerFactory = LoggerFactory.Create(builder => builder
 var signalFlowLogger = loggerFactory.CreateLogger<SignalFlow>();
 
 // Create subscription for all signals and log them.
-flow.Subscribe(builder => builder
+flow.Subscribe(signals => signals
     .Handle(context => signalFlowLogger
         .LogDebug("Signal received: {Signal}", context.Signal))); // log any signals
 
-// Create task completion source for waiting flow completion.
-var flowWaiter = new TaskCompletionSource();
-
-// Create subscription for unhanded exception signal.
-// When exception received, set flow as exception state.
-flow.Subscribe<UnhandledExceptionSignal>(builder => builder
-    .Handle(context => flowWaiter
-        .SetException(context.Signal.Exception))); // set exception to waiter
-
 // Create subscription for incoming message signal with command "/hello".
 // When command received, send message "hi".
-flow.Subscribe<TelegramIncomingMessageSignal>(builder => builder
+flow.Subscribe<TelegramIncomingMessageSignal>(signals => signals
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
     .HandleAsync(context => context
         .ToMessageController() // get message controller
@@ -55,11 +49,11 @@ flow.Subscribe<TelegramIncomingMessageSignal>(builder => builder
         .AsValueTask()));
 
 // Echo message text back to the sender only in private chats example pipeline.
-flow.Subscribe<IncomingMessageSignal>(builder => builder
+flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal.Message.Entry.Environment is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Content.IsNullOrWhiteSpace() is false) // only where message text is not empty
-    .Select(signal => signal.Mutate(mutator => mutator
-        .ContentMutation(content => content?.Trim().ToLowerInvariant())))
+    .Select(signal => signal.MutateMessage(mutator => mutator
+        .MutateContent(content => content?.Trim().ToLowerInvariant())))
     .HandleAsync(context => context
         .ToMessageController() // get message controller
         .PublishMessageAsync(context.Signal.Message.Content!) // send message with same text to the chat of sender
@@ -70,10 +64,8 @@ flow.Subscribe<IncomingMessageSignal>(builder => builder
 await flow.ConnectTelegramAsync(telegramToken)
     .DisposeAsyncWith(disposables);
 
-// Wait for flow completion.
-await flowWaiter.Task;
-
-return;
+// Wait for first unobserved publishing exceptions.
+throw await unobservedPublishingExceptionTask;
 
 // Define helper method to check if message is telegram command.
 static bool IsTelegramCommand(IMessage message, string command)
