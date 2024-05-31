@@ -27,7 +27,11 @@ Whether you're building a simple chatbot or a complex bot, Talkie's lightweight 
 Open your terminal and execute the following command, replacing placeholders with your GitHub credentials:
 
 ```bash
-dotnet nuget add source "https://nuget.pkg.github.com/falko-team/index.json" --name falko-team --store-password-in-clear-text --username $YOUR_GITHUB_USERNAME --password $YOUR_GITHUB_ACCESS_TOKEN
+dotnet nuget add source "https://nuget.pkg.github.com/falko-team/index.json"
+    --name falko-team
+    --store-password-in-clear-text
+    --username $YOUR_GITHUB_USERNAME
+    --password $YOUR_GITHUB_ACCESS_TOKEN
 ```
 
 ### <img src="Icon64.png" width="14" hspace="5" /> Install the Talkie Platforms Package:
@@ -43,10 +47,33 @@ dotnet add package Falko.Talkie.Platforms.Telegram
 To get started quickly, check out the [Examples](Examples) folder in the Talkie repository
 for illustrative code samples and usage demonstrations.
 
+Simple example of code:
+
+```C#
+var flow = new SignalFlow();
+
+flow.Subscribe<IncomingMessageSignal>(signals => signals
+    .Where(signal => signal
+        .Message
+        .Content
+        ?.Contains("hello", StringComparison.InvariantCultureIgnoreCase) is true)
+    .HandleAsync(context => context
+        .ToMessageController()
+        .PublishMessageAsync("hi")
+        .AsValueTask()));
+
+var telegram = await flow.ConnectTelegramAsync("YOUR_TOKEN");
+
+WaitApplicationShutdown();
+
+await telegram.DisposeAsync();
+flow.Dispose();
+```
+
 ## <img src="Icon64.png" width="18" hspace="5" /> License
 
 This project is licensed under the [BSD 2-Clause License](License.md).
 
-Contributions are welcome!
+_Contributions are welcome!_
 
 **© 2024, Falko Team**

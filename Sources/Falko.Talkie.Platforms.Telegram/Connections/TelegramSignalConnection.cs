@@ -29,8 +29,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : I
             _globalCancellationTokenSource.Token);
     }
 
-    private void ProcessUpdate(TelegramPlatform platform,
-        Update update, CancellationToken cancellationToken)
+    private async ValueTask ProcessUpdate(TelegramPlatform platform, Update update, CancellationToken cancellationToken)
     {
         if (update.Message is not { } message) return;
 
@@ -38,7 +37,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : I
 
         if (incomingMessage is null) return;
 
-        _ = flow.PublishAsync(new TelegramIncomingMessageSignal(incomingMessage), cancellationToken);
+        await flow.PublishAsync(new TelegramIncomingMessageSignal(incomingMessage), cancellationToken);
     }
 
     private static IBotProfile GetSelf(User self)
