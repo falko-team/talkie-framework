@@ -55,7 +55,8 @@ await using var disposables = new DisposableStack();
 var flow = new SignalFlow()
     .DisposeWith(disposables);
 
-var unobservedExceptionTask = flow.TakeAsync<UnobservedPublishingExceptionSignal>();
+var unobservedExceptionTask = flow
+    .TakeAsync<UnobservedPublishingExceptionSignal>();
 
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal
