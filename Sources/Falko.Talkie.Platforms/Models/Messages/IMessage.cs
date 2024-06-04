@@ -1,6 +1,6 @@
 namespace Talkie.Models.Messages;
 
-public partial interface IMessage
+public interface IMessage
 {
     string? Content { get; }
 }
