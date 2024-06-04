@@ -15,6 +15,8 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
 
     IPlatform Message.IWithPlatform.Platform => Platform;
 
+    public IMessage? Reply { get; init; }
+
     public string? Content { get; init; }
 
     public TelegramIncomingMessage Mutate(Func<TelegramIncomingMessageMutator, TelegramIncomingMessageMutator> mutation)

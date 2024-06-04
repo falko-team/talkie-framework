@@ -29,6 +29,9 @@ internal static class IncomingMessageConverter
             Id = message.MessageId,
             Content = text,
             Platform = platform,
+            Reply = message.ReplyToMessage is { } reply
+                ? Convert(platform, reply)
+                : null,
             Entry = new TelegramEntry
             {
                 Sender = sender,
