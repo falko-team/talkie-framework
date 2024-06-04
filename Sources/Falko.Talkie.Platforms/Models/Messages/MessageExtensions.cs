@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Talkie.Models.Entries;
 using Talkie.Platforms;
 
@@ -17,7 +18,7 @@ public static class MessageExtensions
         return false;
     }
 
-    public static bool TryGetPlatform(this IMessage message, out IPlatform platform)
+    public static bool TryGetPlatform(this IMessage message, [MaybeNullWhen(false)] out IPlatform platform)
     {
         if (message is Message.IWithPlatform withPlatform)
         {
@@ -29,7 +30,7 @@ public static class MessageExtensions
         return false;
     }
 
-    public static bool TryGetEntry(this IMessage message, out IEntry entry)
+    public static bool TryGetEntry(this IMessage message, [MaybeNullWhen(false)] out IEntry entry)
     {
         if (message is Message.IWithEntry withEntry)
         {
@@ -38,6 +39,18 @@ public static class MessageExtensions
         }
 
         entry = default;
+        return false;
+    }
+
+    public static bool TryGetReply(this IMessage message, [MaybeNullWhen(false)] out IMessage replyMessage)
+    {
+        if (message is Message.IWithReply withReply)
+        {
+            replyMessage = withReply.Reply;
+            return replyMessage is not null;
+        }
+
+        replyMessage = default;
         return false;
     }
 }
