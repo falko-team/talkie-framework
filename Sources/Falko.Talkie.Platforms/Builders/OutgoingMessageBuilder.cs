@@ -7,6 +7,15 @@ public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 {
     private readonly StringBuilder _content = new();
 
+    private IMessage? _reply;
+
+    public IOutgoingMessageBuilder AddReply(IMessage reply)
+    {
+        _reply = reply;
+
+        return this;
+    }
+
     public IOutgoingMessageBuilder AddText(string text)
     {
         _content.Append(text);
@@ -20,7 +29,8 @@ public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 
         return new OutgoingMessage
         {
-            Content = _content.ToString()
+            Content = _content.ToString(),
+            Reply = _reply
         };
     }
 }
