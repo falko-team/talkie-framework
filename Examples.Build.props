@@ -2,8 +2,10 @@
     <Import Project="Common.Build.props" />
 
     <PropertyGroup Label="Assembly">
-        <PublishAot>True</PublishAot>
         <OutputType>Exe</OutputType>
+        <PublishAot>True</PublishAot>
+        <OptimizationPreference>speed</OptimizationPreference>
+        <TrimMode>full</TrimMode>
         <ServerGarbageCollection>true</ServerGarbageCollection>
     </PropertyGroup>
 
