@@ -21,7 +21,7 @@ public static class TelegramBotApiClientExtensions
 
                 offset = updates[^1].UpdateId + 1;
 
-                await updates.ToFrozenSequence().Parallelize().ForEachAsync(process, cancellationToken: cancellationToken);
+                _ = updates.ToFrozenSequence().Parallelize().ForEachAsync(process, cancellationToken: cancellationToken);
             }
         }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
     }
