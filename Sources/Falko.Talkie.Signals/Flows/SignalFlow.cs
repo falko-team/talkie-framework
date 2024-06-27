@@ -55,9 +55,18 @@ public sealed class SignalFlow : ISignalFlow
                 .ForEachAsync((pipeline, scopedCancellationToken) => pipeline.TransferAsync(this, signal, scopedCancellationToken),
                     cancellationToken: publishCancellationToken);
         }
+        catch (SignalPublishingException exception)
+        {
+            if (exception.Flow == this)
+            {
+                throw;
+            }
+
+            throw new SignalPublishingException(this, exception);
+        }
         catch (Exception exception)
         {
-            throw new SignalPublishingException(this, signal, exception);
+            throw new SignalPublishingException(this, exception);
         }
     }
 

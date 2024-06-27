@@ -1,11 +1,10 @@
 using Talkie.Adapters;
 using Talkie.Controllers;
-using Talkie.Handlers;
 using Talkie.Signals;
 
-namespace Talkie.Flows;
+namespace Talkie.Handlers;
 
-public static partial class SignalFlowExtensions
+public static partial class SignalContextExtensions
 {
     public static IOutgoingMessageController ToMessageController(this ISignalContext<IncomingMessageSignal> context)
     {
