@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Adapte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Bridges.Telegram", "Sources\Falko.Talkie.Bridges.Telegram\Falko.Talkie.Bridges.Telegram.csproj", "{1BAA0E4A-072F-4DEA-9820-17D796542F01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "Examples\ConsoleApp1\ConsoleApp1.csproj", "{C974F99B-62ED-4AC9-8DCF-83C84DE35624}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,7 @@ Global
 		{61BAF50C-1232-4694-9374-A4930A0EC111} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
 		{32351F71-4633-41A3-81CE-1BD70C5028C6} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
 		{1BAA0E4A-072F-4DEA-9820-17D796542F01} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
+		{C974F99B-62ED-4AC9-8DCF-83C84DE35624} = {DE9BDD77-C26B-4618-9723-E176586CFBCC}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -111,5 +114,9 @@ Global
 		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C974F99B-62ED-4AC9-8DCF-83C84DE35624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C974F99B-62ED-4AC9-8DCF-83C84DE35624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C974F99B-62ED-4AC9-8DCF-83C84DE35624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C974F99B-62ED-4AC9-8DCF-83C84DE35624}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
