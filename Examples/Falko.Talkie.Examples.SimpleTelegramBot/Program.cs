@@ -12,7 +12,7 @@ using Talkie.Signals;
 using Talkie.Validations;
 
 // Get telegram token from command line arguments.
-var telegramToken = Environment.GetEnvironmentVariable("TELEGRAM_TOKEN")!;
+var telegramToken = Environment.GetEnvironmentVariable("TELEGRAM_TOKEN");
 
 telegramToken.ThrowIf().NullOrWhiteSpace();
 
