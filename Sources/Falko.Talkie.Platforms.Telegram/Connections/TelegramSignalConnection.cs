@@ -1,6 +1,5 @@
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
-using Talkie.Concurrent;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models.Profiles;
@@ -44,16 +43,22 @@ public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : I
             _globalCancellationTokenSource.Token);
     }
 
-    private ValueTask ProcessUpdate(TelegramPlatform platform, Update update, CancellationToken cancellationToken)
+    private async ValueTask ProcessUpdate(TelegramPlatform platform, Update update, CancellationToken cancellationToken)
     {
-        if (update.Message is not { } message) return ValueTask.CompletedTask;
+        try
+        {
+            if (update.Message is not { } message) return;
 
-        var incomingMessage = IncomingMessageConverter.Convert(platform, message);
+            var incomingMessage = IncomingMessageConverter.Convert(platform, message);
 
-        if (incomingMessage is null) return ValueTask.CompletedTask;
+            if (incomingMessage is null) return;
 
-        return flow.PublishAsync(new TelegramIncomingMessageSignal(incomingMessage), cancellationToken)
-            .AsValueTask();
+            await flow.PublishAsync(new TelegramIncomingMessageSignal(incomingMessage), cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            _ = flow.PublishExceptionAsync(exception, cancellationToken);
+        }
     }
 
     private static IBotProfile GetSelf(User self)
