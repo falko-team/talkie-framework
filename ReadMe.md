@@ -1,13 +1,8 @@
-# <img src="Icon64.png" width="24" hspace="5" /> Talkie
+# <img src="Icon64.png" width="24" hspace="5" /> Talkie - Build Bots Once, Deploy Everywhere
 
 > Talkie is under active development. The underlying C# framework libraries is subject to change.
 
-Talkie is a versatile framework designed to streamline the development of bots across various messaging platforms.
-
-It leverages functional interfaces for messaging cross-platform compatibility,
-enabling developers to write code once and deploy it on platforms like Telegram and Discord.
-
-Whether you're building a simple chatbot or a complex bot, Talkie's lightweight design, native AOT support, and parallel processing capabilities ensure optimal performance.
+Talkie is a framework for creating bots across messaging platforms. Write code once, deploy everywere (for Telegram, Discord, and more). Also, its lightweight and modular design, parallel processing and native AOT compilation, keep your bots blazing fast with minimal memory usage.
 
 ## <img src="Icon64.png" width="18" hspace="5" /> Features
 
