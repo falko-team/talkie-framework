@@ -5,6 +5,7 @@ using Talkie.Flows;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 using Talkie.Signals;
+using Talkie.Validations;
 
 namespace Talkie.Connections;
 
@@ -18,9 +19,22 @@ public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : I
     {
         _globalCancellationTokenSource = new();
 
+        token.ThrowIf()!.NullOrWhiteSpace();
+
         var client = new TelegramBotApiClient(token);
 
-        var self = GetSelf(await client.GetMeAsync(cancellationToken));
+        IBotProfile self;
+
+        try
+        {
+            self = GetSelf(await client.GetMeAsync(cancellationToken));
+        }
+        catch (TelegramBotApiRequestException exception)
+        {
+            if (exception.Code is not 401) throw;
+
+            throw new UnauthorizedAccessException("Invalid token");
+        }
 
         var platform = new TelegramPlatform(client, self);
 
