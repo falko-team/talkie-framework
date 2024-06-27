@@ -14,11 +14,11 @@ public sealed class SignalPublishingException(ISignalFlow flow, Exception? inner
     {
         var strings = new StringBuilder();
 
-        strings.AppendLine("An exception occurred while publishing signal");
+        strings.Append("An exception occurred while publishing signal");
 
         if (InnerException is not null)
         {
-            strings.AppendLine($": '{base.Message}'");
+            strings.Append($": '{base.Message}'");
         }
 
         return strings.ToString();
