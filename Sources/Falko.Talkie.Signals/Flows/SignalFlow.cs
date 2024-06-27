@@ -63,7 +63,10 @@ public sealed class SignalFlow : ISignalFlow
 
     private void OnUnobservedSignalPublishingException(object? sender, UnobservedTaskExceptionEventArgs args)
     {
-        var signalPublishingException = args.Exception.InnerExceptions.SingleOrDefault() as SignalPublishingException;
+        var signalPublishingException = args
+            .Exception
+            .InnerExceptions
+            .FirstOrDefault(exception => exception is SignalPublishingException) as SignalPublishingException;
 
         if (signalPublishingException is null) return;
         if (signalPublishingException.Flow != this) return;
