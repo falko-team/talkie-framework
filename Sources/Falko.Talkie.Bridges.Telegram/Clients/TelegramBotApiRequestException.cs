@@ -2,41 +2,49 @@ using System.Text;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
-public sealed class TelegramBotApiRequestException : Exception
+public sealed class TelegramBotApiRequestException(
+    string method,
+    string? message = null,
+    int? code = null,
+    IReadOnlyDictionary<string, string>? parameters = null,
+    Exception? inner = null) : Exception(message, inner)
 {
-    public TelegramBotApiRequestException(string method,
-        string? message = null,
-        int? code = null,
-        IDictionary<string, string>? parameters = null,
-        Exception? inner = null) : base(message, inner)
-    {
-        Method = method;
-        Code = code;
-        Parameters = parameters;
-    }
+    public int? Code { get; } = code;
 
-    public int? Code { get; }
+    public IReadOnlyDictionary<string, string>? Parameters { get; } = parameters;
 
-    public IDictionary<string, string>? Parameters { get; }
-
-    public string Method { get; }
+    public string Method { get; } = method;
 
     public override string HelpLink => $"https://core.telegram.org/bots/api#{Method}";
 
-    public override string ToString()
+    public override string Message => GetFormattedMessage();
+
+    private string GetFormattedMessage()
     {
-        var builder = new StringBuilder();
+        var strings = new StringBuilder();
 
-        builder.Append($"Method: {Method}");
+        strings.Append($"{Method}: {base.Message}");
 
-        builder.Append($", Message: {Message}");
+        if (Code is not null)
+        {
+            strings.Append($", {nameof(Code)}: {Code}");
+        }
 
-        builder.Append($", Code: {Code}");
+        if (Parameters is null || Parameters.Count <= 0)
+        {
+            return strings.ToString();
+        }
 
-        builder.Append($", Parameters: {(Parameters is not null
-            ? string.Join(", ", Parameters)
-            : Parameters)}");
+        strings.Append($", {nameof(Parameters)}: [");
 
-        return builder.ToString();
+        foreach (var (key, value) in Parameters)
+        {
+            strings.Append($"{key}={value}, ");
+        }
+
+        strings.Remove(strings.Length - 2, 2);
+        strings.Append(']');
+
+        return strings.ToString();
     }
 }
