@@ -9,6 +9,7 @@
 
     <PropertyGroup Label="Description">
         <PackageOutputPath>$(SolutionDir)Packages</PackageOutputPath>
+        <PackageIcon>Assets/Icon512.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/falko-team/talkie/development/Icon512.png</PackageIconUrl>
         <PackageProjectUrl>https://github.com/falko-team/talkie</PackageProjectUrl>
         <RepositoryUrl>https://github.com/falko-team/talkie.git</RepositoryUrl>
@@ -20,6 +21,11 @@
     </PropertyGroup>
 
     <ItemGroup Label="Assets">
+        <None Include="../../Icon512.png">
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+            <PackagePath>Assets</PackagePath>
+        </None>
         <None Include="../../License.md">
             <Pack>true</Pack>
             <Visible>false</Visible>
