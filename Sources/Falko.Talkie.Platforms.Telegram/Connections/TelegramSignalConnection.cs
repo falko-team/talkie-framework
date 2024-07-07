@@ -1,15 +1,18 @@
+using System.Net;
 using Talkie.Bridges.Telegram.Clients;
+using Talkie.Bridges.Telegram.Configurations;
 using Talkie.Bridges.Telegram.Models;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 using Talkie.Signals;
-using Talkie.Validations;
 
 namespace Talkie.Connections;
 
-public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : ISignalConnection
+public sealed class TelegramSignalConnection(ISignalFlow flow,
+    ServerConfiguration serverConfiguration,
+    ClientConfiguration clientConfiguration) : ISignalConnection
 {
     private CancellationTokenSource? _globalCancellationTokenSource;
 
@@ -17,11 +20,9 @@ public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : I
 
     public async ValueTask InitializeAsync(CancellationToken cancellationToken = default)
     {
-        _globalCancellationTokenSource = new();
+        _globalCancellationTokenSource = new CancellationTokenSource();
 
-        token.ThrowIf()!.NullOrWhiteSpace();
-
-        var client = new TelegramBotApiClient(token);
+        var client = new TelegramBotApiClient(serverConfiguration, clientConfiguration);
 
         IBotProfile self;
 
@@ -31,7 +32,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow, string token) : I
         }
         catch (TelegramBotApiRequestException exception)
         {
-            if (exception.Code is not 401) throw;
+            if (exception.StatusCode is null or not HttpStatusCode.Unauthorized) throw;
 
             throw new UnauthorizedAccessException("Invalid token");
         }

@@ -1,21 +1,40 @@
+using System.Collections.Frozen;
+using System.Net;
 using System.Text;
+using Talkie.Bridges.Telegram.Models;
+using Talkie.Validations;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
-public sealed class TelegramBotApiRequestException(
-    string method,
-    string? message = null,
-    int? code = null,
-    IReadOnlyDictionary<string, string>? parameters = null,
-    Exception? inner = null) : Exception(message, inner)
+public sealed partial class TelegramBotApiRequestException : Exception
 {
-    public int? Code { get; } = code;
+    public TelegramBotApiRequestException(ITelegramBotApiClient client, string methodName,
+        HttpStatusCode? statusCode = null,
+        string? description = null,
+        IReadOnlyDictionary<string, TextOrNumber>? parameters = null,
+        Exception? innerException = null) : base(null, innerException)
+    {
+        client.ThrowIf().Null();
+        methodName.ThrowIf().NullOrEmpty();
 
-    public IReadOnlyDictionary<string, string>? Parameters { get; } = parameters;
+        Client = client;
+        MethodName = methodName;
+        StatusCode = statusCode;
+        Parameters = parameters ?? FrozenDictionary<string, TextOrNumber>.Empty;
+        Description = description;
+    }
 
-    public string Method { get; } = method;
+    public ITelegramBotApiClient Client { get; }
 
-    public override string HelpLink => $"https://core.telegram.org/bots/api#{Method}";
+    public HttpStatusCode? StatusCode { get; }
+
+    public string MethodName { get; }
+
+    public string? Description { get; }
+
+    public IReadOnlyDictionary<string, TextOrNumber> Parameters { get; }
+
+    public override string HelpLink => $"https://core.telegram.org/bots/api#{MethodName}";
 
     public override string Message => GetFormattedMessage();
 
@@ -23,27 +42,32 @@ public sealed class TelegramBotApiRequestException(
     {
         var strings = new StringBuilder();
 
-        strings.Append($"{Method}: {base.Message}");
+        strings.Append($"{MethodName}()");
 
-        if (Code is not null)
+        if (StatusCode is not null)
         {
-            strings.Append($", {nameof(Code)}: {Code}");
+            strings.Append($", {nameof(StatusCode)}: {StatusCode}");
         }
 
-        if (Parameters is null || Parameters.Count <= 0)
+        if (Description is not null)
         {
-            return strings.ToString();
+            strings.Append($", {nameof(Description)}: {Description}");
         }
 
-        strings.Append($", {nameof(Parameters)}: [");
-
-        foreach (var (key, value) in Parameters)
+        if (Parameters.Count is not 0)
         {
-            strings.Append($"{key}={value}, ");
+            strings.Append($", {nameof(Parameters)}: [");
+
+            foreach (var (key, value) in Parameters)
+            {
+                strings.Append($"{key}={value}, ");
+            }
+
+            strings.Remove(strings.Length - 2, 2);
+            strings.Append(']');
         }
 
-        strings.Remove(strings.Length - 2, 2);
-        strings.Append(']');
+        strings.Append($", {nameof(HelpLink)}: {HelpLink}");
 
         return strings.ToString();
     }

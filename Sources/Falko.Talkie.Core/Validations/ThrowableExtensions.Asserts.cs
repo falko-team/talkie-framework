@@ -23,7 +23,7 @@ public static partial class ThrowableExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void NullOrEmpty(this Throwable<string?> throwable)
+    public static void NullOrEmpty(this Throwable<string> throwable)
     {
         if (string.IsNullOrEmpty(throwable.Value))
         {
@@ -32,7 +32,7 @@ public static partial class ThrowableExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void NullOrWhiteSpace(this Throwable<string?> throwable)
+    public static void NullOrWhiteSpace(this Throwable<string> throwable)
     {
         if (string.IsNullOrWhiteSpace(throwable.Value))
         {
