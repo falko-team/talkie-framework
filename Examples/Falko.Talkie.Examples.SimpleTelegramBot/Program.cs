@@ -15,7 +15,7 @@ using Talkie.Validations;
 // Get telegram token from command line arguments.
 var telegramToken = Environment.GetEnvironmentVariable("TELEGRAM_TOKEN");
 
-telegramToken.ThrowIf().NullOrWhiteSpace();
+telegramToken.ThrowIf()!.NullOrWhiteSpace();
 
 // Used stacked for disposing last to first disposables.
 // At this example first disposed flow and then disposed telegram connection.

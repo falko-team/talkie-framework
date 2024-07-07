@@ -1,5 +1,3 @@
-using System.Collections.Frozen;
-
 namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class Response<T>(
@@ -7,7 +5,7 @@ public sealed class Response<T>(
     T? result = null,
     int? errorCode = null,
     string? description = null,
-    FrozenDictionary<string, string>? parameters = null) where T : class
+    IReadOnlyDictionary<string, TextOrNumber>? parameters = null) where T : class
 {
     public readonly bool Ok = ok;
 
@@ -17,5 +15,5 @@ public sealed class Response<T>(
 
     public readonly string? Description = description;
 
-    public readonly FrozenDictionary<string, string>? Parameters = parameters;
+    public readonly IReadOnlyDictionary<string, TextOrNumber>? Parameters = parameters;
 }

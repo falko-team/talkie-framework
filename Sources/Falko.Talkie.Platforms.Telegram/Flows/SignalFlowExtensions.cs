@@ -1,3 +1,4 @@
+using Talkie.Bridges.Telegram.Configurations;
 using Talkie.Connections;
 using Talkie.Connectors;
 
@@ -5,14 +6,22 @@ namespace Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {
-    public static ISignalConnection ConnectTelegram(this ISignalFlow flow, string token)
+    public static ISignalConnection ConnectTelegram(this ISignalFlow flow,
+        ServerConfiguration serverConfiguration,
+        ClientConfiguration? clientConfiguration = default)
     {
-        return flow.Connect(new TelegramSignalConnector(token));
+        clientConfiguration ??= new ClientConfiguration();
+
+        return flow.Connect(new TelegramSignalConnector(serverConfiguration, clientConfiguration));
     }
 
-    public static ValueTask<IAsyncDisposable> ConnectTelegramAsync(this ISignalFlow flow, string token,
+    public static ValueTask<IAsyncDisposable> ConnectTelegramAsync(this ISignalFlow flow,
+        ServerConfiguration serverConfiguration,
+        ClientConfiguration? clientConfiguration = default,
         CancellationToken cancellationToken = default)
     {
-        return flow.ConnectAsync(new TelegramSignalConnector(token), cancellationToken);
+        clientConfiguration ??= new ClientConfiguration();
+
+        return flow.ConnectAsync(new TelegramSignalConnector(serverConfiguration, clientConfiguration), cancellationToken);
     }
 }
