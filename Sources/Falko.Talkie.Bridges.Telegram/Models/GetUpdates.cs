@@ -4,7 +4,7 @@ public sealed class GetUpdates(
     long? offset = null,
     long? limit = null,
     long? timeout = null,
-    IEnumerable<Update>? allowedUpdates = null)
+    IReadOnlyList<string>? allowedUpdates = null)
 {
     public readonly long? Offset = offset;
 
@@ -12,5 +12,5 @@ public sealed class GetUpdates(
 
     public readonly long? Timeout = timeout;
 
-    public readonly IEnumerable<Update>? AllowedUpdates = allowedUpdates;
+    public readonly IReadOnlyList<string>? AllowedUpdates = allowedUpdates;
 }
