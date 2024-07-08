@@ -4,17 +4,27 @@ public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
 {
     private readonly TelegramIncomingMessage _message;
 
-    private string? _content;
+    private string? _text;
+
+    private IMessage? _reply;
 
     internal TelegramIncomingMessageMutator(TelegramIncomingMessage message)
     {
         _message = message;
-        _content = message.Content;
+        _text = message.Text;
+        _reply = message.Reply;
     }
 
-    public IIncomingMessageMutator MutateContent(Func<string?, string?> content)
+    public IIncomingMessageMutator MutateText(Func<string?, string?> textMutationFactory)
     {
-        _content = content(_content);
+        _text = textMutationFactory(_text);
+
+        return this;
+    }
+
+    public IIncomingMessageMutator MutateReply(Func<IMessage?, IMessage?> replyMutationFactory)
+    {
+        _reply = replyMutationFactory(_reply);
 
         return this;
     }
@@ -23,7 +33,8 @@ public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
     {
         return _message with
         {
-            Content = _content
+            Text = _text,
+            Reply = _reply
         };
     }
 
