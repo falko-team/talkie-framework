@@ -1,6 +1,6 @@
 namespace Talkie.Collections;
 
-public static class SequenceExtensions
+public static partial class SequenceExtensions
 {
     public static Sequence<T> ToSequence<T>(this IEnumerable<T> enumerable) where T : notnull
     {

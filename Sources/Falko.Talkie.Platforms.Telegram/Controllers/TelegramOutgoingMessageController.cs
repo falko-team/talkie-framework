@@ -1,20 +1,21 @@
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
 using Talkie.Converters;
+using Talkie.Models;
 using Talkie.Models.Messages;
 using Talkie.Platforms;
 using Talkie.Validations;
 
 namespace Talkie.Controllers;
 
-public sealed class TelegramOutgoingMessageController(TelegramPlatform platform, IIncomingMessage incomingMessage) : IOutgoingMessageController
+public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
+    Identifier environmentProfileIdentifier) : IOutgoingMessageController
 {
     public async Task<IMessage> PublishMessageAsync(IMessage message, CancellationToken cancellationToken = default)
     {
         message.Text.ThrowIf().Null();
-        incomingMessage.ThrowIf().NotPlatform<TelegramPlatform>();
 
-        if (incomingMessage.EnvironmentProfile.Identifier.TryGetValue(out long receiverId) is not true)
+        if (environmentProfileIdentifier.TryGetValue(out long receiverId) is not true)
         {
             throw new ArgumentException("Environment id is required.");
         }
@@ -48,7 +49,7 @@ public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
             throw new ArgumentException("Reply message telegram id is required.");
         }
 
-        if (incomingMessage.EnvironmentProfile.Identifier == replyMessage.EnvironmentProfile.Identifier)
+        if (environmentProfileIdentifier == replyMessage.EnvironmentProfile.Identifier)
         {
             return new ReplyParameters(replyMessageTelegramId);
         }
