@@ -2,7 +2,7 @@ using Talkie.Collections;
 
 namespace Talkie.Disposables;
 
-public static class DisposableExtensions
+public static partial class DisposableExtensions
 {
     public static T DisposeWith<T>(this T disposable, IEnumerableDisposable enumerableDisposables) where T : IDisposable
     {
