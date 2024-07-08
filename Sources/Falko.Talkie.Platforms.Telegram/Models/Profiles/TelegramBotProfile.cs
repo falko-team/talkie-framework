@@ -2,7 +2,7 @@ namespace Talkie.Models.Profiles;
 
 public sealed record TelegramBotProfile : IBotProfile
 {
-    public required Identifier Id { get; init; }
+    public required Identifier Identifier { get; init; }
 
     public string? FirstName { get; init; }
 

@@ -25,8 +25,9 @@ await using var disposables = new DisposableStack();
 var flow = new SignalFlow()
     .DisposeWith(disposables);
 
-// Create unobserved task for publishing exceptions.
-var unobservedPublishingExceptionTask = flow.TakeAsync<UnobservedPublishingExceptionSignal>();
+// Create unobserved exception signal task.
+var unobservedExceptionSignalTask = flow.TakeAsync(signals => signals
+    .Where(signal => signal is UnobservedPublishingExceptionSignal or UnobservedConnectionExceptionSignal));
 
 // Create Microsoft Logger Factory.
 var loggerFactory = LoggerFactory.Create(signals => signals
@@ -54,13 +55,13 @@ flow.Subscribe<TelegramIncomingMessageSignal>(signals => signals
 
 // Echo message text back to the sender only in private chats example pipeline.
 flow.Subscribe<IncomingMessageSignal>(signals => signals
-    .Where(signal => signal.Message.Entry.Environment is IUserProfile) // only chat with user
-    .Where(signal => signal.Message.Content.IsNullOrWhiteSpace() is false) // only where message text is not empty
+    .Where(signal => signal.Message.EnvironmentProfile is IUserProfile) // only chat with user
+    .Where(signal => signal.Message.Text.IsNullOrWhiteSpace() is false) // only where message text is not empty
     .Select(signal => signal.MutateMessage(mutator => mutator
-        .MutateContent(content => content?.Trim().ToLowerInvariant())))
+        .MutateText(content => content?.Trim().ToLowerInvariant())))
     .HandleAsync(context => context
         .ToMessageController() // get message controller
-        .PublishMessageAsync(context.Signal.Message.Content!) // send message with same text to the chat of sender
+        .PublishMessageAsync(context.Signal.Message.Text!) // send message with same text to the chat of sender
         .AsValueTask()));
 
 // Connect to telegram with empty token and dispose it with disposables.
@@ -69,13 +70,23 @@ await flow.ConnectTelegramAsync(telegramToken)
     .DisposeAsyncWith(disposables);
 
 // Wait for first unobserved publishing exceptions.
-throw await unobservedPublishingExceptionTask;
+await ThrowUnobservedExceptionSignalAsync(unobservedExceptionSignalTask);
 
 // Define helper method to check if message is telegram command.
 static bool IsTelegramCommand(IMessage message, string command)
 {
-    return message is { Content: { } content}
+    return message is { Text: { } content}
         && content
             .TrimStart()
             .StartsWith($"/{command}", StringComparison.InvariantCultureIgnoreCase);
+}
+
+static async Task ThrowUnobservedExceptionSignalAsync(Task<Signal> unobservedExceptionSignalTask)
+{
+    throw await unobservedExceptionSignalTask switch
+    {
+        UnobservedPublishingExceptionSignal publishingExceptionSignal => publishingExceptionSignal.Exception,
+        UnobservedConnectionExceptionSignal connectionExceptionSignal => connectionExceptionSignal.Exception,
+        _ => new InvalidOperationException("Unknown unobserved exception signal.")
+    };
 }

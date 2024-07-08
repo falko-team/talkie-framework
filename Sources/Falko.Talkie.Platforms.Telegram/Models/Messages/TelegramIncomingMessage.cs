@@ -1,23 +1,27 @@
-using Talkie.Models.Entries;
+using Talkie.Models.Profiles;
 using Talkie.Platforms;
 
 namespace Talkie.Models.Messages;
 
 public sealed record TelegramIncomingMessage : IIncomingMessage
 {
-    public required Identifier Id { get; init; }
+    public required Identifier Identifier { get; init; }
 
-    public required TelegramEntry Entry { get; init; }
+    public required IPlatform Platform { get; init; }
 
-    IEntry Message.IWithEntry.Entry => Entry;
+    public required IProfile EnvironmentProfile { get; init; }
 
-    public required TelegramPlatform Platform { get; init; }
+    public required IProfile SenderProfile { get; init; }
 
-    IPlatform Message.IWithPlatform.Platform => Platform;
+    public required IProfile ReceiverProfile { get; init; }
+
+    public required DateTime Sent { get; init; }
+
+    public required DateTime Received { get; init; }
+
+    public string? Text { get; init; }
 
     public IMessage? Reply { get; init; }
-
-    public string? Content { get; init; }
 
     public TelegramIncomingMessage Mutate(Func<TelegramIncomingMessageMutator, TelegramIncomingMessageMutator> mutation)
     {
