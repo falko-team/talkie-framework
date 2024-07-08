@@ -2,11 +2,14 @@ using System.Net;
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Configurations;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Collections;
+using Talkie.Concurrent;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 using Talkie.Signals;
+using Talkie.Validations;
 
 namespace Talkie.Connections;
 
@@ -20,11 +23,16 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
     public async ValueTask InitializeAsync(CancellationToken cancellationToken = default)
     {
+        if (_processUpdatesTask is not null) return;
+
+        serverConfiguration.ThrowIf().Null();
+        clientConfiguration.ThrowIf().Null();
+
         _globalCancellationTokenSource = new CancellationTokenSource();
 
         var client = new TelegramBotApiClient(serverConfiguration, clientConfiguration);
 
-        IBotProfile self;
+        TelegramBotProfile self;
 
         try
         {
@@ -39,38 +47,75 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
         var platform = new TelegramPlatform(client, self);
 
-        _processUpdatesTask = client.ProcessUpdatesAsync((update, scopedCancellationToken) =>
-                ProcessUpdate(platform, update, scopedCancellationToken),
-            _globalCancellationTokenSource.Token);
+        if (_processUpdatesTask is not null) return;
+
+        _processUpdatesTask = ProcessUpdatesAsync(client, platform, _globalCancellationTokenSource.Token);
     }
 
     private async ValueTask ProcessUpdate(TelegramPlatform platform, Update update, CancellationToken cancellationToken)
     {
+        if (update.Message is not { } message) return;
+
+        var incomingMessage = IncomingMessageConverter.Convert(platform, message);
+
+        if (incomingMessage is null) return;
+
         try
         {
-            if (update.Message is not { } message) return;
-
-            var incomingMessage = IncomingMessageConverter.Convert(platform, message);
-
-            if (incomingMessage is null) return;
-
             await flow.PublishAsync(new TelegramIncomingMessageSignal(incomingMessage), cancellationToken);
         }
         catch (Exception exception)
         {
-            _ = flow.PublishExceptionAsync(exception, cancellationToken);
+            _ = flow.PublishUnobservedPublishingExceptionAsync(exception, cancellationToken);
         }
     }
 
-    private static IBotProfile GetSelf(User self)
+    private static TelegramBotProfile GetSelf(User self)
     {
         return new TelegramBotProfile
         {
-            Id = self.Id,
+            Identifier = self.Id,
             FirstName = self.FirstName,
             LastName = self.LastName,
             NickName = self.Username
         };
+    }
+
+    private Task ProcessUpdatesAsync(ITelegramBotApiClient client, TelegramPlatform platform,
+        CancellationToken cancellationToken)
+    {
+        return Task.Factory.StartNew(async () =>
+        {
+            long offset = 0;
+
+            while (cancellationToken.IsCancellationRequested is false)
+            {
+                try
+                {
+                    var updates = await client.GetUpdatesAsync(new GetUpdates(offset), cancellationToken);
+
+                    if (updates.Length is 0) continue;
+
+                    offset = updates[^1].UpdateId + 1;
+
+                    _ = updates.ToFrozenSequence().Parallelize().ForEachAsync((update, scopedCancellationToken) =>
+                            ProcessUpdate(platform, update, scopedCancellationToken), cancellationToken)
+                        .ContinueWith(task =>
+                            HandleProcessUpdateFaults(cancellationToken, task), TaskContinuationOptions.ExecuteSynchronously);
+                }
+                catch (Exception exception)
+                {
+                    _ = flow.PublishUnobservedConnectionExceptionAsync(this, exception, cancellationToken);
+                }
+            }
+        }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+    }
+
+    private void HandleProcessUpdateFaults(CancellationToken cancellationToken, Task task)
+    {
+        if (task.IsFaulted is false || task.Exception is null) return;
+
+        _ = flow.PublishUnobservedConnectionExceptionAsync(this, task.Exception, cancellationToken);
     }
 
     public async ValueTask DisposeAsync()
@@ -78,6 +123,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
         if (_globalCancellationTokenSource is not null)
         {
             await _globalCancellationTokenSource.CancelAsync();
+
             _globalCancellationTokenSource.Dispose();
         }
 

@@ -1,5 +1,4 @@
 using Talkie.Bridges.Telegram.Models;
-using Talkie.Models.Entries;
 using Talkie.Models.Messages;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
@@ -26,20 +25,17 @@ internal static class IncomingMessageConverter
 
         return new TelegramIncomingMessage
         {
-            Id = message.MessageId,
-            Content = text,
+            Identifier = message.MessageId,
+            Text = text,
             Platform = platform,
             Reply = message.ReplyToMessage is { } reply
                 ? Convert(platform, reply)
                 : null,
-            Entry = new TelegramEntry
-            {
-                Sender = sender,
-                Sent = message.Date ?? received,
-                Receiver = platform.Self,
-                Received = received,
-                Environment = receiver
-            }
+            SenderProfile = sender,
+            Sent = message.Date ?? received,
+            ReceiverProfile = platform.BotProfile,
+            Received = received,
+            EnvironmentProfile = receiver
         };
     }
 
@@ -51,7 +47,7 @@ internal static class IncomingMessageConverter
         {
             return new TelegramUserProfile
             {
-                Id = chat.Id,
+                Identifier = chat.Id,
                 NickName = chat.Username,
                 FirstName = chat.FirstName,
                 LastName = chat.LastName
@@ -60,7 +56,7 @@ internal static class IncomingMessageConverter
 
         return new TelegramChatProfile
         {
-            Id = chat.Id,
+            Identifier = chat.Id,
             Title = chat.Title,
         };
     }
@@ -73,7 +69,7 @@ internal static class IncomingMessageConverter
             {
                 return new TelegramBotProfile
                 {
-                    Id = sender.Id,
+                    Identifier = sender.Id,
                     NickName = sender.Username,
                     FirstName = sender.FirstName,
                     LastName = sender.LastName
@@ -82,7 +78,7 @@ internal static class IncomingMessageConverter
 
             return new TelegramUserProfile
             {
-                Id = sender.Id,
+                Identifier = sender.Id,
                 NickName = sender.Username,
                 FirstName = sender.FirstName,
                 LastName = sender.LastName
@@ -93,8 +89,9 @@ internal static class IncomingMessageConverter
         {
             return new TelegramChatProfile
             {
-                Id = chat.Id,
+                Identifier = chat.Id,
                 Title = chat.Title,
+                NickName = chat.Username
             };
         }
 
