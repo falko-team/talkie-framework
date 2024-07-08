@@ -1,7 +1,6 @@
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Controllers;
 using Talkie.Models;
-using Talkie.Models.Messages;
 using Talkie.Models.Profiles;
 
 namespace Talkie.Platforms;
@@ -15,7 +14,7 @@ public sealed record TelegramPlatform : IPlatform
         BotProfile = botProfile;
 
         ControllerCreator = ControllerCreatorBuilder.Create()
-            .Add<IOutgoingMessageController, IIncomingMessage>(message => new TelegramOutgoingMessageController(this, message))
+            .AddOutgoingMessageController(environmentProfileIdentifier => new TelegramOutgoingMessageController(this, environmentProfileIdentifier))
             .Build();
     }
 

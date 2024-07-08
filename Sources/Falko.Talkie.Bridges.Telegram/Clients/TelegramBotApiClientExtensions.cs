@@ -2,7 +2,7 @@ using Talkie.Bridges.Telegram.Models;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
-public static class TelegramBotApiClientExtensions
+public static partial class TelegramBotApiClientExtensions
 {
     public static Task<Update[]> GetUpdatesAsync(this ITelegramBotApiClient client, GetUpdates getUpdates,
         CancellationToken cancellationToken = default)

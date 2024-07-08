@@ -3,7 +3,7 @@ using Talkie.Platforms;
 
 namespace Talkie.Validations;
 
-public static class ThrowableExtensions
+public static partial class ThrowableExtensions
 {
     public static void NotPlatform<T>(this Throwable<IIncomingMessage> throwable) where T : class, IPlatform
     {
