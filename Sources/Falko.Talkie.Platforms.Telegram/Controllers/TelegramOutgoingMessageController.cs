@@ -11,20 +11,20 @@ public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
 {
     public async Task<IMessage> PublishMessageAsync(IMessage message, CancellationToken cancellationToken = default)
     {
-        message.Content.ThrowIf().Null();
+        message.Text.ThrowIf().Null();
         incomingMessage.ThrowIf().NotPlatform<TelegramPlatform>();
 
-        if (incomingMessage.Entry.Environment.Id.TryGetValue(out long receiverId) is not true)
+        if (incomingMessage.EnvironmentProfile.Identifier.TryGetValue(out long receiverId) is not true)
         {
             throw new ArgumentException("Environment id is required.");
         }
 
         var sendMessage = new SendMessage(
             receiverId,
-            message.Content!,
+            message.Text!,
             GetReplyParameters(message));
 
-        var sentMessage = await platform.Client.SendMessageAsync(sendMessage,
+        var sentMessage = await platform.BotApiClient.SendMessageAsync(sendMessage,
             cancellationToken: cancellationToken);
 
         return IncomingMessageConverter.Convert(platform, sentMessage)
@@ -33,32 +33,27 @@ public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
 
     private ReplyParameters? GetReplyParameters(IMessage outgoingMessage)
     {
-        if (outgoingMessage.TryGetReply(out var replyMessage) is false)
+        if (outgoingMessage.Reply is null)
         {
             return null;
         }
 
-        if (replyMessage.TryGetIdentifier(out var replyMessageId) is false)
+        if (outgoingMessage.Reply is not IIncomingMessage replyMessage)
         {
             throw new ArgumentException("Reply message id is required.");
         }
 
-        if (replyMessageId.TryGetValue(out long replyMessageTelegramId) is false)
+        if (replyMessage.Identifier.TryGetValue(out long replyMessageTelegramId) is false)
         {
             throw new ArgumentException("Reply message telegram id is required.");
         }
 
-        if (replyMessage.TryGetEntry(out var replyMessageEntry) is false)
+        if (incomingMessage.EnvironmentProfile.Identifier == replyMessage.EnvironmentProfile.Identifier)
         {
             return new ReplyParameters(replyMessageTelegramId);
         }
 
-        if (incomingMessage.Entry.Environment.Id == replyMessageEntry.Environment.Id)
-        {
-            return new ReplyParameters(replyMessageTelegramId);
-        }
-
-        if (replyMessageEntry.Environment.Id.TryGetValue(out long replyMessageEnvironmentTelegramId) is false)
+        if (replyMessage.EnvironmentProfile.Identifier.TryGetValue(out long replyMessageEnvironmentTelegramId) is false)
         {
             throw new ArgumentException("Reply message environment telegram id is required.");
         }

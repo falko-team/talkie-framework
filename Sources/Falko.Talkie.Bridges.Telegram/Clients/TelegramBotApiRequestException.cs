@@ -15,7 +15,7 @@ public sealed partial class TelegramBotApiRequestException : Exception
         Exception? innerException = null) : base(null, innerException)
     {
         client.ThrowIf().Null();
-        methodName.ThrowIf().NullOrEmpty();
+        methodName.ThrowIf().NullOrWhiteSpace();
 
         Client = client;
         MethodName = methodName;
