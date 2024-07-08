@@ -29,7 +29,7 @@ public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 
         return new OutgoingMessage
         {
-            Content = _content.ToString(),
+            Text = _content.ToString(),
             Reply = _reply
         };
     }

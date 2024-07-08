@@ -2,5 +2,7 @@ namespace Talkie.Models.Messages;
 
 public interface IMessage
 {
-    string? Content { get; }
+    string? Text { get; }
+
+    IMessage? Reply { get; }
 }
