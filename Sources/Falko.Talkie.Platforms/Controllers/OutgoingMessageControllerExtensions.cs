@@ -2,7 +2,7 @@ using Talkie.Builders;
 
 namespace Talkie.Controllers;
 
-public static class OutgoingMessageControllerExtensions
+public static partial class OutgoingMessageControllerExtensions
 {
     public static Task PublishMessageAsync(this IOutgoingMessageController controller, Func<IOutgoingMessageBuilder, IOutgoingMessageBuilder> builder,
         CancellationToken cancellationToken = default)

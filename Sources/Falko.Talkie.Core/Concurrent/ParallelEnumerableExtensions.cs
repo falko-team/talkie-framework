@@ -3,7 +3,7 @@ using Talkie.Collections;
 
 namespace Talkie.Concurrent;
 
-public static class ParallelEnumerableExtensions
+public static partial class ParallelEnumerableExtensions
 {
     public static Partitioner<T> ToPartitioner<T>(this IParallelEnumerable<T> parallelEnumerable)
     {
