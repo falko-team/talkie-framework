@@ -50,8 +50,14 @@ await using var disposables = new DisposableStack();
 var flow = new SignalFlow()
     .DisposeWith(disposables);
 
-var unobservedExceptionTask = flow
-    .TakeAsync<UnobservedPublishingExceptionSignal>();
+var unobservedExceptionTask = flow.TakeAsync(signals => signals
+    .Only<UnobservedConnectionExceptionSignal, UnobservedPublishingExceptionSignal>())
+    .ContinueWith(signal => signal.Result switch
+    {
+        UnobservedPublishingExceptionSignal publishingExceptionSignal => publishingExceptionSignal.Exception,
+        UnobservedConnectionExceptionSignal connectionExceptionSignal => connectionExceptionSignal.Exception,
+        _ => new InvalidOperationException("Unknown unobserved exception signal")
+    }, TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnRanToCompletion);
 
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal

@@ -5,12 +5,6 @@ namespace Talkie.Pipelines;
 
 public static partial class SignalPipelineBuilderExtensions
 {
-    public static ISignalInterceptingPipelineBuilder<T> WhereCommand<T>(this ISignalInterceptingPipelineBuilder<T> builder,
-        string name) where T : Signal
-    {
-        return builder.Where((signal, _) => true);
-    }
-
     public static ISignalInterceptingPipelineBuilder<T> Where<T>(this ISignalInterceptingPipelineBuilder<T> builder,
         Func<T, CancellationToken, bool> where) where T : Signal
     {
