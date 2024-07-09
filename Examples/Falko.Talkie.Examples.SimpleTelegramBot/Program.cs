@@ -26,8 +26,14 @@ var flow = new SignalFlow()
     .DisposeWith(disposables);
 
 // Create unobserved exception signal task.
-var unobservedExceptionSignalTask = flow.TakeAsync(signals => signals
-    .Where(signal => signal is UnobservedPublishingExceptionSignal or UnobservedConnectionExceptionSignal));
+var unobservedExceptionTask = flow.TakeAsync(signals => signals
+    .Only<UnobservedConnectionExceptionSignal, UnobservedPublishingExceptionSignal>())
+    .ContinueWith(signal => signal.Result switch
+    {
+        UnobservedPublishingExceptionSignal publishingExceptionSignal => publishingExceptionSignal.Exception,
+        UnobservedConnectionExceptionSignal connectionExceptionSignal => connectionExceptionSignal.Exception,
+        _ => new InvalidOperationException("Unknown unobserved exception signal")
+    }, TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnRanToCompletion);
 
 // Create Microsoft Logger Factory.
 var loggerFactory = LoggerFactory.Create(signals => signals
@@ -39,7 +45,7 @@ var loggerFactory = LoggerFactory.Create(signals => signals
 // Create logger for signal flow.
 var signalFlowLogger = loggerFactory.CreateLogger<SignalFlow>();
 
-// Create subscription for all signals and log them.
+// Create subscription for all signals and log them
 flow.Subscribe(signals => signals
     .Handle(context => signalFlowLogger
         .LogDebug("Signal received: {Signal}", context.Signal))); // log any signals
@@ -53,7 +59,7 @@ flow.Subscribe<TelegramIncomingMessageSignal>(signals => signals
         .PublishMessageAsync("hi") // send message "hi"
         .AsValueTask()));
 
-// Echo message text back to the sender only in private chats example pipeline.
+// Echo message text back to the sender only in private chats example pipeline
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal.Message.EnvironmentProfile is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Text.IsNullOrWhiteSpace() is false) // only where message text is not empty
@@ -70,7 +76,7 @@ await flow.ConnectTelegramAsync(telegramToken)
     .DisposeAsyncWith(disposables);
 
 // Wait for first unobserved publishing exceptions.
-await ThrowUnobservedExceptionSignalAsync(unobservedExceptionSignalTask);
+throw await unobservedExceptionTask;
 
 // Define helper method to check if message is telegram command.
 static bool IsTelegramCommand(IMessage message, string command)
@@ -79,14 +85,4 @@ static bool IsTelegramCommand(IMessage message, string command)
         && content
             .TrimStart()
             .StartsWith($"/{command}", StringComparison.InvariantCultureIgnoreCase);
-}
-
-static async Task ThrowUnobservedExceptionSignalAsync(Task<Signal> unobservedExceptionSignalTask)
-{
-    throw await unobservedExceptionSignalTask switch
-    {
-        UnobservedPublishingExceptionSignal publishingExceptionSignal => publishingExceptionSignal.Exception,
-        UnobservedConnectionExceptionSignal connectionExceptionSignal => connectionExceptionSignal.Exception,
-        _ => new InvalidOperationException("Unknown unobserved exception signal.")
-    };
 }
