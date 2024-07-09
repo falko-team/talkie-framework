@@ -5,7 +5,7 @@ namespace Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {
-    public static Task PublishUnobservedPublishingExceptionAsync(this ISignalFlow flow, Exception? exception = null,
+    public static Task PublishUnobservedPublishingExceptionAsync(this ISignalFlow flow, Exception exception,
         CancellationToken cancellationToken = default)
     {
         if (exception is not SignalPublishingException publishingException || publishingException.Flow != flow)
