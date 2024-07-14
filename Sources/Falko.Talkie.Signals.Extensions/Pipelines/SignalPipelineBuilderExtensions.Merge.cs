@@ -11,7 +11,7 @@ public static partial class SignalPipelineBuilderExtensions
     {
         return new SignalInterceptingPipelineBuilder(new Sequence<ISignalInterceptor>
         {
-            new MergeInterceptor(builder.CopyInterceptors(), mergeBuilder.CopyInterceptors())
+            new MergedInterceptor(builder.CopyInterceptors(), mergeBuilder.CopyInterceptors())
         });
     }
 
@@ -33,7 +33,7 @@ public static partial class SignalPipelineBuilderExtensions
     {
         return new SignalInterceptingPipelineBuilder<T>(new Sequence<ISignalInterceptor>
         {
-            new MergeInterceptor(builder.CopyInterceptors(), mergeBuilder.CopyInterceptors())
+            new MergedInterceptor(builder.CopyInterceptors(), mergeBuilder.CopyInterceptors())
         });
     }
 
