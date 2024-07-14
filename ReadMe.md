@@ -62,8 +62,8 @@ var unobservedExceptionTask = flow.TakeAsync(signals => signals
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal
         .Message
-        .Content
-        ?.Contains("hello", StringComparison.InvariantCultureIgnoreCase) is true)
+        .Text
+        ?.StartWith("/hello", StringComparison.InvariantCultureIgnoreCase) is true)
     .HandleAsync(context => context
         .ToMessageController()
         .PublishMessageAsync("hi")

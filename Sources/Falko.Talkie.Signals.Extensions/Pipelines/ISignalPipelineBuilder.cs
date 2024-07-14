@@ -11,4 +11,6 @@ public interface ISignalPipelineBuilder
     FrozenSequence<ISignalInterceptor> CopyInterceptors();
 
     FrozenSequence<ISignalHandler> CopyHandlers();
+
+    ISignalPipelineBuilder Copy();
 }

@@ -36,4 +36,8 @@ public sealed class SignalInterceptingPipelineBuilder<T> : ISignalInterceptingPi
     public FrozenSequence<ISignalInterceptor> CopyInterceptors() => _interceptors.ToFrozenSequence();
 
     public FrozenSequence<ISignalHandler> CopyHandlers() => FrozenSequence<ISignalHandler>.Empty;
+
+    public ISignalInterceptingPipelineBuilder<T> Copy() => new SignalInterceptingPipelineBuilder<T>(_interceptors);
+
+    ISignalPipelineBuilder ISignalPipelineBuilder.Copy() => Copy();
 }

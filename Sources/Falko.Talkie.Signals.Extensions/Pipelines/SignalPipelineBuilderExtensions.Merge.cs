@@ -1,3 +1,5 @@
+using Talkie.Collections;
+using Talkie.Interceptors;
 using Talkie.Signals;
 
 namespace Talkie.Pipelines;
@@ -5,30 +7,48 @@ namespace Talkie.Pipelines;
 public static partial class SignalPipelineBuilderExtensions
 {
     public static ISignalInterceptingPipelineBuilder Merge(this ISignalInterceptingPipelineBuilder builder,
-        ISignalInterceptingPipelineBuilder mergingBuilder)
+        ISignalInterceptingPipelineBuilder mergeBuilder)
     {
-        return new SignalInterceptingPipelineBuilder(builder.CopyInterceptors()
-            .Concat(mergingBuilder.CopyInterceptors()));
+        return new SignalInterceptingPipelineBuilder(new Sequence<ISignalInterceptor>
+        {
+            new MergedInterceptor(builder.CopyInterceptors(), mergeBuilder.CopyInterceptors())
+        });
     }
 
     public static ISignalInterceptingPipelineBuilder Merge(this ISignalInterceptingPipelineBuilder builder,
-        ISignalInterceptingPipelineBuilder mergingBuilder,
-        Func<ISignalInterceptingPipelineBuilder, ISignalInterceptingPipelineBuilder> builderFactory)
+        ISignalInterceptingPipelineBuilder mergeBuilder,
+        Func<ISignalInterceptingPipelineBuilder, ISignalInterceptingPipelineBuilder> mergeBuilderFactory)
     {
-        return builderFactory(builder.Merge(mergingBuilder));
+        return builder.Merge(mergeBuilderFactory(mergeBuilder.Copy()));
+    }
+
+    public static ISignalInterceptingPipelineBuilder Merge(this ISignalInterceptingPipelineBuilder builder,
+        Func<ISignalInterceptingPipelineBuilder, ISignalInterceptingPipelineBuilder> mergeBuilderFactory)
+    {
+        return builder.Merge(mergeBuilderFactory(new SignalInterceptingPipelineBuilder()));
     }
 
     public static ISignalInterceptingPipelineBuilder<T> Merge<T>(this ISignalInterceptingPipelineBuilder<T> builder,
-        ISignalInterceptingPipelineBuilder<T> mergingBuilder) where T : Signal
+        ISignalInterceptingPipelineBuilder<T> mergeBuilder) where T : Signal
     {
-        return new SignalInterceptingPipelineBuilder<T>(builder.CopyInterceptors()
-            .Concat(mergingBuilder.CopyInterceptors()));
+        return new SignalInterceptingPipelineBuilder<T>(new Sequence<ISignalInterceptor>
+        {
+            new MergedInterceptor(builder.CopyInterceptors(), mergeBuilder.CopyInterceptors())
+        });
     }
 
     public static ISignalInterceptingPipelineBuilder<T> Merge<T>(this ISignalInterceptingPipelineBuilder<T> builder,
-        ISignalInterceptingPipelineBuilder<T> mergingBuilder,
-        Func<ISignalInterceptingPipelineBuilder<T>, ISignalInterceptingPipelineBuilder<T>> builderFactory) where T : Signal
+        ISignalInterceptingPipelineBuilder<T> mergeBuilder,
+        Func<ISignalInterceptingPipelineBuilder<T>, ISignalInterceptingPipelineBuilder<T>> mergeBuilderFactory)
+        where T : Signal
     {
-        return builderFactory(builder.Merge(mergingBuilder));
+        return builder.Merge(mergeBuilderFactory(mergeBuilder.Copy()));
+    }
+
+    public static ISignalInterceptingPipelineBuilder<T> Merge<T>(this ISignalInterceptingPipelineBuilder<T> builder,
+        Func<ISignalInterceptingPipelineBuilder<T>, ISignalInterceptingPipelineBuilder<T>> mergeBuilderFactory)
+        where T : Signal
+    {
+        return builder.Merge(mergeBuilderFactory(new SignalInterceptingPipelineBuilder<T>()));
     }
 }

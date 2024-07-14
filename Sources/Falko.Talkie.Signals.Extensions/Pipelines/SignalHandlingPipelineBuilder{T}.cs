@@ -36,9 +36,13 @@ public sealed class SignalHandlingPipelineBuilder<T> : ISignalHandlingPipelineBu
         return this;
     }
 
-    public ISignalPipeline Build() => new SignalPipeline(_interceptors, _handlers);
+    public ISignalPipeline Build() => SignalPipelineFactory.Create(_interceptors, _handlers);
 
     public FrozenSequence<ISignalInterceptor> CopyInterceptors() => _interceptors;
 
     public FrozenSequence<ISignalHandler> CopyHandlers() => _handlers.ToFrozenSequence();
+
+    public ISignalHandlingPipelineBuilder<T> Copy() => new SignalHandlingPipelineBuilder<T>(_interceptors, _handlers);
+
+    ISignalPipelineBuilder ISignalPipelineBuilder.Copy() => Copy();
 }

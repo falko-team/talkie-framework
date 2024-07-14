@@ -2,7 +2,7 @@ using Talkie.Signals;
 
 namespace Talkie.Interceptors;
 
-public sealed class DistinctUntilChangedSignalInterceptor<TSignal, TValue>(Func<TSignal, CancellationToken, TValue> distinctUntilChanged)
+internal sealed class DistinctUntilChangedSignalInterceptor<TSignal, TValue>(Func<TSignal, CancellationToken, TValue> distinctUntilChanged)
         : SignalInterceptor<TSignal>
     where TSignal : Signal
 {

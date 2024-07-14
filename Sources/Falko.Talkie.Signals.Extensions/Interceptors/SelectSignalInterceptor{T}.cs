@@ -2,7 +2,7 @@ using Talkie.Signals;
 
 namespace Talkie.Interceptors;
 
-public sealed class SelectSignalInterceptor<TFrom, TTo>(Func<TFrom, CancellationToken, TTo> select) : SignalInterceptor<TFrom>
+internal sealed class SelectSignalInterceptor<TFrom, TTo>(Func<TFrom, CancellationToken, TTo> select) : SignalInterceptor<TFrom>
     where TFrom : Signal
     where TTo : Signal
 {

@@ -23,6 +23,20 @@ public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
         return this;
     }
 
+    public IOutgoingMessageBuilder AddTextLine(string text)
+    {
+        _content.AppendLine(text);
+
+        return this;
+    }
+
+    public IOutgoingMessageBuilder AddTextLine()
+    {
+        _content.AppendLine();
+
+        return this;
+    }
+
     public IMessage Build()
     {
         if (_content.Length == 0) return new OutgoingMessage();
