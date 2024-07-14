@@ -8,5 +8,9 @@ public interface IOutgoingMessageBuilder
 
     IOutgoingMessageBuilder AddText(string text);
 
+    IOutgoingMessageBuilder AddTextLine(string text);
+
+    IOutgoingMessageBuilder AddTextLine();
+
     IMessage Build();
 }

@@ -2,7 +2,7 @@ using Talkie.Signals;
 
 namespace Talkie.Interceptors;
 
-public sealed class TakeSignalInterceptor<T>(int count) : ISignalInterceptor<T> where T : Signal
+internal sealed class TakeSignalInterceptor<T>(int count) : ISignalInterceptor<T> where T : Signal
 {
     private readonly object _locker = new();
 

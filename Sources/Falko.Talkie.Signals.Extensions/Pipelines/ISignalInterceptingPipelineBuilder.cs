@@ -8,4 +8,6 @@ public interface ISignalInterceptingPipelineBuilder : ISignalPipelineBuilder
     ISignalInterceptingPipelineBuilder Intercept(ISignalInterceptor interceptor);
 
     ISignalHandlingPipelineBuilder HandleAsync(ISignalHandler handler);
+
+    new ISignalInterceptingPipelineBuilder Copy();
 }
