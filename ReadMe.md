@@ -42,7 +42,9 @@ dotnet add package Falko.Talkie.Platforms.Telegram
 To get started quickly, check out the [Examples](Examples) folder in the Talkie repository
 for illustrative code samples and usage demonstrations.
 
-Simple example of code:
+Or explore [Simple Wallet Bot (Rider Coin Bot)](https://github.com/falko-team/rider-coin)!
+
+Or watch simple example of code:
 
 ```C#
 await using var disposables = new DisposableStack();
