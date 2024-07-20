@@ -6,11 +6,37 @@ using Talkie.Controllers;
 using Talkie.Disposables;
 using Talkie.Flows;
 using Talkie.Handlers;
+using Talkie.Interceptors;
 using Talkie.Models.Messages;
 using Talkie.Models.Profiles;
+using Talkie.Piepelines2.Intercepting;
 using Talkie.Pipelines;
 using Talkie.Signals;
 using Talkie.Validations;
+
+var interceptingPipeline = ImmutableSignalInterceptingPipelineBuilder<Signal>.Instance
+    .Intercept(new SingletonSignalInterceptorFactory<DelegatedSignalInterceptor<Signal>>(() =>
+        new DelegatedSignalInterceptor<Signal>((_, _) => true)))
+    .Build();
+
+var interceptorB = interceptorA
+    .Intercept(null!);
+
+var interceptorC = interceptorA
+    .Intercept(null!);
+
+var oldA = new SignalInterceptingPipelineBuilder()
+    .Intercept(null!)
+    .Intercept(null!)
+    .Intercept(null!);
+
+var oldB = oldA.Copy()
+    .Intercept(null!);
+
+var oldC = oldA.Copy()
+    .Intercept(null!);
+
+return;
 
 // Get telegram token from command line arguments.
 var telegramToken = Environment.GetEnvironmentVariable("TELEGRAM_TOKEN");
