@@ -1,9 +1,8 @@
 using Talkie.Handlers;
-using Talkie.Pipelines.Handling;
 using Talkie.Pipelines.Intercepting;
 using Talkie.Signals;
 
-namespace Talkie.Pipelines;
+namespace Talkie.Pipelines.Handling;
 
 public static partial class SignalHandlingPipelineBuilderExtensions
 {

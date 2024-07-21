@@ -1,4 +1,4 @@
-using Talkie.Pipelines;
+using Talkie.Pipelines.Handling;
 using Talkie.Pipelines.Intercepting;
 using Talkie.Signals;
 
