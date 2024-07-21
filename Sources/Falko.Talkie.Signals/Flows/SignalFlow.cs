@@ -1,7 +1,7 @@
 using Talkie.Collections;
 using Talkie.Concurrent;
 using Talkie.Exceptions;
-using Talkie.Pipelines;
+using Talkie.Pipelines.Handling;
 using Talkie.Signals;
 using Talkie.Validations;
 
@@ -13,7 +13,7 @@ public sealed class SignalFlow : ISignalFlow
 
     private readonly CancellationTokenSource _flowCancellationTokenSource = new();
 
-    private readonly RemovableSequence<ISignalPipeline> _pipelines = new();
+    private readonly RemovableSequence<ISignalHandlingPipeline> _pipelines = new();
 
     private readonly ParallelismMeter _pipelinesParallelismMeter = new();
 
@@ -24,13 +24,13 @@ public sealed class SignalFlow : ISignalFlow
         TaskScheduler.UnobservedTaskException += OnUnobservedSignalPublishingException;
     }
 
-    public Subscription Subscribe(ISignalPipeline pipeline)
+    public Subscription Subscribe(ISignalHandlingPipeline handlingPipeline)
     {
         _disposed.ThrowIf().Disposed<SignalFlow>();
 
         lock (_locker)
         {
-            var remover = _pipelines.Add(pipeline);
+            var remover = _pipelines.Add(handlingPipeline);
 
             return new Subscription(() =>
             {
