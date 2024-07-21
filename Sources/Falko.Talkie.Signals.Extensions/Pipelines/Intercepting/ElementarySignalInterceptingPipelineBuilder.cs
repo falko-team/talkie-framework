@@ -13,15 +13,11 @@ public abstract class ElementarySignalInterceptingPipelineBuilder(ImmutableStack
     {
         var interceptors = new Sequence<ISignalInterceptor>();
 
-        var interceptorFactories = InterceptorFactories;
-
-        while (interceptorFactories.IsEmpty is false)
+        foreach (var factory in InterceptorFactories)
         {
-            var interceptorFactory = interceptorFactories.Peek();
+            var interceptor = factory.Create();
 
-            interceptors.Add(interceptorFactory.Create());
-
-            interceptorFactories = interceptorFactories.Pop();
+            interceptors.Add(interceptor);
         }
 
         return SignalInterceptingPipelineFactory.Create(interceptors);

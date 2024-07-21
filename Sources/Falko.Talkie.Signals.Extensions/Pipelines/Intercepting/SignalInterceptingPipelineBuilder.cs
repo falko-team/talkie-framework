@@ -5,8 +5,9 @@ namespace Talkie.Pipelines.Intercepting;
 public sealed class SignalInterceptingPipelineBuilder(ImmutableStack<ISignalInterceptorFactory> interceptorFactories)
     : ElementarySignalInterceptingPipelineBuilder(interceptorFactories), ISignalInterceptingPipelineBuilder
 {
-    public static readonly ISignalInterceptingPipelineBuilder Empty =
-        new SignalInterceptingPipelineBuilder(ImmutableStack<ISignalInterceptorFactory>.Empty);
+    public static readonly SignalInterceptingPipelineBuilder Empty = new();
+
+    private SignalInterceptingPipelineBuilder() : this(ImmutableStack<ISignalInterceptorFactory>.Empty) { }
 
     public ISignalInterceptingPipelineBuilder Intercept(ISignalInterceptorFactory interceptorFactory)
     {

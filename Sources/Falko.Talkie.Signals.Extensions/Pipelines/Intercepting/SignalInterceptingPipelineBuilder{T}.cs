@@ -7,8 +7,9 @@ public sealed class SignalInterceptingPipelineBuilder<T>(ImmutableStack<ISignalI
     : ElementarySignalInterceptingPipelineBuilder(interceptorFactories), ISignalInterceptingPipelineBuilder<T>
         where T : Signal
 {
-    public static readonly ISignalInterceptingPipelineBuilder<T> Empty =
-        new SignalInterceptingPipelineBuilder<T>(ImmutableStack<ISignalInterceptorFactory>.Empty);
+    public static readonly SignalInterceptingPipelineBuilder<T> Empty = new();
+
+    private SignalInterceptingPipelineBuilder() : this(ImmutableStack<ISignalInterceptorFactory>.Empty) { }
 
     public ISignalInterceptingPipelineBuilder<T> Intercept(ISignalInterceptorFactory<T> interceptor)
     {
