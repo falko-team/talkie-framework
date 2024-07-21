@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup Label="Assembly">
-        <Version>1.4.0</Version>
+        <Version>1.5.0</Version>
         <TargetFramework>net8.0</TargetFramework>
         <IsAotCompatible>true</IsAotCompatible>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
