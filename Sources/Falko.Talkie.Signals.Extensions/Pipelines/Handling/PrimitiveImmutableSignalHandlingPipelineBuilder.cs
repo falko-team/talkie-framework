@@ -1,9 +1,7 @@
-using Talkie.Piepelines2.Intercepting;
-using Talkie.Pipelines.Handling;
 using Talkie.Pipelines.Intercepting;
 using Talkie.Validations;
 
-namespace Talkie.Piepelines2.Handling;
+namespace Talkie.Pipelines.Handling;
 
 public abstract class PrimitiveImmutableSignalHandlingPipelineBuilder : IReadOnlySignalHandlingPipelineBuilder
 {

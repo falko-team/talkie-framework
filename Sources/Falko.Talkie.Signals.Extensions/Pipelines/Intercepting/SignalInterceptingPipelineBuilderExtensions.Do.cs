@@ -1,14 +1,14 @@
 using Talkie.Interceptors;
 using Talkie.Signals;
 
-namespace Talkie.Pipelines;
+namespace Talkie.Pipelines.Intercepting;
 
-public static partial class SignalPipelineBuilderExtensions
+public static partial class SignalInterceptingPipelineBuilderExtensions
 {
     public static ISignalInterceptingPipelineBuilder Do(this ISignalInterceptingPipelineBuilder builder,
         Action<Signal, CancellationToken> @do)
     {
-        return builder.Intercept(new DelegatedSignalInterceptor((signal, cancellationToken) =>
+        return builder.InterceptSingleton(() => new DelegatedSignalInterceptor((signal, cancellationToken) =>
         {
             @do(signal, cancellationToken);
 
@@ -25,7 +25,7 @@ public static partial class SignalPipelineBuilderExtensions
     public static ISignalInterceptingPipelineBuilder<T> Do<T>(this ISignalInterceptingPipelineBuilder<T> builder,
         Action<T, CancellationToken> @do) where T : Signal
     {
-        return builder.Intercept(new DelegatedSignalInterceptor<T>((signal, cancellationToken) =>
+        return builder.InterceptSingleton(() => new DelegatedSignalInterceptor<T>((signal, cancellationToken) =>
         {
             @do(signal, cancellationToken);
 

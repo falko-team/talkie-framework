@@ -1,4 +1,4 @@
-using Talkie.Piepelines2.Intercepting;
+using System.Collections.Immutable;
 using Talkie.Signals;
 
 namespace Talkie.Pipelines.Intercepting;
@@ -6,28 +6,46 @@ namespace Talkie.Pipelines.Intercepting;
 public static partial class SignalInterceptingPipelineBuilderExtensions
 {
     public static ISignalInterceptingPipelineBuilder Concat(this ISignalInterceptingPipelineBuilder builder,
-        IReadOnlySignalInterceptingPipelineBuilder concatBuilder)
+        ISignalInterceptingPipelineBuilder concatBuilder)
     {
-        var resultBuilder = builder;
+        return new SignalInterceptingPipelineBuilder(Concat(builder.InterceptorFactories,
+            concatBuilder.InterceptorFactories));
+    }
 
-        foreach (var interceptorFactory in concatBuilder.InterceptorFactories)
-        {
-            resultBuilder = resultBuilder.Intercept(interceptorFactory);
-        }
-
-        return resultBuilder;
+    public static ISignalInterceptingPipelineBuilder Concat(this ISignalInterceptingPipelineBuilder builder,
+        Func<ISignalInterceptingPipelineBuilder, ISignalInterceptingPipelineBuilder> concatBuilderFactory)
+    {
+        return builder.Concat(concatBuilderFactory(SignalInterceptingPipelineBuilder.Empty));
     }
 
     public static ISignalInterceptingPipelineBuilder<T> Concat<T>(this ISignalInterceptingPipelineBuilder<T> builder,
-        ISignalInterceptingPipelineBuilder concatBuilder) where T : Signal
+        ISignalInterceptingPipelineBuilder<T> concatBuilder) where T : Signal
     {
-        var resultBuilder = builder;
+        return new SignalInterceptingPipelineBuilder<T>(Concat(builder.InterceptorFactories,
+            concatBuilder.InterceptorFactories));
+    }
 
-        foreach (var interceptorFactory in concatBuilder.InterceptorFactories)
+    public static ISignalInterceptingPipelineBuilder<T> Concat<T>(this ISignalInterceptingPipelineBuilder<T> builder,
+        Func<ISignalInterceptingPipelineBuilder<T>, ISignalInterceptingPipelineBuilder<T>> concatBuilderFactory) where T : Signal
+    {
+        return builder.Concat(concatBuilderFactory(SignalInterceptingPipelineBuilder<T>.Empty));
+    }
+
+    private static ImmutableStack<ISignalInterceptorFactory> Concat(ImmutableStack<ISignalInterceptorFactory> targetInterceptorFactories,
+        ImmutableStack<ISignalInterceptorFactory> concatInterceptorFactories)
+    {
+        var reversedConcatInterceptorFactories = new Stack<ISignalInterceptorFactory>();
+
+        foreach (var interceptorFactory in concatInterceptorFactories)
         {
-            resultBuilder = resultBuilder.Intercept(interceptorFactory);
+            reversedConcatInterceptorFactories.Push(interceptorFactory);
         }
 
-        return resultBuilder;
+        foreach (var interceptorFactory in reversedConcatInterceptorFactories)
+        {
+            targetInterceptorFactories = targetInterceptorFactories.Push(interceptorFactory);
+        }
+
+        return targetInterceptorFactories;
     }
 }

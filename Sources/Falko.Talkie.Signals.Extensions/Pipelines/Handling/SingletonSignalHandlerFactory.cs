@@ -1,7 +1,7 @@
 using Talkie.Handlers;
 using Talkie.Validations;
 
-namespace Talkie.Piepelines2.Handling;
+namespace Talkie.Pipelines.Handling;
 
 public sealed class SingletonSignalHandlerFactory<T> : ISignalHandlerFactory<T> where T : ISignalHandler
 {

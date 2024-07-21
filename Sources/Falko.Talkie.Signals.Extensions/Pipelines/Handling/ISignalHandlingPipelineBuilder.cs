@@ -1,4 +1,4 @@
-namespace Talkie.Piepelines2.Handling;
+namespace Talkie.Pipelines.Handling;
 
 public interface ISignalHandlingPipelineBuilder : IReadOnlySignalHandlingPipelineBuilder
 {

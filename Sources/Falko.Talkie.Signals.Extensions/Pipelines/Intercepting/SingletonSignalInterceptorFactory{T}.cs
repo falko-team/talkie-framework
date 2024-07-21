@@ -1,24 +1,25 @@
 using Talkie.Interceptors;
+using Talkie.Signals;
 using Talkie.Validations;
 
 namespace Talkie.Pipelines.Intercepting;
 
-public sealed class SingletonSignalInterceptorFactory : ISignalInterceptorFactory
+public sealed class SingletonSignalInterceptorFactory<T> : ISignalInterceptorFactory<T> where T : Signal
 {
     private readonly object _lock = new();
 
-    private Func<ISignalInterceptor>? _interceptorFactory;
+    private Func<ISignalInterceptor<T>>? _interceptorFactory;
 
-    private ISignalInterceptor? _interceptor;
+    private ISignalInterceptor<T>? _interceptor;
 
-    public SingletonSignalInterceptorFactory(Func<ISignalInterceptor> interceptorFactory)
+    public SingletonSignalInterceptorFactory(Func<ISignalInterceptor<T>> interceptorFactory)
     {
         interceptorFactory.ThrowIf().Null();
 
         _interceptorFactory = interceptorFactory;
     }
 
-    public ISignalInterceptor Create()
+    public ISignalInterceptor<T> Create()
     {
         if (_interceptor is not null) return _interceptor;
 

@@ -1,9 +1,8 @@
 using Talkie.Handlers;
-using Talkie.Piepelines2.Intercepting;
 using Talkie.Pipelines.Intercepting;
 using Talkie.Signals;
 
-namespace Talkie.Piepelines2.Handling;
+namespace Talkie.Pipelines.Handling;
 
 public sealed class ImmutableSignalHandlingPipelineBuilder<T>
     : PrimitiveImmutableSignalHandlingPipelineBuilder, ISignalHandlingPipelineBuilder<T> where T : Signal

@@ -1,4 +1,4 @@
-namespace Talkie.Piepelines2.Intercepting;
+namespace Talkie.Pipelines.Intercepting;
 
 public interface ISignalInterceptingPipelineBuilder : IReadOnlySignalInterceptingPipelineBuilder
 {

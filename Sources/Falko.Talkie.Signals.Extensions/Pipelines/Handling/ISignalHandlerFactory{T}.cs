@@ -1,6 +1,6 @@
 using Talkie.Handlers;
 
-namespace Talkie.Piepelines2.Handling;
+namespace Talkie.Pipelines.Handling;
 
 public interface ISignalHandlerFactory<out T> : ISignalHandlerFactory where T : ISignalHandler
 {

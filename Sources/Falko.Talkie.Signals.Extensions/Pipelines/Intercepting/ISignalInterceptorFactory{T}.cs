@@ -1,8 +1,9 @@
 using Talkie.Interceptors;
+using Talkie.Signals;
 
-namespace Talkie.Piepelines2.Intercepting;
+namespace Talkie.Pipelines.Intercepting;
 
-public interface ISignalInterceptorFactory<out T> : ISignalInterceptorFactory where T : ISignalInterceptor
+public interface ISignalInterceptorFactory<in T> : ISignalInterceptorFactory where T : Signal
 {
-    new T Create();
+    new ISignalInterceptor<T> Create();
 }

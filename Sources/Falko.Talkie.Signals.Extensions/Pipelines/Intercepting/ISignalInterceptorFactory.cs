@@ -1,6 +1,6 @@
 using Talkie.Interceptors;
 
-namespace Talkie.Piepelines2.Intercepting;
+namespace Talkie.Pipelines.Intercepting;
 
 public interface ISignalInterceptorFactory
 {

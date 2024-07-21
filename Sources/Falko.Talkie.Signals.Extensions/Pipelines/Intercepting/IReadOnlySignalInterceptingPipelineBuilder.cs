@@ -1,10 +1,10 @@
-using Talkie.Pipelines.Intercepting;
+using System.Collections.Immutable;
 
-namespace Talkie.Piepelines2.Intercepting;
+namespace Talkie.Pipelines.Intercepting;
 
 public interface IReadOnlySignalInterceptingPipelineBuilder
 {
-    IEnumerable<ISignalInterceptorFactory> InterceptorFactories { get; }
+    ImmutableStack<ISignalInterceptorFactory> InterceptorFactories { get; }
 
     ISignalInterceptingPipeline Build();
 }

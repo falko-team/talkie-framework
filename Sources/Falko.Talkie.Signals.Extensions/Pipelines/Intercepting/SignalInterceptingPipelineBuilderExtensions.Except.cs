@@ -1,8 +1,8 @@
 using Talkie.Signals;
 
-namespace Talkie.Pipelines;
+namespace Talkie.Pipelines.Intercepting;
 
-public static partial class SignalPipelineBuilderExtensions
+public static partial class SignalInterceptingPipelineBuilderExtensions
 {
     public static ISignalInterceptingPipelineBuilder Except<T>(this ISignalInterceptingPipelineBuilder builder)
         where T : Signal

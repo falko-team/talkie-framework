@@ -1,14 +1,14 @@
 using Talkie.Interceptors;
 using Talkie.Signals;
 
-namespace Talkie.Pipelines;
+namespace Talkie.Pipelines.Intercepting;
 
-public static partial class SignalPipelineBuilderExtensions
+public static partial class SignalInterceptingPipelineBuilderExtensions
 {
     public static ISignalInterceptingPipelineBuilder<T> Where<T>(this ISignalInterceptingPipelineBuilder<T> builder,
         Func<T, CancellationToken, bool> where) where T : Signal
     {
-        return builder.Intercept(new WhereSignalInterceptor<T>(where));
+        return builder.InterceptSingleton(() => new WhereSignalInterceptor<T>(where));
     }
 
     public static ISignalInterceptingPipelineBuilder<T> Where<T>(this ISignalInterceptingPipelineBuilder<T> builder,
@@ -20,7 +20,7 @@ public static partial class SignalPipelineBuilderExtensions
     public static ISignalInterceptingPipelineBuilder Where(this ISignalInterceptingPipelineBuilder builder,
         Func<Signal, CancellationToken, bool> where)
     {
-        return builder.Intercept(new WhereSignalInterceptor(where));
+        return builder.InterceptSingleton(() => new WhereSignalInterceptor(where));
     }
 
     public static ISignalInterceptingPipelineBuilder Where(this ISignalInterceptingPipelineBuilder builder,

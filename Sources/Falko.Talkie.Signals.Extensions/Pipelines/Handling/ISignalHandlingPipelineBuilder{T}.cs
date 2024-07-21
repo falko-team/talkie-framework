@@ -1,8 +1,7 @@
 using Talkie.Handlers;
-using Talkie.Piepelines2.Intercepting;
 using Talkie.Signals;
 
-namespace Talkie.Piepelines2.Handling;
+namespace Talkie.Pipelines.Handling;
 
 public interface ISignalHandlingPipelineBuilder<out T> : IReadOnlySignalHandlingPipelineBuilder where T : Signal
 {
