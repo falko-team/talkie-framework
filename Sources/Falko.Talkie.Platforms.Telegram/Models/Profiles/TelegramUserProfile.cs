@@ -4,6 +4,8 @@ public sealed record TelegramUserProfile : IUserProfile
 {
     public required Identifier Identifier { get; init; }
 
+    public string? Language { get; init; }
+
     public string? FirstName { get; init; }
 
     public string? LastName { get; init; }
