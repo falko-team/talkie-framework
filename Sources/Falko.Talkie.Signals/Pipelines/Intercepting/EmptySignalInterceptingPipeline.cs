@@ -11,6 +11,6 @@ public sealed class EmptySignalInterceptingPipeline : ISignalInterceptingPipelin
     public bool TryTransfer(Signal incomingSignal, out Signal outgoingSignal, CancellationToken cancellationToken = default)
     {
         outgoingSignal = incomingSignal;
-        return false;
+        return true;
     }
 }
