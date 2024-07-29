@@ -12,7 +12,7 @@ public static partial class SignalHandlingPipelineBuilderExtensions
         var pipeline = builder.Build();
 
         return pipeline is not EmptySignalInterceptingPipeline
-            ? new SignalHandlingPipelineBuilder(builder.Build()).HandleAsync(handler)
+            ? new SignalHandlingPipelineBuilder(pipeline).HandleAsync(handler)
             : SignalHandlingPipelineBuilder.Empty.HandleAsync(handler);
     }
 
@@ -22,7 +22,7 @@ public static partial class SignalHandlingPipelineBuilderExtensions
         var pipeline = builder.Build();
 
         return pipeline is not EmptySignalInterceptingPipeline
-            ? new SignalHandlingPipelineBuilder<T>(builder.Build()).HandleAsync(handler)
+            ? new SignalHandlingPipelineBuilder<T>(pipeline).HandleAsync(handler)
             : SignalHandlingPipelineBuilder<T>.Empty.HandleAsync(handler);
     }
 
