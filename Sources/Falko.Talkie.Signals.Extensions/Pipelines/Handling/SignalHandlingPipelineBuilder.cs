@@ -9,7 +9,7 @@ public sealed class SignalHandlingPipelineBuilder : ElementarySignalHandlingPipe
 
     private SignalHandlingPipelineBuilder() { }
 
-    public SignalHandlingPipelineBuilder(ISignalInterceptingPipeline? pipeline) : base(pipeline) { }
+    public SignalHandlingPipelineBuilder(ISignalInterceptingPipeline pipeline) : base(pipeline) { }
 
     public ISignalHandlingPipelineBuilder HandleAsync(ISignalHandler handler)
     {

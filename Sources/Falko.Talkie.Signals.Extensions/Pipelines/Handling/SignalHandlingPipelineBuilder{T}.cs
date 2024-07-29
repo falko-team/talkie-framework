@@ -11,7 +11,7 @@ public sealed class SignalHandlingPipelineBuilder<T>
 
     private SignalHandlingPipelineBuilder() { }
 
-    public SignalHandlingPipelineBuilder(ISignalInterceptingPipeline? pipeline) : base(pipeline) { }
+    public SignalHandlingPipelineBuilder(ISignalInterceptingPipeline pipeline) : base(pipeline) { }
 
     public ISignalHandlingPipelineBuilder<T> HandleAsync(ISignalHandler<T> handler)
     {

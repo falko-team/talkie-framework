@@ -11,7 +11,7 @@ public abstract class ElementarySignalHandlingPipelineBuilder : IReadOnlySignalH
 
     protected ElementarySignalHandlingPipelineBuilder() { }
 
-    protected ElementarySignalHandlingPipelineBuilder(ISignalInterceptingPipeline? interceptingPipeline)
+    protected ElementarySignalHandlingPipelineBuilder(ISignalInterceptingPipeline interceptingPipeline)
     {
         interceptingPipeline.ThrowIf().Null();
 
