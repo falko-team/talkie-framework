@@ -15,11 +15,11 @@ internal static class IncomingMessageConverter
 
         if (message.Text is not { } text) return null;
 
-        var sender = GetMessageSender(message);
+        var sender = GetSender(message);
 
-        var receiver = GetReceiver(message);
+        var environment = GetEnvironment(message);
 
-        if (sender is null || receiver is null) return null;
+        if (sender is null || environment is null) return null;
 
         var received = DateTime.UtcNow;
 
@@ -35,11 +35,11 @@ internal static class IncomingMessageConverter
             Sent = message.Date ?? received,
             ReceiverProfile = platform.BotProfile,
             Received = received,
-            EnvironmentProfile = receiver
+            EnvironmentProfile = environment
         };
     }
 
-    private static IProfile? GetReceiver(Message message)
+    private static IProfile? GetEnvironment(Message message)
     {
         if (message.Chat is not { } chat) return null;
 
@@ -61,7 +61,7 @@ internal static class IncomingMessageConverter
         };
     }
 
-    private static IProfile? GetMessageSender(Message message)
+    private static IProfile? GetSender(Message message)
     {
         if (message.From is { } sender)
         {
@@ -72,7 +72,8 @@ internal static class IncomingMessageConverter
                     Identifier = sender.Id,
                     NickName = sender.Username,
                     FirstName = sender.FirstName,
-                    LastName = sender.LastName
+                    LastName = sender.LastName,
+                    Language = sender.LanguageCode
                 };
             }
 
@@ -81,7 +82,8 @@ internal static class IncomingMessageConverter
                 Identifier = sender.Id,
                 NickName = sender.Username,
                 FirstName = sender.FirstName,
-                LastName = sender.LastName
+                LastName = sender.LastName,
+                Language = sender.LanguageCode
             };
         }
 
