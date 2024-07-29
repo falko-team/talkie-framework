@@ -10,7 +10,7 @@ public sealed class SingleSignalHandlingPipeline(ISignalHandler handler,
 {
     public ValueTask TransferAsync(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default)
     {
-        if (interceptingPipeline?.TryTransfer(signal, out signal, cancellationToken) is null or false)
+        if (interceptingPipeline?.TryTransfer(signal, out signal, cancellationToken) is false)
         {
             return ValueTask.CompletedTask;
         }
