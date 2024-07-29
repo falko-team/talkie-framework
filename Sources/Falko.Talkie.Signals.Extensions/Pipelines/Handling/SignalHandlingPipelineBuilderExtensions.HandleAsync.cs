@@ -9,13 +9,21 @@ public static partial class SignalHandlingPipelineBuilderExtensions
     public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalInterceptingPipelineBuilder builder,
         ISignalHandler handler)
     {
-        return new SignalHandlingPipelineBuilder(builder.Build()).HandleAsync(handler);
+        var pipeline = builder.Build();
+
+        return pipeline is not EmptySignalInterceptingPipeline
+            ? new SignalHandlingPipelineBuilder(builder.Build()).HandleAsync(handler)
+            : SignalHandlingPipelineBuilder.Empty.HandleAsync(handler);
     }
 
     public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalInterceptingPipelineBuilder<T> builder,
         ISignalHandler<T> handler) where T : Signal
     {
-        return new SignalHandlingPipelineBuilder<T>(builder.Build()).HandleAsync(handler);
+        var pipeline = builder.Build();
+
+        return pipeline is not EmptySignalInterceptingPipeline
+            ? new SignalHandlingPipelineBuilder<T>(builder.Build()).HandleAsync(handler)
+            : SignalHandlingPipelineBuilder<T>.Empty.HandleAsync(handler);
     }
 
     public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalInterceptingPipelineBuilder builder,

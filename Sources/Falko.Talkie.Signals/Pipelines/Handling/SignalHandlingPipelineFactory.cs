@@ -8,7 +8,7 @@ public static class SignalHandlingPipelineFactory
 {
     [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
     public static ISignalHandlingPipeline Create(IEnumerable<ISignalHandler> handlers,
-        ISignalInterceptingPipeline interceptingPipeline)
+        ISignalInterceptingPipeline? interceptingPipeline = null)
     {
         using var enumerator = handlers.GetEnumerator();
 
