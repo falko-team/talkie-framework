@@ -21,6 +21,8 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
     private Task? _processUpdatesTask;
 
+    public TelegramPlatform? Platform { get; private set; }
+
     public async ValueTask InitializeAsync(CancellationToken cancellationToken = default)
     {
         if (_processUpdatesTask is not null) return;
@@ -45,11 +47,11 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
             throw new UnauthorizedAccessException("Invalid token");
         }
 
-        var platform = new TelegramPlatform(client, self);
+        Platform = new TelegramPlatform(client, self);
 
         if (_processUpdatesTask is not null) return;
 
-        _processUpdatesTask = ProcessUpdatesAsync(client, platform, _globalCancellationTokenSource.Token);
+        _processUpdatesTask = ProcessUpdatesAsync(client, Platform, _globalCancellationTokenSource.Token);
     }
 
     private async ValueTask ProcessUpdate(TelegramPlatform platform, Update update, CancellationToken cancellationToken)
