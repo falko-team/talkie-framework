@@ -11,7 +11,7 @@ namespace Talkie.Controllers;
 public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
     Identifier environmentProfileIdentifier) : IOutgoingMessageController
 {
-    public async Task<IMessage> PublishMessageAsync(IMessage message, CancellationToken cancellationToken = default)
+    public async Task<IMessage> PublishMessageAsync(IOutgoingMessage message, CancellationToken cancellationToken = default)
     {
         message.Text.ThrowIf().Null();
 
@@ -32,29 +32,24 @@ public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
             ?? throw new InvalidOperationException("Failed to convert sent message.");
     }
 
-    private ReplyParameters? GetReplyParameters(IMessage outgoingMessage)
+    private ReplyParameters? GetReplyParameters(IOutgoingMessage outgoingMessage)
     {
         if (outgoingMessage.Reply is null)
         {
             return null;
         }
 
-        if (outgoingMessage.Reply is not IIncomingMessage replyMessage)
-        {
-            throw new ArgumentException("Reply message id is required.");
-        }
-
-        if (replyMessage.Identifier.TryGetValue(out long replyMessageTelegramId) is false)
+        if (outgoingMessage.Reply.MessageIdentifier.TryGetValue(out long replyMessageTelegramId) is false)
         {
             throw new ArgumentException("Reply message telegram id is required.");
         }
 
-        if (environmentProfileIdentifier == replyMessage.EnvironmentProfile.Identifier)
+        if (environmentProfileIdentifier == outgoingMessage.Reply.EnvironmentIdentifier)
         {
             return new ReplyParameters(replyMessageTelegramId);
         }
 
-        if (replyMessage.EnvironmentProfile.Identifier.TryGetValue(out long replyMessageEnvironmentTelegramId) is false)
+        if (outgoingMessage.Reply.EnvironmentIdentifier.TryGetValue(out long replyMessageEnvironmentTelegramId) is false)
         {
             throw new ArgumentException("Reply message environment telegram id is required.");
         }

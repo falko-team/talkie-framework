@@ -21,15 +21,11 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
 
     public string? Text { get; init; }
 
-    public IMessage? Reply { get; init; }
+    public TelegramIncomingMessage? Reply { get; init; }
 
-    public TelegramIncomingMessage Mutate(Func<TelegramIncomingMessageMutator, TelegramIncomingMessageMutator> mutation)
-    {
-        return mutation(new TelegramIncomingMessageMutator(this)).Mutate();
-    }
+    IIncomingMessage? IIncomingMessage.Reply => Reply;
 
-    IIncomingMessage IIncomingMessage.Mutate(Func<IIncomingMessageMutator, IIncomingMessageMutator> mutation)
-    {
-        return Mutate(mutator => (TelegramIncomingMessageMutator)mutation(mutator));
-    }
+    public TelegramIncomingMessageMutator ToMutator() => new(this);
+
+    IIncomingMessageMutator IIncomingMessage.ToMutator() => ToMutator();
 }
