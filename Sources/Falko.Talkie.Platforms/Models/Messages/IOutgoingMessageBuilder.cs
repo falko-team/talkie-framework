@@ -1,10 +1,8 @@
-using Talkie.Models.Messages;
-
-namespace Talkie.Builders;
+namespace Talkie.Models.Messages;
 
 public interface IOutgoingMessageBuilder
 {
-    IOutgoingMessageBuilder AddReply(IMessage reply);
+    IOutgoingMessageBuilder SetReply(GlobalIdentifier reply);
 
     IOutgoingMessageBuilder AddText(string text);
 
@@ -12,5 +10,5 @@ public interface IOutgoingMessageBuilder
 
     IOutgoingMessageBuilder AddTextLine();
 
-    IMessage Build();
+    IOutgoingMessage Build();
 }

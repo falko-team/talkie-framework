@@ -1,10 +1,6 @@
 namespace Talkie.Models.Messages;
 
-public interface IIncomingMessageMutator
+public interface IIncomingMessageMutator : IMessageMutator<IIncomingMessageMutator, IIncomingMessage>
 {
-    IIncomingMessageMutator MutateText(Func<string?, string?> textMutationFactory);
-
-    IIncomingMessageMutator MutateReply(Func<IMessage?, IMessage?> replyMutationFactory);
-
-    IIncomingMessage Mutate();
+    IIncomingMessageMutator MutateReply(Func<IIncomingMessage?, IIncomingMessage?> replyMutationFactory);
 }

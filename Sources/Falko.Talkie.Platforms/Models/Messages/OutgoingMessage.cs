@@ -1,10 +1,12 @@
 namespace Talkie.Models.Messages;
 
-public sealed class OutgoingMessage : IMessage
+public sealed record OutgoingMessage : IOutgoingMessage
 {
     public static readonly OutgoingMessage Empty = new();
 
     public string? Text { get; init; }
 
-    public IMessage? Reply { get; init; }
+    public GlobalIdentifier? Reply { get; init; }
+
+    public IOutgoingMessageMutator ToMutator() => new OutgoingMessageMutator(this);
 }

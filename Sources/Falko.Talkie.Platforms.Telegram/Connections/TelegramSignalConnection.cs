@@ -6,9 +6,9 @@ using Talkie.Collections;
 using Talkie.Concurrent;
 using Talkie.Converters;
 using Talkie.Flows;
+using Talkie.Models.Messages;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
-using Talkie.Signals;
 using Talkie.Validations;
 
 namespace Talkie.Connections;
@@ -64,7 +64,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
         try
         {
-            await flow.PublishAsync(new TelegramIncomingMessageSignal(incomingMessage), cancellationToken);
+            await flow.PublishAsync(incomingMessage.ToSignal(), cancellationToken);
         }
         catch (Exception exception)
         {

@@ -3,9 +3,9 @@ using Talkie.Platforms;
 
 namespace Talkie.Models.Messages;
 
-public interface IIncomingMessage : IMessage
+public interface IMessageEnvironment
 {
-    Identifier Identifier { get; }
+    Identifier MessageIdentifier { get; }
 
     IPlatform Platform { get; }
 
@@ -18,8 +18,4 @@ public interface IIncomingMessage : IMessage
     IProfile ReceiverProfile { get; }
 
     DateTime Received { get; }
-
-    IIncomingMessage? Reply { get; }
-
-    IIncomingMessageMutator ToMutator();
 }

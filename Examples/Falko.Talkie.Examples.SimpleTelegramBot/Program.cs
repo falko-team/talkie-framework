@@ -10,6 +10,7 @@ using Talkie.Models.Messages;
 using Talkie.Models.Profiles;
 using Talkie.Pipelines.Handling;
 using Talkie.Pipelines.Intercepting;
+using Talkie.Platforms;
 using Talkie.Signals;
 using Talkie.Validations;
 
@@ -53,22 +54,23 @@ flow.Subscribe(signals => signals
 
 // Create subscription for incoming message signal with command "/hello".
 // When command received, send message "hi".
-flow.Subscribe<TelegramIncomingMessageSignal>(signals => signals
+flow.Subscribe<IncomingMessageSignal>(signals => signals
+    .Where(signal => signal.Message.Platform is TelegramPlatform) // only telegram platform
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
-    .HandleAsync(context => context
-        .ToMessageController() // get message controller
-        .PublishMessageAsync("hi") // send message "hi"
+    .HandleAsync((context, cancellation) => context
+        .ToOutgoingMessageController() // get message controller
+        .PublishMessageAsync("hi", cancellation) // send message "hi"
         .AsValueTask()));
 
 // Echo message text back to the sender only in private chats example pipeline
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal.Message.EnvironmentProfile is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Text.IsNullOrWhiteSpace() is false) // only where message text is not empty
-    .Select(signal => signal.MutateMessage(mutator => mutator
-        .MutateText(content => content?.Trim().ToLowerInvariant())))
-    .HandleAsync(context => context
-        .ToMessageController() // get message controller
-        .PublishMessageAsync(context.Signal.Message.Text!) // send message with same text to the chat of sender
+    .Select(signal => signal.Message.Mutate(mutator => mutator
+        .MutateText(text => text?.Trim().ToLowerInvariant())).ToSignal()) // add text to message
+    .HandleAsync((context, cancellation) => context
+        .ToOutgoingMessageController() // get message controller
+        .PublishMessageAsync(context.Signal.Message.Text!, cancellation) // send message with same text to the chat of sender
         .AsValueTask()));
 
 // Connect to telegram with empty token and dispose it with disposables.
