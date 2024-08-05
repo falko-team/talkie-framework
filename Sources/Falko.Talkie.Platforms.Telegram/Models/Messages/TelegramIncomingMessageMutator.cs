@@ -6,7 +6,7 @@ public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
 
     private string? _text;
 
-    private IMessage? _reply;
+    private TelegramIncomingMessage? _reply;
 
     internal TelegramIncomingMessageMutator(TelegramIncomingMessage message)
     {
@@ -15,18 +15,28 @@ public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
         _reply = message.Reply;
     }
 
-    public IIncomingMessageMutator MutateText(Func<string?, string?> textMutationFactory)
+    public TelegramIncomingMessageMutator MutateText(Func<string?, string?> textMutationFactory)
     {
         _text = textMutationFactory(_text);
 
         return this;
     }
 
-    public IIncomingMessageMutator MutateReply(Func<IMessage?, IMessage?> replyMutationFactory)
+    IIncomingMessageMutator IMessageMutator<IIncomingMessageMutator, IIncomingMessage>.MutateText(Func<string?, string?> textMutationFactory)
+    {
+        return MutateText(textMutationFactory);
+    }
+
+    public TelegramIncomingMessageMutator MutateReply(Func<TelegramIncomingMessage?, TelegramIncomingMessage?> replyMutationFactory)
     {
         _reply = replyMutationFactory(_reply);
 
         return this;
+    }
+
+    IIncomingMessageMutator IIncomingMessageMutator.MutateReply(Func<IIncomingMessage?, IIncomingMessage?> replyMutationFactory)
+    {
+        return MutateReply(replyMessage => (TelegramIncomingMessage?)replyMutationFactory(replyMessage));
     }
 
     public TelegramIncomingMessage Mutate()
@@ -38,7 +48,7 @@ public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
         };
     }
 
-    IIncomingMessage IIncomingMessageMutator.Mutate()
+    IIncomingMessage IMessageMutator<IIncomingMessageMutator, IIncomingMessage>.Mutate()
     {
         return Mutate();
     }

@@ -1,15 +1,14 @@
 using System.Text;
-using Talkie.Models.Messages;
 
-namespace Talkie.Builders;
+namespace Talkie.Models.Messages;
 
 public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 {
     private readonly StringBuilder _content = new();
 
-    private IMessage? _reply;
+    private GlobalIdentifier? _reply;
 
-    public IOutgoingMessageBuilder AddReply(IMessage reply)
+    public IOutgoingMessageBuilder SetReply(GlobalIdentifier reply)
     {
         _reply = reply;
 
@@ -37,9 +36,9 @@ public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
         return this;
     }
 
-    public IMessage Build()
+    public IOutgoingMessage Build()
     {
-        if (_content.Length == 0) return new OutgoingMessage();
+        if (_content.Length is 0) return new OutgoingMessage();
 
         return new OutgoingMessage
         {
