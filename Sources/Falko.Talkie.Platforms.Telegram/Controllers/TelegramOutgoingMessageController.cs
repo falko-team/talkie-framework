@@ -11,7 +11,9 @@ namespace Talkie.Controllers;
 public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
     Identifier environmentProfileIdentifier) : IOutgoingMessageController
 {
-    public async Task<IMessage> PublishMessageAsync(IOutgoingMessage message, CancellationToken cancellationToken = default)
+    public async Task<IMessage> PublishMessageAsync(IOutgoingMessage message,
+        MessagePublishingFeatures features = default,
+        CancellationToken cancellationToken = default)
     {
         message.Text.ThrowIf().Null();
 
@@ -23,6 +25,7 @@ public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
         var sendMessage = new SendMessage(
             receiverId,
             message.Text!,
+            features.PublishSilently,
             GetReplyParameters(message));
 
         var sentMessage = await platform.BotApiClient.SendMessageAsync(sendMessage,
