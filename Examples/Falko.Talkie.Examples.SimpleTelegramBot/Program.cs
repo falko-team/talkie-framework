@@ -59,7 +59,7 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
     .HandleAsync((context, cancellation) => context
         .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync("hi", cancellation) // send message "hi"
+        .PublishMessageAsync("hi", cancellationToken: cancellation) // send message "hi"
         .AsValueTask()));
 
 // Echo message text back to the sender only in private chats example pipeline
@@ -70,7 +70,7 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
         .MutateText(text => text?.Trim().ToLowerInvariant())).ToSignal()) // add text to message
     .HandleAsync((context, cancellation) => context
         .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync(context.Signal.Message.Text!, cancellation) // send message with same text to the chat of sender
+        .PublishMessageAsync(context.Signal.Message.Text!, cancellationToken: cancellation) // send message with same text to the chat of sender
         .AsValueTask()));
 
 // Connect to telegram with empty token and dispose it with disposables.
