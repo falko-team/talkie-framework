@@ -1,4 +1,4 @@
-using Talkie.Globalization;
+using Talkie.Localizations;
 
 namespace Talkie.Models.Profiles;
 

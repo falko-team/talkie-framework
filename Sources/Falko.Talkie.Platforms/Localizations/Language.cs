@@ -1,4 +1,4 @@
-namespace Talkie.Globalization;
+namespace Talkie.Localizations;
 
 public enum Language
 {

@@ -1,4 +1,4 @@
-namespace Talkie.Globalization;
+namespace Talkie.Localizations;
 
 [AttributeUsage(AttributeTargets.Field)]
 public sealed class LanguageAttribute(Language language) : Attribute

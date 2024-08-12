@@ -1,5 +1,5 @@
 using Talkie.Bridges.Telegram.Models;
-using Talkie.Globalization;
+using Talkie.Localizations;
 using Talkie.Models.Messages;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;

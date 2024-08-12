@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using Talkie.Validations;
 
-namespace Talkie.Globalization;
+namespace Talkie.Localizations;
 
 public static class Languages
 {
