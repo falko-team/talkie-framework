@@ -1,10 +1,12 @@
+using Talkie.Globalization;
+
 namespace Talkie.Models.Profiles;
 
 public sealed record TelegramChatProfile : IChatProfile
 {
     public required Identifier Identifier { get; init; }
 
-    public string? Language { get; init; }
+    public Language Language { get; init; }
 
     public string? Title { get; init; }
 
