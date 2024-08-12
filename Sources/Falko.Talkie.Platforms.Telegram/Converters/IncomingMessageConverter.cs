@@ -1,4 +1,5 @@
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Localizations;
 using Talkie.Models.Messages;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
@@ -65,6 +66,16 @@ internal static class IncomingMessageConverter
     {
         if (message.From is { } sender)
         {
+            var language = Language.Unknown;
+
+            if (sender.LanguageCode is not null)
+            {
+                if (LanguageCodes.TryGetLanguageCode(sender.LanguageCode, out var languageCode))
+                {
+                    languageCode.TryGetLanguage(out language);
+                }
+            }
+
             if (sender.IsBot)
             {
                 return new TelegramBotProfile
@@ -73,7 +84,7 @@ internal static class IncomingMessageConverter
                     NickName = sender.Username,
                     FirstName = sender.FirstName,
                     LastName = sender.LastName,
-                    Language = sender.LanguageCode
+                    Language = language
                 };
             }
 
@@ -83,7 +94,7 @@ internal static class IncomingMessageConverter
                 NickName = sender.Username,
                 FirstName = sender.FirstName,
                 LastName = sender.LastName,
-                Language = sender.LanguageCode
+                Language = language
             };
         }
 
