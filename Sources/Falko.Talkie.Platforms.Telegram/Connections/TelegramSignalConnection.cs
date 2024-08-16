@@ -15,22 +15,16 @@ namespace Talkie.Connections;
 
 public sealed class TelegramSignalConnection(ISignalFlow flow,
     ServerConfiguration serverConfiguration,
-    ClientConfiguration clientConfiguration) : ISignalConnection
+    ClientConfiguration clientConfiguration) : SignalConnection(flow), IWithPlatformSignalConnection
 {
-    private CancellationTokenSource? _globalCancellationTokenSource;
-
-    private Task? _processUpdatesTask;
-
     public TelegramPlatform? Platform { get; private set; }
 
-    public async ValueTask InitializeAsync(CancellationToken cancellationToken = default)
-    {
-        if (_processUpdatesTask is not null) return;
+    IPlatform? IWithPlatformSignalConnection.Platform => Platform;
 
+    protected override async Task WhenInitializingAsync(CancellationToken cancellationToken)
+    {
         serverConfiguration.ThrowIf().Null();
         clientConfiguration.ThrowIf().Null();
-
-        _globalCancellationTokenSource = new CancellationTokenSource();
 
         var client = new TelegramBotApiClient(serverConfiguration, clientConfiguration);
 
@@ -48,10 +42,39 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
         }
 
         Platform = new TelegramPlatform(client, self);
+    }
 
-        if (_processUpdatesTask is not null) return;
+    protected override async Task WhenExecutingAsync(CancellationToken cancellationToken)
+    {
+        long offset = 0;
 
-        _processUpdatesTask = ProcessUpdatesAsync(client, Platform, _globalCancellationTokenSource.Token);
+        while (cancellationToken.IsCancellationRequested is false)
+        {
+            try
+            {
+                var updates = await Platform!.BotApiClient.GetUpdatesAsync(new GetUpdates(offset), cancellationToken);
+
+                if (updates.Length is 0) continue;
+
+                offset = updates[^1].UpdateId + 1;
+
+                _ = updates.ToFrozenSequence().Parallelize().ForEachAsync((update, scopedCancellationToken) =>
+                        ProcessUpdate(Platform!, update, scopedCancellationToken), cancellationToken)
+                    .ContinueWith(task =>
+                        HandleProcessUpdateFaults(cancellationToken, task), TaskContinuationOptions.ExecuteSynchronously);
+            }
+            catch (Exception exception)
+            {
+                _ = Flow.PublishUnobservedConnectionExceptionAsync(this, exception, cancellationToken);
+            }
+        }
+    }
+
+    protected override Task WhenDisposingAsync()
+    {
+        Platform!.BotApiClient.Dispose();
+
+        return Task.CompletedTask;
     }
 
     private async ValueTask ProcessUpdate(TelegramPlatform platform, Update update, CancellationToken cancellationToken)
@@ -64,11 +87,11 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
         try
         {
-            await flow.PublishAsync(incomingMessage.ToSignal(), cancellationToken);
+            await Flow.PublishAsync(incomingMessage.ToSignal(), cancellationToken);
         }
         catch (Exception exception)
         {
-            _ = flow.PublishUnobservedPublishingExceptionAsync(exception, cancellationToken);
+            _ = Flow.PublishUnobservedPublishingExceptionAsync(exception, cancellationToken);
         }
     }
 
@@ -83,55 +106,10 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
         };
     }
 
-    private Task ProcessUpdatesAsync(ITelegramBotApiClient client, TelegramPlatform platform,
-        CancellationToken cancellationToken)
-    {
-        return Task.Factory.StartNew(async () =>
-        {
-            long offset = 0;
-
-            while (cancellationToken.IsCancellationRequested is false)
-            {
-                try
-                {
-                    var updates = await client.GetUpdatesAsync(new GetUpdates(offset), cancellationToken);
-
-                    if (updates.Length is 0) continue;
-
-                    offset = updates[^1].UpdateId + 1;
-
-                    _ = updates.ToFrozenSequence().Parallelize().ForEachAsync((update, scopedCancellationToken) =>
-                            ProcessUpdate(platform, update, scopedCancellationToken), cancellationToken)
-                        .ContinueWith(task =>
-                            HandleProcessUpdateFaults(cancellationToken, task), TaskContinuationOptions.ExecuteSynchronously);
-                }
-                catch (Exception exception)
-                {
-                    _ = flow.PublishUnobservedConnectionExceptionAsync(this, exception, cancellationToken);
-                }
-            }
-        }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-    }
-
     private void HandleProcessUpdateFaults(CancellationToken cancellationToken, Task task)
     {
         if (task.IsFaulted is false || task.Exception is null) return;
 
-        _ = flow.PublishUnobservedConnectionExceptionAsync(this, task.Exception, cancellationToken);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_globalCancellationTokenSource is not null)
-        {
-            await _globalCancellationTokenSource.CancelAsync();
-
-            _globalCancellationTokenSource.Dispose();
-        }
-
-        if (_processUpdatesTask is not null)
-        {
-            await _processUpdatesTask;
-        }
+        _ = Flow.PublishUnobservedConnectionExceptionAsync(this, task.Exception, cancellationToken);
     }
 }
