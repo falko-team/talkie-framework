@@ -28,14 +28,7 @@ var flow = new SignalFlow()
     .DisposeWith(disposables);
 
 // Create unobserved exception signal task.
-var unobservedExceptionTask = flow.TakeAsync(signals => signals
-    .Only<UnobservedConnectionExceptionSignal, UnobservedPublishingExceptionSignal>())
-    .ContinueWith(signal => signal.Result switch
-    {
-        UnobservedPublishingExceptionSignal publishingExceptionSignal => publishingExceptionSignal.Exception,
-        UnobservedConnectionExceptionSignal connectionExceptionSignal => connectionExceptionSignal.Exception,
-        _ => new InvalidOperationException("Unknown unobserved exception signal")
-    }, TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnRanToCompletion);
+var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync();
 
 // Create Microsoft Logger Factory.
 var loggerFactory = LoggerFactory.Create(signals => signals
@@ -59,18 +52,18 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
     .HandleAsync((context, cancellation) => context
         .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync("hi", cancellationToken: cancellation) // send message "hi"
+        .PublishMessageAsync("hi", cancellation) // send message "hi"
         .AsValueTask()));
 
 // Echo message text back to the sender only in private chats example pipeline
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal.Message.EnvironmentProfile is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Text.IsNullOrWhiteSpace() is false) // only where message text is not empty
-    .Select(signal => signal.Message.Mutate(mutator => mutator
-        .MutateText(text => text?.Trim().ToLowerInvariant())).ToSignal()) // add text to message
+    .Select(signal => signal.MutateMessage(mutator => mutator
+        .MutateText(text => text?.Trim().ToLowerInvariant()))) // add text to message
     .HandleAsync((context, cancellation) => context
         .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync(context.Signal.Message.Text!, cancellationToken: cancellation) // send message with same text to the chat of sender
+        .PublishMessageAsync(context.Signal.Message.Text!, cancellation) // send message with same text to the chat of sender
         .AsValueTask()));
 
 // Connect to telegram with empty token and dispose it with disposables.
