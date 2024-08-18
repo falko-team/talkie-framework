@@ -36,4 +36,6 @@ public partial class Sequence<T> : ISequence<T>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public IParallelEnumerator<T> GetParallelEnumerator() => new ParallelEnumerator(_first);
+
+    public override string ToString() => $"[{string.Join(", ", this)}]";
 }

@@ -2,8 +2,8 @@ namespace Talkie.Models.Messages.Contents;
 
 public sealed record BoldTextStyle(int Offset, int Length) : IMessageTextStyle
 {
-    public static BoldTextStyle FromContext(MessageTextContext context)
+    public static BoldTextStyle FromRange(MessageTextRange range)
     {
-        return new BoldTextStyle(context.Offset, context.Length);
+        return new BoldTextStyle(range.Offset, range.Length);
     }
 }
