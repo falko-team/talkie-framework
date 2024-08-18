@@ -82,6 +82,8 @@ throw await unobservedExceptionTask;
 // Define helper method to check if message is telegram command.
 static bool IsTelegramCommand(IMessage message, string command)
 {
-    return message.Content.Text.TrimStart()
+    return message
+        .GetText()
+        .TrimStart()
         .StartsWith($"/{command}", StringComparison.InvariantCultureIgnoreCase);
 }
