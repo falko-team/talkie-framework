@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Talkie.Models.Messages;
+namespace Talkie.Models.Messages.Outgoing;
 
 public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 {
