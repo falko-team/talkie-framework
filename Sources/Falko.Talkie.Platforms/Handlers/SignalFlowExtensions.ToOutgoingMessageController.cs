@@ -1,7 +1,8 @@
 using Talkie.Adapters;
 using Talkie.Controllers;
+using Talkie.Controllers.OutgoingMessageControllers;
 using Talkie.Models;
-using Talkie.Models.Messages;
+using Talkie.Models.Messages.Incoming;
 using Talkie.Signals;
 
 namespace Talkie.Handlers;

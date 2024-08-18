@@ -1,6 +1,6 @@
-using Talkie.Models.Messages;
+using Talkie.Models.Messages.Outgoing;
 
-namespace Talkie.Controllers;
+namespace Talkie.Controllers.OutgoingMessageControllers;
 
 public static partial class OutgoingMessageControllerExtensions
 {

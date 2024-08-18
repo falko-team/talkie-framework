@@ -1,4 +1,4 @@
-using Talkie.Models.Messages;
+using Talkie.Models.Messages.Incoming;
 
 namespace Talkie.Signals;
 

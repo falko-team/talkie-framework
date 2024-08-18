@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages;
+namespace Talkie.Models.Messages.Incoming;
 
 public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
 {
