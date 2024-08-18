@@ -10,6 +10,8 @@ public static partial class OutgoingMessageBuilderExtensions
     {
         var previousContext = builder.Content;
 
+        if (previousContext.IsEmpty) return builder.SetContent(content);
+
         var newContext = new MessageContent(previousContext.Text + content.Text,
             previousContext.Styles.Concat(content.Styles).ToFrozenSequence());
 

@@ -2,8 +2,8 @@ namespace Talkie.Models.Messages.Contents;
 
 public sealed record StrikethroughTextStyle(int Offset, int Length) : IMessageTextStyle
 {
-    public static StrikethroughTextStyle FromContext(MessageTextContext context)
+    public static StrikethroughTextStyle FromRange(MessageTextRange range)
     {
-        return new StrikethroughTextStyle(context.Offset, context.Length);
+        return new StrikethroughTextStyle(range.Offset, range.Length);
     }
 }

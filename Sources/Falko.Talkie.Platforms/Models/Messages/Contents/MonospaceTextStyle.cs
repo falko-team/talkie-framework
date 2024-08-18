@@ -2,8 +2,8 @@ namespace Talkie.Models.Messages.Contents;
 
 public sealed record MonospaceTextStyle(int Offset, int Length) : IMessageTextStyle
 {
-    public static MonospaceTextStyle FromContext(MessageTextContext context)
+    public static MonospaceTextStyle FromRange(MessageTextRange range)
     {
-        return new MonospaceTextStyle(context.Offset, context.Length);
+        return new MonospaceTextStyle(range.Offset, range.Length);
     }
 }
