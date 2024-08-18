@@ -10,8 +10,6 @@ public readonly record struct MessageContent(string Text, IReadOnlyCollection<IM
 
     public bool IsEmpty => Text.IsNullOrEmpty();
 
-    public override string ToString() => Text;
-
     public static implicit operator string(MessageContent content) => content.Text;
 
     public static implicit operator MessageContent(string text) => new(text);
