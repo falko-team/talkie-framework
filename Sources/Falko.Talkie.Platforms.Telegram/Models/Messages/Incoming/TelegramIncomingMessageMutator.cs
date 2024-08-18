@@ -1,30 +1,32 @@
+using Talkie.Models.Messages.Contents;
+
 namespace Talkie.Models.Messages.Incoming;
 
 public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
 {
     private readonly TelegramIncomingMessage _message;
 
-    private string? _text;
+    private MessageContent _content;
 
     private TelegramIncomingMessage? _reply;
 
     internal TelegramIncomingMessageMutator(TelegramIncomingMessage message)
     {
         _message = message;
-        _text = message.Text;
+        _content = message.Content;
         _reply = message.Reply;
     }
 
-    public TelegramIncomingMessageMutator MutateText(Func<string?, string?> textMutationFactory)
+    public TelegramIncomingMessageMutator MutateContent(Func<MessageContent, MessageContent> contentMutationFactory)
     {
-        _text = textMutationFactory(_text);
+        _content = contentMutationFactory(_content);
 
         return this;
     }
 
-    IIncomingMessageMutator IMessageMutator<IIncomingMessageMutator, IIncomingMessage>.MutateText(Func<string?, string?> textMutationFactory)
+    IIncomingMessageMutator IMessageMutator<IIncomingMessageMutator, IIncomingMessage>.MutateContent(Func<MessageContent, MessageContent> contentMutationFactory)
     {
-        return MutateText(textMutationFactory);
+        return MutateContent(contentMutationFactory);
     }
 
     public TelegramIncomingMessageMutator MutateReply(Func<TelegramIncomingMessage?, TelegramIncomingMessage?> replyMutationFactory)
@@ -43,7 +45,7 @@ public sealed class TelegramIncomingMessageMutator : IIncomingMessageMutator
     {
         return _message with
         {
-            Text = _text,
+            Content = _content,
             Reply = _reply
         };
     }

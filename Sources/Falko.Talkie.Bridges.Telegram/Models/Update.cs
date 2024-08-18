@@ -1,7 +1,9 @@
+using System.Text.Json.Serialization;
+
 namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class Update(
-    long updateId,
+    int updateId,
     Message? message = null,
     Message? editedMessage = null,
     Message? channelPost = null,
@@ -9,7 +11,8 @@ public sealed class Update(
     Message? businessMessage = null,
     Message? editedBusinessMessage = null)
 {
-    public readonly long UpdateId = updateId;
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public readonly int UpdateId = updateId;
 
     public readonly Message? Message = message;
 

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class User(
@@ -14,10 +16,13 @@ public sealed class User(
     bool? supportsInlineQueries = null,
     bool? canConnectToBusiness = null)
 {
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public readonly long Id = id;
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public readonly bool IsBot = isBot;
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public readonly string FirstName = firstName;
 
     public readonly string? LastName = lastName;

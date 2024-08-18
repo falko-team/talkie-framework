@@ -46,7 +46,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
     protected override async Task WhenExecutingAsync(CancellationToken cancellationToken)
     {
-        long offset = 0;
+        int offset = 0;
 
         while (cancellationToken.IsCancellationRequested is false)
         {

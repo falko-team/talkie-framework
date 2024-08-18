@@ -1,6 +1,8 @@
+using Talkie.Models.Messages.Contents;
+
 namespace Talkie.Models.Messages;
 
 public interface IMessage
 {
-    string? Text { get; }
+    MessageContent Content { get; }
 }

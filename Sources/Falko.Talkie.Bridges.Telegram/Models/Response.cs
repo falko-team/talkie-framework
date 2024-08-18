@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class Response<T>(
@@ -7,6 +9,7 @@ public sealed class Response<T>(
     string? description = null,
     IReadOnlyDictionary<string, TextOrNumber>? parameters = null) where T : class
 {
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public readonly bool Ok = ok;
 
     public readonly T? Result = result;
