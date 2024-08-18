@@ -37,12 +37,6 @@ public sealed class TelegramOutgoingMessageController(ISignalFlow flow,
         var sentMessage = await platform.BotApiClient.SendMessageAsync(sendMessage,
             cancellationToken: cancellationToken);
 
-        _ = flow.PublishAsync(message.ToSignal(), cancellationToken).ContinueWith((e, _) =>
-        {
-            flow.PublishUnobservedPublishingExceptionAsync(e.Exception
-                ?? new Exception("Failed to publish outgoing message."), cancellationToken);
-        }, TaskContinuationOptions.ExecuteSynchronously, TaskContinuationOptions.OnlyOnFaulted);
-
         var sentIncomingMessage = IncomingMessageConverter.Convert(platform, sentMessage)
             ?? throw new InvalidOperationException("Failed to convert sent message.");
 

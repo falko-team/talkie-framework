@@ -3,11 +3,11 @@ namespace Talkie.Models.Messages.Contents;
 public static partial class MessageContentBuilderExtensions
 {
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, string text,
-        params Func<MessageTextContext, IMessageTextStyle>[] styleFactories)
+        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
     {
         builder.AddText(text);
 
-        var styleContext = new MessageTextContext(builder.TextLength - text.Length, text.Length);
+        var styleContext = new MessageTextRange(builder.TextLength - text.Length, text.Length);
 
         foreach (var style in styleFactories.Select(factory => factory(styleContext)))
         {
@@ -23,7 +23,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder, string text,
-        params Func<MessageTextContext, IMessageTextStyle>[] styleFactories)
+        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
     {
         return builder.AddText(text, styleFactories).AddTextLine();
     }

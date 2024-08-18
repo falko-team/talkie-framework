@@ -64,9 +64,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal.Message.EnvironmentProfile is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Content.IsEmpty is false) // only where message text is not empty
     .Select(signal => signal.MutateMessage(mutator => mutator
-        .MutateContent(content => new MessageContentBuilder()
-            .AddText(content.Text.ToLowerInvariant(), BoldTextStyle.FromContext)
-            .Build()))) // trim message text and make it bold
+        .MutateContent((content, builder) => builder
+            .AddText(content.Text.ToLowerInvariant(), BoldTextStyle.FromRange)))) // trim message text and make it bold
     .HandleAsync((context, cancellation) => context
         .ToOutgoingMessageController() // get message controller
         .PublishMessageAsync(context.Signal.Message.Content, cancellation) // send message with same text to the chat of sender
