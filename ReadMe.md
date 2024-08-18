@@ -58,7 +58,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal
         .Message
         .GetText()
-        ?.StartWith("/hello", StringComparison.InvariantCultureIgnoreCase) is true)
+        .ToLowerInvariant()
+        .Contains("hello"))
     .HandleAsync(context => context
         .ToOutgoingMessageController()
         .PublishMessageAsync("hi")
