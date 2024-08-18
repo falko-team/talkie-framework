@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages;
+namespace Talkie.Models.Messages.Outgoing;
 
 public sealed class OutgoingMessageMutator : IOutgoingMessageMutator
 {

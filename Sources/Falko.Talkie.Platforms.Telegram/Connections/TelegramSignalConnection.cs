@@ -6,7 +6,7 @@ using Talkie.Collections;
 using Talkie.Concurrent;
 using Talkie.Converters;
 using Talkie.Flows;
-using Talkie.Models.Messages;
+using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 using Talkie.Validations;
@@ -41,7 +41,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
             throw new UnauthorizedAccessException("Invalid token");
         }
 
-        Platform = new TelegramPlatform(client, self);
+        Platform = new TelegramPlatform(flow, client, self);
     }
 
     protected override async Task WhenExecutingAsync(CancellationToken cancellationToken)

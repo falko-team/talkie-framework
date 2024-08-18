@@ -1,7 +1,7 @@
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 
-namespace Talkie.Models.Messages;
+namespace Talkie.Models.Messages.Incoming;
 
 public interface IIncomingMessage : IMessage
 {

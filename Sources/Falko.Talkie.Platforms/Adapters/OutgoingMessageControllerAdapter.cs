@@ -1,4 +1,5 @@
 using Talkie.Controllers;
+using Talkie.Controllers.OutgoingMessageControllers;
 using Talkie.Handlers;
 using Talkie.Signals;
 
