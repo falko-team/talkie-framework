@@ -1,14 +1,16 @@
+using Talkie.Models.Messages.Contents;
+
 namespace Talkie.Models.Messages.Outgoing;
 
 public interface IOutgoingMessageBuilder
 {
+    MessageContent Content { get; }
+
+    GlobalIdentifier? Reply { get; }
+
     IOutgoingMessageBuilder SetReply(GlobalIdentifier reply);
 
-    IOutgoingMessageBuilder AddText(string text);
-
-    IOutgoingMessageBuilder AddTextLine(string text);
-
-    IOutgoingMessageBuilder AddTextLine();
+    IOutgoingMessageBuilder SetContent(MessageContent content);
 
     IOutgoingMessage Build();
 }

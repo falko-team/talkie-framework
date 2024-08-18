@@ -8,7 +8,7 @@ public static partial class IncomingMessageExtensions
     {
         return new OutgoingMessage
         {
-            Text = message.Text,
+            Content = message.Content,
             Reply = message.Reply?.ToGlobalIdentifier()
         };
     }
@@ -17,7 +17,7 @@ public static partial class IncomingMessageExtensions
     {
         return new OutgoingMessage
         {
-            Text = message.Text
+            Content = message.Content
         };
     }
 }

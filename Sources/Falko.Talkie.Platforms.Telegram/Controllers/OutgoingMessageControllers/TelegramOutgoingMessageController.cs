@@ -1,8 +1,10 @@
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Collections;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models;
+using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
 using Talkie.Platforms;
@@ -18,7 +20,7 @@ public sealed class TelegramOutgoingMessageController(ISignalFlow flow,
         MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default)
     {
-        message.Text.ThrowIf().Null();
+        message.Content.ThrowIf().Null();
 
         if (environmentProfileIdentifier.TryGetValue(out long receiverId) is not true)
         {
@@ -27,7 +29,8 @@ public sealed class TelegramOutgoingMessageController(ISignalFlow flow,
 
         var sendMessage = new SendMessage(
             receiverId,
-            message.Text!,
+            message.Content,
+            GetEnitites(message.Content.Styles),
             features.PublishSilently,
             GetReplyParameters(message));
 
@@ -52,9 +55,23 @@ public sealed class TelegramOutgoingMessageController(ISignalFlow flow,
         return sentIncomingMessage;
     }
 
-    public Task<IIncomingMessage> DeleteMessageAsync(Identifier messageId, CancellationToken cancellationToken = default)
+    private IReadOnlyCollection<MessageEntity>? GetEnitites(IReadOnlyCollection<IMessageTextStyle> styles)
     {
-        throw new NotSupportedException();
+        if (styles.Count is 0) return null;
+
+        return styles
+            .Select(style => style switch
+            {
+                BoldTextStyle => new MessageEntity(MessageEntities.Bold, style.Offset, style.Length),
+                ItalicTextStyle => new MessageEntity(MessageEntities.Italic, style.Offset, style.Length),
+                UnderlineTextStyle => new MessageEntity(MessageEntities.Underline, style.Offset, style.Length),
+                StrikethroughTextStyle => new MessageEntity(MessageEntities.Strikethrough, style.Offset, style.Length),
+                MonospaceTextStyle => new MessageEntity(MessageEntities.Code, style.Offset, style.Length),
+                _ => null
+            })
+            .Where(entity => entity is not null)
+            .Cast<MessageEntity>()
+            .ToFrozenSequence();
     }
 
     private ReplyParameters? GetReplyParameters(IOutgoingMessage outgoingMessage)

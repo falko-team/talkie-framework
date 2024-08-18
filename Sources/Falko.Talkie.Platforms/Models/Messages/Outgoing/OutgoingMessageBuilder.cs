@@ -1,49 +1,35 @@
-using System.Text;
+using Talkie.Models.Messages.Contents;
 
 namespace Talkie.Models.Messages.Outgoing;
 
 public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 {
-    private readonly StringBuilder _content = new();
+    public MessageContent Content { get; private set; }
 
-    private GlobalIdentifier? _reply;
+    public GlobalIdentifier? Reply { get; private set; }
 
     public IOutgoingMessageBuilder SetReply(GlobalIdentifier reply)
     {
-        _reply = reply;
+        Reply = reply;
 
         return this;
     }
 
-    public IOutgoingMessageBuilder AddText(string text)
+    public IOutgoingMessageBuilder SetContent(MessageContent content)
     {
-        _content.Append(text);
-
-        return this;
-    }
-
-    public IOutgoingMessageBuilder AddTextLine(string text)
-    {
-        _content.AppendLine(text);
-
-        return this;
-    }
-
-    public IOutgoingMessageBuilder AddTextLine()
-    {
-        _content.AppendLine();
+        Content = content;
 
         return this;
     }
 
     public IOutgoingMessage Build()
     {
-        if (_content.Length is 0) return new OutgoingMessage();
+        if (Content.IsEmpty) return OutgoingMessage.Empty;
 
         return new OutgoingMessage
         {
-            Text = _content.ToString(),
-            Reply = _reply
+            Content = Content,
+            Reply = Reply
         };
     }
 }

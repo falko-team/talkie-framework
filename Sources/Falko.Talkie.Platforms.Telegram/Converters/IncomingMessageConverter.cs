@@ -1,5 +1,7 @@
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Collections;
 using Talkie.Localizations;
+using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
@@ -26,7 +28,7 @@ internal static class IncomingMessageConverter
         return new TelegramIncomingMessage
         {
             Identifier = message.MessageId,
-            Text = text,
+            Content = new MessageContent(text, GetStyles(message.Entities)),
             Platform = platform,
             Reply = message.ReplyToMessage is { } reply
                 ? Convert(platform, reply)
@@ -37,6 +39,25 @@ internal static class IncomingMessageConverter
             Received = received,
             EnvironmentProfile = environment
         };
+    }
+
+    private static IReadOnlyCollection<IMessageTextStyle> GetStyles(IReadOnlyCollection<MessageEntity>? entities)
+    {
+        if (entities is null || entities.Count is 0) return [];
+
+        return entities
+            .Select<MessageEntity, IMessageTextStyle?>(entity => entity.Type switch
+            {
+                MessageEntities.Bold => new BoldTextStyle(entity.Offset, entity.Length),
+                MessageEntities.Italic => new ItalicTextStyle(entity.Offset, entity.Length),
+                MessageEntities.Underline => new UnderlineTextStyle(entity.Offset, entity.Length),
+                MessageEntities.Strikethrough => new StrikethroughTextStyle(entity.Offset, entity.Length),
+                MessageEntities.Code => new MonospaceTextStyle(entity.Offset, entity.Length),
+                _ => null
+            })
+            .Where(style => style is not null)
+            .Cast<IMessageTextStyle>()
+            .ToFrozenSequence();
     }
 
     private static IProfile? GetEnvironment(Message message)
