@@ -2,7 +2,7 @@
 using Talkie.Collections;
 using Talkie.Common;
 using Talkie.Concurrent;
-using Talkie.Controllers;
+using Talkie.Controllers.OutgoingMessageControllers;
 using Talkie.Disposables;
 using Talkie.Flows;
 using Talkie.Handlers;
@@ -49,6 +49,8 @@ flow.Subscribe(signals => signals
 // When command received, send message "hi".
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal.Message.Platform is TelegramPlatform) // only telegram platform
+    .SkipSelfSent() // skip self sent messages
+    .SkipOlderThan(TimeSpan.FromSeconds(30)) // skip messages older than 30 seconds
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
     .HandleAsync((context, cancellation) => context
         .ToOutgoingMessageController() // get message controller
@@ -57,6 +59,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
 
 // Echo message text back to the sender only in private chats example pipeline
 flow.Subscribe<IncomingMessageSignal>(signals => signals
+    .SkipSelfSent() // skip self sent messages
+    .SkipOlderThan(TimeSpan.FromSeconds(30)) // skip messages older than 30 seconds
     .Where(signal => signal.Message.EnvironmentProfile is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Text.IsNullOrWhiteSpace() is false) // only where message text is not empty
     .Select(signal => signal.MutateMessage(mutator => mutator

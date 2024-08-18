@@ -1,17 +1,20 @@
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
 using Talkie.Converters;
+using Talkie.Flows;
 using Talkie.Models;
-using Talkie.Models.Messages;
+using Talkie.Models.Messages.Incoming;
+using Talkie.Models.Messages.Outgoing;
 using Talkie.Platforms;
 using Talkie.Validations;
 
-namespace Talkie.Controllers;
+namespace Talkie.Controllers.OutgoingMessageControllers;
 
-public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
+public sealed class TelegramOutgoingMessageController(ISignalFlow flow,
+    TelegramPlatform platform,
     Identifier environmentProfileIdentifier) : IOutgoingMessageController
 {
-    public async Task<IMessage> PublishMessageAsync(IOutgoingMessage message,
+    public async Task<IIncomingMessage> PublishMessageAsync(IOutgoingMessage message,
         MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default)
     {
@@ -31,8 +34,27 @@ public sealed class TelegramOutgoingMessageController(TelegramPlatform platform,
         var sentMessage = await platform.BotApiClient.SendMessageAsync(sendMessage,
             cancellationToken: cancellationToken);
 
-        return IncomingMessageConverter.Convert(platform, sentMessage)
+        _ = flow.PublishAsync(message.ToSignal(), cancellationToken).ContinueWith((e, _) =>
+        {
+            flow.PublishUnobservedPublishingExceptionAsync(e.Exception
+                ?? new Exception("Failed to publish outgoing message."), cancellationToken);
+        }, TaskContinuationOptions.ExecuteSynchronously, TaskContinuationOptions.OnlyOnFaulted);
+
+        var sentIncomingMessage = IncomingMessageConverter.Convert(platform, sentMessage)
             ?? throw new InvalidOperationException("Failed to convert sent message.");
+
+        _ = flow.PublishAsync(sentIncomingMessage.ToSignal(), cancellationToken).ContinueWith((e, _) =>
+        {
+            flow.PublishUnobservedPublishingExceptionAsync(e.Exception
+                ?? new Exception("Failed to publish self sent incoming message."), cancellationToken);
+        }, TaskContinuationOptions.ExecuteSynchronously, TaskContinuationOptions.OnlyOnFaulted);
+
+        return sentIncomingMessage;
+    }
+
+    public Task<IIncomingMessage> DeleteMessageAsync(Identifier messageId, CancellationToken cancellationToken = default)
+    {
+        throw new NotSupportedException();
     }
 
     private ReplyParameters? GetReplyParameters(IOutgoingMessage outgoingMessage)
