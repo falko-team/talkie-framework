@@ -52,22 +52,16 @@ await using var disposables = new DisposableStack();
 var flow = new SignalFlow()
     .DisposeWith(disposables);
 
-var unobservedExceptionTask = flow.TakeAsync(signals => signals
-    .Only<UnobservedConnectionExceptionSignal, UnobservedPublishingExceptionSignal>())
-    .ContinueWith(signal => signal.Result switch
-    {
-        UnobservedPublishingExceptionSignal publishingExceptionSignal => publishingExceptionSignal.Exception,
-        UnobservedConnectionExceptionSignal connectionExceptionSignal => connectionExceptionSignal.Exception,
-        _ => new InvalidOperationException("Unknown unobserved exception signal")
-    }, TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnRanToCompletion);
+var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync()
 
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .Where(signal => signal
         .Message
+        .Content
         .Text
         ?.StartWith("/hello", StringComparison.InvariantCultureIgnoreCase) is true)
     .HandleAsync(context => context
-        .ToMessageController()
+        .ToOutgoingMessageController()
         .PublishMessageAsync("hi")
         .AsValueTask()));
 
