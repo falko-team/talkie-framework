@@ -24,4 +24,6 @@ public partial class FrozenSequence<T> : IReadOnlySequence<T>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public IParallelEnumerator<T> GetParallelEnumerator() => new ParallelEnumerator(_items, _itemsCount);
+
+    public override string ToString() => $"[{string.Join(", ", _items)}]";
 }

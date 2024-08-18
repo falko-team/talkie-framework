@@ -7,11 +7,11 @@ public static partial class SignalInterceptingPipelineBuilderExtensions
 {
     public static ISignalInterceptingPipelineBuilder<IncomingMessageSignal> SkipSelfSent(this ISignalInterceptingPipelineBuilder<IncomingMessageSignal> builder)
     {
-        return builder.Where(signal => signal.Message.IsSelfSent());
+        return builder.Where(signal => signal.Message.IsSelfSent() is false);
     }
 
     public static ISignalInterceptingPipelineBuilder<IncomingMessageSignal> OnlySelfSent(this ISignalInterceptingPipelineBuilder<IncomingMessageSignal> builder)
     {
-        return builder.Where(signal => signal.Message.IsSelfSent() is false);
+        return builder.Where(signal => signal.Message.IsSelfSent());
     }
 }

@@ -1,3 +1,4 @@
+using Talkie.Models.Messages.Contents;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 
@@ -19,7 +20,7 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
 
     public required DateTime Received { get; init; }
 
-    public string? Text { get; init; }
+    public MessageContent Content { get; init; } = MessageContent.Empty;
 
     public TelegramIncomingMessage? Reply { get; init; }
 

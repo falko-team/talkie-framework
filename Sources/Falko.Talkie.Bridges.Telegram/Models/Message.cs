@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class Message(
@@ -5,7 +7,7 @@ public sealed class Message(
     long? messageThreadId = null,
     User? from = null,
     Chat? senderChat = null,
-    long? senderBoostCount = null,
+    int? senderBoostCount = null,
     User? senderBusinessBot = null,
     DateTime? date = null,
     string? businessConnectionId = null,
@@ -13,8 +15,10 @@ public sealed class Message(
     bool? isTopicMessage = null,
     bool? isAutomaticForward = null,
     Message? replyToMessage = null,
-    string? text = null)
+    string? text = null,
+    IReadOnlyCollection<MessageEntity>? entities = null)
 {
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public readonly long MessageId = messageId;
 
     public readonly long? MessageThreadId = messageThreadId;
@@ -23,7 +27,7 @@ public sealed class Message(
 
     public readonly Chat? SenderChat = senderChat;
 
-    public readonly long? SenderBoostCount = senderBoostCount;
+    public readonly int? SenderBoostCount = senderBoostCount;
 
     public readonly User? SenderBusinessBot = senderBusinessBot;
 
@@ -40,4 +44,6 @@ public sealed class Message(
     public readonly Message? ReplyToMessage = replyToMessage;
 
     public readonly string? Text = text;
+
+    public readonly IReadOnlyCollection<MessageEntity>? Entities = entities;
 }

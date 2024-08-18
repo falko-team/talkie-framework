@@ -1,25 +1,20 @@
+using Talkie.Models.Messages.Contents;
+
 namespace Talkie.Models.Messages.Outgoing;
 
 public sealed class OutgoingMessageMutator : IOutgoingMessageMutator
 {
     private readonly OutgoingMessage _message;
 
-    private string? _text;
+    private MessageContent _content;
 
     private GlobalIdentifier? _reply;
 
     internal OutgoingMessageMutator(OutgoingMessage message)
     {
         _message = message;
-        _text = message.Text;
+        _content = message.Content;
         _reply = message.Reply;
-    }
-
-    public IOutgoingMessageMutator MutateText(Func<string?, string?> textMutationFactory)
-    {
-        _text = textMutationFactory(_text);
-
-        return this;
     }
 
     public IOutgoingMessageMutator MutateReply(Func<GlobalIdentifier?, GlobalIdentifier?> replyMutationFactory)
@@ -29,11 +24,18 @@ public sealed class OutgoingMessageMutator : IOutgoingMessageMutator
         return this;
     }
 
+    public IOutgoingMessageMutator MutateContent(Func<MessageContent, MessageContent> contentMutationFactory)
+    {
+        _content = contentMutationFactory(_content);
+
+        return this;
+    }
+
     public IOutgoingMessage Mutate()
     {
         return new OutgoingMessage
         {
-            Text = _text,
+            Content = _content,
             Reply = _reply
         };
     }

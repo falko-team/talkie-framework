@@ -1,3 +1,4 @@
+using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Outgoing;
 
 namespace Talkie.Controllers.OutgoingMessageControllers;
@@ -43,17 +44,17 @@ public static partial class OutgoingMessageControllerExtensions
         return controller.PublishMessageAsync(builderFactory, default, cancellationToken);
     }
 
-    public static Task PublishMessageAsync(this IOutgoingMessageController controller, string text,
+    public static Task PublishMessageAsync(this IOutgoingMessageController controller, MessageContent content,
         MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default)
     {
-        return controller.PublishMessageAsync(message => message.AddText(text), features, cancellationToken);
+        return controller.PublishMessageAsync(new OutgoingMessage { Content = content }, features, cancellationToken);
     }
 
-    public static Task PublishMessageAsync(this IOutgoingMessageController controller, string text,
+    public static Task PublishMessageAsync(this IOutgoingMessageController controller, MessageContent content,
         CancellationToken cancellationToken)
     {
-        return controller.PublishMessageAsync(text, default, cancellationToken);
+        return controller.PublishMessageAsync(content, default, cancellationToken);
     }
 
     public static Task PublishMessageAsync(this IOutgoingMessageController controller, IOutgoingMessage message,

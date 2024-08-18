@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Talkie.Collections;
-using Talkie.Common;
 using Talkie.Concurrent;
 using Talkie.Controllers.OutgoingMessageControllers;
 using Talkie.Disposables;
 using Talkie.Flows;
 using Talkie.Handlers;
 using Talkie.Models.Messages;
+using Talkie.Models.Messages.Contents;
 using Talkie.Models.Profiles;
 using Talkie.Pipelines.Handling;
 using Talkie.Pipelines.Intercepting;
@@ -62,12 +62,14 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
     .SkipSelfSent() // skip self sent messages
     .SkipOlderThan(TimeSpan.FromSeconds(30)) // skip messages older than 30 seconds
     .Where(signal => signal.Message.EnvironmentProfile is IUserProfile) // only chat with user
-    .Where(signal => signal.Message.Text.IsNullOrWhiteSpace() is false) // only where message text is not empty
+    .Where(signal => signal.Message.Content.IsEmpty is false) // only where message text is not empty
     .Select(signal => signal.MutateMessage(mutator => mutator
-        .MutateText(text => text?.Trim().ToLowerInvariant()))) // add text to message
+        .MutateContent(content => new MessageContentBuilder()
+            .AddText(content.Text.ToLowerInvariant(), BoldTextStyle.FromContext)
+            .Build()))) // trim message text and make it bold
     .HandleAsync((context, cancellation) => context
         .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync(context.Signal.Message.Text!, cancellation) // send message with same text to the chat of sender
+        .PublishMessageAsync(context.Signal.Message.Content, cancellation) // send message with same text to the chat of sender
         .AsValueTask()));
 
 // Connect to telegram with empty token and dispose it with disposables.
@@ -81,8 +83,6 @@ throw await unobservedExceptionTask;
 // Define helper method to check if message is telegram command.
 static bool IsTelegramCommand(IMessage message, string command)
 {
-    return message is { Text: { } content}
-        && content
-            .TrimStart()
-            .StartsWith($"/{command}", StringComparison.InvariantCultureIgnoreCase);
+    return message.Content.Text.TrimStart()
+        .StartsWith($"/{command}", StringComparison.InvariantCultureIgnoreCase);
 }
