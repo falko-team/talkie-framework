@@ -16,7 +16,7 @@ public sealed class TelegramOutgoingMessageController(ISignalFlow flow,
     TelegramPlatform platform,
     Identifier environmentProfileIdentifier) : IOutgoingMessageController
 {
-    public async Task<IIncomingMessage> PublishMessageAsync(IOutgoingMessage message,
+    public async Task<IIncomingMessage> SendMessageAsync(IOutgoingMessage message,
         MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default)
     {
