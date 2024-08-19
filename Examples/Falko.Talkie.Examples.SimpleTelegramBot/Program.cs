@@ -53,8 +53,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
     .SkipOlderThan(TimeSpan.FromSeconds(30)) // skip messages older than 30 seconds
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
     .HandleAsync((context, cancellation) => context
-        .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync("hi", cancellation) // send message "hi"
+        .ToMessageController() // get message controller
+        .SendMessageAsync("hi", cancellation) // send message "hi"
         .AsValueTask()));
 
 // Echo message text back to the sender only in private chats example pipeline
@@ -67,8 +67,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
         .MutateContent((content, builder) => builder
             .AddText(content.Text.ToLowerInvariant(), BoldTextStyle.FromRange)))) // trim message text and make it bold
     .HandleAsync((context, cancellation) => context
-        .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync(context.Signal.Message.Content, cancellation) // send message with same text to the chat of sender
+        .ToMessageController() // get message controller
+        .SendMessageAsync(context.GetMessage().Content, cancellation) // send message with same text to the chat of sender
         .AsValueTask()));
 
 // Connect to telegram with empty token and dispose it with disposables.
