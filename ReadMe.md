@@ -63,7 +63,7 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
         .ToLowerInvariant()
         .Contains("hello"))
     .HandleAsync(context => context
-        .ToOutgoingMessageController()
+        .ToMessageController()
         .SendMessageAsync("hi")
         .AsValueTask()));
 
