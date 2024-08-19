@@ -52,7 +52,7 @@ await using var disposables = new DisposableStack();
 var flow = new SignalFlow()
     .DisposeWith(disposables);
 
-var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync()
+var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync();
 
 flow.Subscribe<IncomingMessageSignal>(signals => signals
     .SkipSelfSent()
