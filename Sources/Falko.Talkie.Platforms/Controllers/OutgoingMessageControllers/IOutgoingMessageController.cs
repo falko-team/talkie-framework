@@ -6,7 +6,7 @@ namespace Talkie.Controllers.OutgoingMessageControllers;
 
 public interface IOutgoingMessageController : IController<Identifier>
 {
-    Task<IIncomingMessage> PublishMessageAsync(IOutgoingMessage message,
+    Task<IIncomingMessage> SendMessageAsync(IOutgoingMessage message,
         MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default);
 }

@@ -9,21 +9,21 @@ namespace Talkie.Handlers;
 
 public static partial class SignalContextExtensions
 {
-    public static IOutgoingMessageController ToOutgoingMessageController(this ISignalContext<IncomingMessageSignal> context)
+    public static IOutgoingMessageController ToMessageController(this ISignalContext<IncomingMessageSignal> context)
     {
         return context.To<OutgoingMessageControllerAdapter, IOutgoingMessageController>();
     }
 
-    public static IOutgoingMessageController GetOutgoingMessageController(this ISignalContext<IncomingMessageSignal> context,
+    public static IOutgoingMessageController GetMessageController(this ISignalContext<IncomingMessageSignal> context,
         Identifier environmentProfileIdentifier)
     {
-        return context.GetIncomingMessage()
+        return context.GetMessage()
             .Platform
             .ControllerCreator
             .CreateOutgoingMessageController(environmentProfileIdentifier);
     }
 
-    public static IIncomingMessage GetIncomingMessage(this ISignalContext<IncomingMessageSignal> context)
+    public static IIncomingMessage GetMessage(this ISignalContext<IncomingMessageSignal> context)
     {
         return context.Signal.Message;
     }

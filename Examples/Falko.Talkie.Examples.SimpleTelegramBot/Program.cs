@@ -7,6 +7,7 @@ using Talkie.Flows;
 using Talkie.Handlers;
 using Talkie.Models.Messages;
 using Talkie.Models.Messages.Contents;
+using Talkie.Models.Messages.Outgoing;
 using Talkie.Models.Profiles;
 using Talkie.Pipelines.Handling;
 using Talkie.Pipelines.Intercepting;
@@ -52,10 +53,28 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
     .SkipSelfSent() // skip self sent messages
     .SkipOlderThan(TimeSpan.FromSeconds(30)) // skip messages older than 30 seconds
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
-    .HandleAsync((context, cancellation) => context
-        .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync("hi", cancellation) // send message "hi"
-        .AsValueTask()));
+    .HandleAsync((context, cancellation) =>
+    {
+        var sender = context
+            .GetMessage()
+            .SenderProfile;
+
+        var senderName = sender switch
+        {
+            IUserProfile userSender => userSender.FirstName ?? userSender.LastName ?? userSender.NickName ?? null,
+            IChatProfile chatSender => chatSender.Title ?? chatSender.NickName ?? null,
+            _ => null
+        } ?? "Amigo";
+
+        return context
+            .ToMessageController()
+            .SendMessageAsync(message => message
+                .AddContent(content => content
+                    .AddText("Hi, ")
+                    .AddText(senderName, BoldTextStyle.FromRange)
+                    .AddText("!!!")), cancellation)
+            .AsValueTask();
+    }));
 
 // Echo message text back to the sender only in private chats example pipeline
 flow.Subscribe<IncomingMessageSignal>(signals => signals
@@ -67,8 +86,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
         .MutateContent((content, builder) => builder
             .AddText(content.Text.ToLowerInvariant(), BoldTextStyle.FromRange)))) // trim message text and make it bold
     .HandleAsync((context, cancellation) => context
-        .ToOutgoingMessageController() // get message controller
-        .PublishMessageAsync(context.Signal.Message.Content, cancellation) // send message with same text to the chat of sender
+        .ToMessageController() // get message controller
+        .SendMessageAsync(context.GetMessage().Content, cancellation) // send message with same text to the chat of sender
         .AsValueTask()));
 
 // Connect to telegram with empty token and dispose it with disposables.
