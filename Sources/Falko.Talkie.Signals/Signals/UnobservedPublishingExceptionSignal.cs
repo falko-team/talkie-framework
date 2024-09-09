@@ -1,5 +1,4 @@
 using Talkie.Exceptions;
-using Talkie.Signals.Mixins;
 
 namespace Talkie.Signals;
 

@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using Talkie.Pipelines.Intercepting;
-using Talkie.Signals.Mixins;
+using Talkie.Signals;
 
 namespace Talkie.Flows;
 

@@ -17,14 +17,9 @@ public partial class Sequence<T> : ISequence<T>
     {
         var next = new Node(value);
 
-        if (_first is null)
-        {
-            _last = _first = next;
-        }
-        else
-        {
-            _last = _last!.Next = next;
-        }
+        _last = _first is null
+            ? _first = next
+            : _last!.Next = next;
 
         ++_count;
     }

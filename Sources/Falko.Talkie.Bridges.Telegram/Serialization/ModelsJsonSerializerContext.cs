@@ -9,7 +9,7 @@ namespace Talkie.Bridges.Telegram.Serialization;
     IgnoreReadOnlyFields = false,
     IgnoreReadOnlyProperties = false,
     IncludeFields = true,
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
     DictionaryKeyPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
     Converters = [typeof(DateTimeUnixConverter), typeof(ReadOnlyStringsToTextOrNumberDictionaryConverter)])]
@@ -18,4 +18,6 @@ namespace Talkie.Bridges.Telegram.Serialization;
 [JsonSerializable(typeof(Response<Message>))]
 [JsonSerializable(typeof(GetUpdates))]
 [JsonSerializable(typeof(SendMessage))]
+[JsonSerializable(typeof(DeleteMessage))]
+[JsonSerializable(typeof(EditMessageText))]
 internal sealed partial class ModelsJsonSerializerContext : JsonSerializerContext;

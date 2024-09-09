@@ -39,7 +39,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     }
 
     async Task<TResult> ITelegramBotApiClient.SendAsync<TResult, TRequest>(string methodName, TRequest request,
-        CancellationToken cancellationToken) where TResult : class where TRequest : class
+        CancellationToken cancellationToken)
     {
         methodName.ThrowIf().NullOrWhiteSpace();
         request.ThrowIf().Null();
@@ -53,7 +53,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     }
 
     async Task<TResult> ITelegramBotApiClient.SendAsync<TResult>(string methodName,
-        CancellationToken cancellationToken) where TResult : class
+        CancellationToken cancellationToken)
     {
         methodName.ThrowIf().NullOrWhiteSpace();
 
@@ -68,7 +68,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     }
 
     Task ITelegramBotApiClient.SendAsync<TRequest>(string methodName, TRequest request,
-        CancellationToken cancellationToken) where TRequest : class
+        CancellationToken cancellationToken)
     {
         methodName.ThrowIf().NullOrWhiteSpace();
         request.ThrowIf().Null();
@@ -89,7 +89,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     }
 
     private async Task<TResult?> SendRepeatableRequestAsync<TResult, TRequest>(string method, TRequest? request,
-        CancellationToken cancellationToken) where TResult : class where TRequest : class
+        CancellationToken cancellationToken)
     {
         while (true)
         {
@@ -110,7 +110,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     }
 
     private async Task<TResult?> SendRequestAsync<TResult, TRequest>(string method, TRequest? request,
-        CancellationToken cancellationToken) where TResult : class where TRequest : class
+        CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -139,8 +139,13 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     }
 
     private async Task<TResult?> ParseHttpResponseAsync<TResult>(string method, HttpResponseMessage httpResponse,
-        CancellationToken cancellationToken) where TResult : class
+        CancellationToken cancellationToken)
     {
+        if (typeof(TResult) == typeof(object))
+        {
+            return default;
+        }
+
         var responseJson = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
 
         if (JsonSerializer.Deserialize(responseJson, typeof(Response<TResult>), ModelsJsonSerializerContext.Default)
@@ -162,7 +167,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     }
 
     private async Task<HttpRequestMessage> BuildHttpRequestAsync<TRequest>(string method, TRequest? request,
-        CancellationToken cancellationToken) where TRequest : class
+        CancellationToken cancellationToken)
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Post, method);
 

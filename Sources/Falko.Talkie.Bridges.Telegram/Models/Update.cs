@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class Update(
@@ -11,7 +9,6 @@ public sealed class Update(
     Message? businessMessage = null,
     Message? editedBusinessMessage = null)
 {
-    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public readonly int UpdateId = updateId;
 
     public readonly Message? Message = message;

@@ -79,19 +79,36 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
     private async ValueTask ProcessUpdate(TelegramPlatform platform, Update update, CancellationToken cancellationToken)
     {
-        if (update.Message is not { } message) return;
-
-        var incomingMessage = IncomingMessageConverter.Convert(platform, message);
-
-        if (incomingMessage is null) return;
-
-        try
+        if (update.Message is { } message)
         {
-            await Flow.PublishAsync(incomingMessage.ToSignal(), cancellationToken);
+            var incomingMessage = IncomingMessageConverter.Convert(platform, message);
+
+            if (incomingMessage is null) return;
+
+            try
+            {
+                await Flow.PublishAsync(incomingMessage.ToMessageReceivedSignal(), cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                _ = Flow.PublishUnobservedPublishingExceptionAsync(exception, cancellationToken);
+            }
         }
-        catch (Exception exception)
+
+        if (update.EditedMessage is { } editedMessage)
         {
-            _ = Flow.PublishUnobservedPublishingExceptionAsync(exception, cancellationToken);
+            var incomingMessage = IncomingMessageConverter.Convert(platform, editedMessage);
+
+            if (incomingMessage is null) return;
+
+            try
+            {
+                await Flow.PublishAsync(incomingMessage.ToMessageEditedSignal(), cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                _ = Flow.PublishUnobservedPublishingExceptionAsync(exception, cancellationToken);
+            }
         }
     }
 

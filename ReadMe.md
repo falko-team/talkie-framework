@@ -52,10 +52,10 @@ await using var disposables = new DisposableStack();
 var flow = new SignalFlow()
     .DisposeWith(disposables);
 
-var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync();
+var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync()
 
 flow.Subscribe<IncomingMessageSignal>(signals => signals
-    .SkipSelfSent()
+    .SkipSelf()
     .SkipOlderThan(TimeSpan.FromMinutes(1))
     .Where(signal => signal
         .Message
@@ -64,7 +64,7 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
         .Contains("hello"))
     .HandleAsync(context => context
         .ToMessageController()
-        .SendMessageAsync("hi")
+        .PublishMessageAsync("hi")
         .AsValueTask()));
 
 await flow.ConnectTelegramAsync("YOUR_TOKEN")
