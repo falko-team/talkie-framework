@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Talkie.Collections;
 using Talkie.Concurrent;
-using Talkie.Controllers.OutgoingMessageControllers;
+using Talkie.Controllers.MessageControllers;
 using Talkie.Disposables;
 using Talkie.Flows;
 using Talkie.Handlers;
@@ -48,16 +48,16 @@ flow.Subscribe(signals => signals
 
 // Create subscription for incoming message signal with command "/hello".
 // When command received, send message "hi".
-flow.Subscribe<IncomingMessageSignal>(signals => signals
+flow.Subscribe<MessagePublishedSignal>(signals => signals
     .Where(signal => signal.Message.Platform is TelegramPlatform) // only telegram platform
-    .SkipSelfSent() // skip self sent messages
+    .SkipSelf() // skip self sent messages
     .SkipOlderThan(TimeSpan.FromSeconds(30)) // skip messages older than 30 seconds
     .Where(signal => IsTelegramCommand(signal.Message, "hello")) // only messages with command "/hello"
     .HandleAsync((context, cancellation) =>
     {
         var sender = context
             .GetMessage()
-            .SenderProfile;
+            .PublisherProfile;
 
         var senderName = sender switch
         {
@@ -68,7 +68,7 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
 
         return context
             .ToMessageController()
-            .SendMessageAsync(message => message
+            .PublishMessageAsync(message => message
                 .AddContent(content => content
                     .AddText("Hi, ")
                     .AddText(senderName, BoldTextStyle.FromRange)
@@ -77,8 +77,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
     }));
 
 // Echo message text back to the sender only in private chats example pipeline
-flow.Subscribe<IncomingMessageSignal>(signals => signals
-    .SkipSelfSent() // skip self sent messages
+flow.Subscribe<MessagePublishedSignal>(signals => signals
+    .SkipSelf() // skip self sent messages
     .SkipOlderThan(TimeSpan.FromSeconds(30)) // skip messages older than 30 seconds
     .Where(signal => signal.Message.EnvironmentProfile is IUserProfile) // only chat with user
     .Where(signal => signal.Message.Content.IsEmpty is false) // only where message text is not empty
@@ -87,7 +87,7 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
             .AddText(content.Text.ToLowerInvariant(), BoldTextStyle.FromRange)))) // trim message text and make it bold
     .HandleAsync((context, cancellation) => context
         .ToMessageController() // get message controller
-        .SendMessageAsync(context.GetMessage().Content, cancellation) // send message with same text to the chat of sender
+        .PublishMessageAsync(context.GetMessage().Content, cancellation) // send message with same text to the chat of sender
         .AsValueTask()));
 
 // Connect to telegram with empty token and dispose it with disposables.

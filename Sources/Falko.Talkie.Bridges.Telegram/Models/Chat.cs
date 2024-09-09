@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Talkie.Bridges.Telegram.Models;
 
 public sealed class Chat(
@@ -11,10 +9,8 @@ public sealed class Chat(
     string? username = null,
     bool? isForum = null)
 {
-    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public readonly long Id = id;
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public readonly ChatType Type = type;
 
     public readonly string? Title = title;

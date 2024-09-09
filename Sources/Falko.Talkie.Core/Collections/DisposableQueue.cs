@@ -39,7 +39,7 @@ public sealed class DisposableQueue : IEnumerableDisposable
 
     public void Dispose()
     {
-        while (_disposables.Dequeue() is var disposable && disposable is not null)
+        while (_disposables.Count > 0 && _disposables.Dequeue() is var disposable && disposable is not null)
         {
             switch (disposable)
             {

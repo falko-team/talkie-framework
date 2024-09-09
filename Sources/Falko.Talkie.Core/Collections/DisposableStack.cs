@@ -39,7 +39,7 @@ public sealed class DisposableStack : IEnumerableDisposable
 
     public void Dispose()
     {
-        while (_disposables.Pop() is var disposable && disposable is not null)
+        while (_disposables.Count > 0 && _disposables.Pop() is var disposable && disposable is not null)
         {
             switch (disposable)
             {

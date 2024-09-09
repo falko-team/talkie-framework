@@ -21,4 +21,16 @@ public static partial class TelegramBotApiClientExtensions
     {
         return client.SendAsync<Message, SendMessage>("sendMessage", message, cancellationToken);
     }
+
+    public static Task<bool> DeleteMessageAsync(this ITelegramBotApiClient client, DeleteMessage deleteMessage,
+        CancellationToken cancellationToken = default)
+    {
+        return client.SendAsync<bool, DeleteMessage>("deleteMessage", deleteMessage, cancellationToken);
+    }
+
+    public static Task<Message> EditMessageTextAsync(this ITelegramBotApiClient client, EditMessageText editMessageText,
+        CancellationToken cancellationToken = default)
+    {
+        return client.SendAsync<Message, EditMessageText>("editMessageText", editMessageText, cancellationToken);
+    }
 }

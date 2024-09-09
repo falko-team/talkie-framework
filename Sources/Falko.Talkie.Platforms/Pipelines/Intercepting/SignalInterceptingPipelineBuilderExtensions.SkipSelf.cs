@@ -1,0 +1,17 @@
+using Talkie.Models.Messages.Incoming;
+using Talkie.Signals;
+
+namespace Talkie.Pipelines.Intercepting;
+
+public static partial class SignalInterceptingPipelineBuilderExtensions
+{
+    public static ISignalInterceptingPipelineBuilder<MessagePublishedSignal> SkipSelf(this ISignalInterceptingPipelineBuilder<MessagePublishedSignal> builder)
+    {
+        return builder.Where(signal => signal.Message.IsSelf() is false);
+    }
+
+    public static ISignalInterceptingPipelineBuilder<MessageExchangedSignal> SkipSelf(this ISignalInterceptingPipelineBuilder<MessageExchangedSignal> builder)
+    {
+        return builder.Where(signal => signal.Message.IsSelf() is false);
+    }
+}

@@ -1,6 +1,6 @@
 using Talkie.Mixins;
 
-namespace Talkie.Signals.Mixins;
+namespace Talkie.Signals;
 
 /// <summary>
 /// The mixin for <see cref="Signal"/> that have an unobserved exception.
