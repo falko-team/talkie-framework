@@ -12,13 +12,13 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
 
     public required IProfile EnvironmentProfile { get; init; }
 
-    public required IProfile SenderProfile { get; init; }
+    public required IProfile PublisherProfile { get; init; }
 
     public required IProfile ReceiverProfile { get; init; }
 
-    public required DateTime Sent { get; init; }
+    public required DateTime PublishedDate { get; init; }
 
-    public required DateTime Received { get; init; }
+    public required DateTime ReceivedDate { get; init; }
 
     public MessageContent Content { get; init; } = MessageContent.Empty;
 

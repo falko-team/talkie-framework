@@ -35,6 +35,24 @@ public static partial class SignalInterceptingPipelineBuilderExtensions
             mergeTargetBuilderFactory(SignalInterceptingPipelineBuilder.Empty));
     }
 
+    public static ISignalInterceptingPipelineBuilder<T> Merge<T>(this ISignalInterceptingPipelineBuilder builder,
+        ISignalInterceptingPipelineBuilder<T> mergeSourceBuilder,
+        ISignalInterceptingPipelineBuilder<T> mergeTargetBuilder) where T : Signal
+    {
+        return builder.InterceptSingleton(() => new MergeSignalInterceptor<Signal>(mergeSourceBuilder.Build(),
+            mergeTargetBuilder.Build()))
+            .OfType<T>();
+    }
+
+    public static ISignalInterceptingPipelineBuilder<T> Merge<T>(this ISignalInterceptingPipelineBuilder builder,
+        Func<ISignalInterceptingPipelineBuilder, ISignalInterceptingPipelineBuilder<T>> mergeSourceBuilderFactory,
+        Func<ISignalInterceptingPipelineBuilder, ISignalInterceptingPipelineBuilder<T>> mergeTargetBuilderFactory)
+        where T : Signal
+    {
+        return builder.Merge(mergeSourceBuilderFactory(SignalInterceptingPipelineBuilder.Empty),
+            mergeTargetBuilderFactory(SignalInterceptingPipelineBuilder.Empty));
+    }
+
     public static ISignalInterceptingPipelineBuilder<T> Merge<T>(this ISignalInterceptingPipelineBuilder<T> builder,
         ISignalInterceptingPipelineBuilder<T> mergeBuilder) where T : Signal
     {

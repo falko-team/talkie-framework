@@ -33,6 +33,6 @@ public static partial class SignalInterceptingPipelineBuilderExtensions
         where TFrom : Signal
         where TTo : Signal
     {
-        return builder.Select((signal, _) => select(signal));
+        return builder.Select<TFrom, TTo>((signal, _) => select(signal));
     }
 }

@@ -33,7 +33,7 @@ public static partial class ParallelEnumerableExtensions
     {
         var startTicks = Environment.TickCount64;
 
-        var parallels = parallel.Meter.Parallels;
+        var parallels = parallel.Meter.CurrentParallels;
 
         if (parallels is 1)
         {
@@ -74,7 +74,7 @@ public static partial class ParallelEnumerableExtensions
     {
         var startTicks = Environment.TickCount64;
 
-        var parallels = parallel.Meter.Parallels;
+        var parallels = parallel.Meter.CurrentParallels;
 
         if (parallels is 1)
         {

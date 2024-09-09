@@ -55,7 +55,7 @@ var flow = new SignalFlow()
 var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync()
 
 flow.Subscribe<IncomingMessageSignal>(signals => signals
-    .SkipSelfSent()
+    .SkipSelf()
     .SkipOlderThan(TimeSpan.FromMinutes(1))
     .Where(signal => signal
         .Message
@@ -63,8 +63,8 @@ flow.Subscribe<IncomingMessageSignal>(signals => signals
         .ToLowerInvariant()
         .Contains("hello"))
     .HandleAsync(context => context
-        .ToOutgoingMessageController()
-        .SendMessageAsync("hi")
+        .ToMessageController()
+        .PublishMessageAsync("hi")
         .AsValueTask()));
 
 await flow.ConnectTelegramAsync("YOUR_TOKEN")

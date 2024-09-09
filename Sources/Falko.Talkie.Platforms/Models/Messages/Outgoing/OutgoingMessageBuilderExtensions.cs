@@ -1,5 +1,6 @@
 using Talkie.Collections;
 using Talkie.Models.Messages.Contents;
+using Talkie.Models.Messages.Incoming;
 
 namespace Talkie.Models.Messages.Outgoing;
 
@@ -40,5 +41,11 @@ public static partial class OutgoingMessageBuilderExtensions
         Func<IMessageContentBuilder, IMessageContentBuilder> contentBuilderFactory)
     {
         return builder.AddContent(contentBuilderFactory(new MessageContentBuilder()).Build());
+    }
+
+    public static IOutgoingMessageBuilder SetReply(this IOutgoingMessageBuilder builder,
+        IIncomingMessage message)
+    {
+        return builder.SetReply(message.ToGlobalIdentifier());
     }
 }

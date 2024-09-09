@@ -1,10 +1,10 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class ReplyParameters(
+public sealed class DeleteMessage(
     long messageId,
-    long? chatId = null)
+    long chatId)
 {
     public readonly long MessageId = messageId;
 
-    public readonly long? ChatId = chatId;
+    public readonly long ChatId = chatId;
 }

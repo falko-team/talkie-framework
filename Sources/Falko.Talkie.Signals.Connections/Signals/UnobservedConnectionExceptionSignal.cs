@@ -1,5 +1,4 @@
 using Talkie.Connections;
-using Talkie.Signals.Mixins;
 
 namespace Talkie.Signals;
 

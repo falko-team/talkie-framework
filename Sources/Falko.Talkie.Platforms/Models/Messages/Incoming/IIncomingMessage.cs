@@ -11,13 +11,13 @@ public interface IIncomingMessage : IMessage
 
     IProfile EnvironmentProfile { get; }
 
-    IProfile SenderProfile { get; }
+    IProfile PublisherProfile { get; }
 
-    DateTime Sent { get; }
+    DateTime PublishedDate { get; }
 
     IProfile ReceiverProfile { get; }
 
-    DateTime Received { get; }
+    DateTime ReceivedDate { get; }
 
     IIncomingMessage? Reply { get; }
 

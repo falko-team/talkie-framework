@@ -33,10 +33,10 @@ internal static class IncomingMessageConverter
             Reply = message.ReplyToMessage is { } reply
                 ? Convert(platform, reply)
                 : null,
-            SenderProfile = sender,
-            Sent = message.Date ?? received,
+            PublisherProfile = sender,
+            PublishedDate = message.Date ?? received,
             ReceiverProfile = platform.BotProfile,
-            Received = received,
+            ReceivedDate = received,
             EnvironmentProfile = environment
         };
     }

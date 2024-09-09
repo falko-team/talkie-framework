@@ -10,13 +10,13 @@ using Talkie.Models.Messages.Outgoing;
 using Talkie.Platforms;
 using Talkie.Validations;
 
-namespace Talkie.Controllers.OutgoingMessageControllers;
+namespace Talkie.Controllers.MessageControllers;
 
-public sealed class TelegramOutgoingMessageController(ISignalFlow flow,
+public sealed class TelegramMessageController(ISignalFlow flow,
     TelegramPlatform platform,
-    Identifier environmentProfileIdentifier) : IOutgoingMessageController
+    Identifier environmentProfileIdentifier) : IMessageController
 {
-    public async Task<IIncomingMessage> SendMessageAsync(IOutgoingMessage message,
+    public async Task<IIncomingMessage> PublishMessageAsync(IOutgoingMessage message,
         MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default)
     {
@@ -40,13 +40,72 @@ public sealed class TelegramOutgoingMessageController(ISignalFlow flow,
         var sentIncomingMessage = IncomingMessageConverter.Convert(platform, sentMessage)
             ?? throw new InvalidOperationException("Failed to convert sent message.");
 
-        _ = flow.PublishAsync(sentIncomingMessage.ToSignal(), cancellationToken).ContinueWith((e, _) =>
+        _ = flow.PublishAsync(sentIncomingMessage.ToMessageReceivedSignal(), cancellationToken).ContinueWith((e, _) =>
         {
             flow.PublishUnobservedPublishingExceptionAsync(e.Exception
                 ?? new Exception("Failed to publish self sent incoming message."), cancellationToken);
         }, TaskContinuationOptions.ExecuteSynchronously, TaskContinuationOptions.OnlyOnFaulted);
 
         return sentIncomingMessage;
+    }
+
+    public async Task<IIncomingMessage> ExchangeMessageAsync(GlobalIdentifier messageIdentifier, IOutgoingMessage message,
+        CancellationToken cancellationToken = default)
+    {
+        if (message.Content.IsEmpty)
+        {
+            throw new ArgumentException("Message content is required.");
+        }
+
+        if (messageIdentifier.EnvironmentIdentifier.TryGetValue(out long environmentTelegramId) is false)
+        {
+            throw new ArgumentException("Environment id is required.");
+        }
+
+        if (messageIdentifier.MessageIdentifier.TryGetValue(out long messageTelegramId) is false)
+        {
+            throw new ArgumentException("Message id is required.");
+        }
+
+        var editMessageText = new EditMessageText(
+            message.Content.Text,
+            entities: GetEnitites(message.Content.Styles),
+            messageId: messageTelegramId,
+            chatId: environmentTelegramId);
+
+        var sentMessage = await platform.BotApiClient.EditMessageTextAsync(editMessageText,
+            cancellationToken: cancellationToken);
+
+        var sentIncomingMessage = IncomingMessageConverter.Convert(platform, sentMessage)
+                                  ?? throw new InvalidOperationException("Failed to convert sent message.");
+
+        _ = flow.PublishAsync(sentIncomingMessage.ToMessageReceivedSignal(), cancellationToken).ContinueWith((e, _) =>
+        {
+            flow.PublishUnobservedPublishingExceptionAsync(e.Exception
+                                                           ?? new Exception("Failed to publish self sent incoming message."), cancellationToken);
+        }, TaskContinuationOptions.ExecuteSynchronously, TaskContinuationOptions.OnlyOnFaulted);
+
+        return sentIncomingMessage;
+    }
+
+    public async Task UnpublishMessageAsync(GlobalIdentifier messageIdentifier, CancellationToken cancellationToken = default)
+    {
+        if (messageIdentifier.EnvironmentIdentifier.TryGetValue(out long environmentTelegramId) is false)
+        {
+            throw new ArgumentException("Environment id is required.");
+        }
+
+        if (messageIdentifier.MessageIdentifier.TryGetValue(out long messageTelegramId) is false)
+        {
+            throw new ArgumentException("Message id is required.");
+        }
+
+        var deleteMessage = new DeleteMessage(messageTelegramId, environmentTelegramId);
+
+        if (await platform.BotApiClient.DeleteMessageAsync(deleteMessage, cancellationToken) is false)
+        {
+            throw new InvalidOperationException("Message was not found.");
+        }
     }
 
     private IReadOnlyCollection<MessageEntity>? GetEnitites(IReadOnlyCollection<IMessageTextStyle> styles)
