@@ -54,7 +54,7 @@ var flow = new SignalFlow()
 
 var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync()
 
-flow.Subscribe<IncomingMessageSignal>(signals => signals
+flow.Subscribe<MessagePublishedSignal>(signals => signals
     .SkipSelf()
     .SkipOlderThan(TimeSpan.FromMinutes(1))
     .Where(signal => signal
