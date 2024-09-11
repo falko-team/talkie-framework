@@ -16,6 +16,7 @@ namespace Talkie.Bridges.Telegram.Serialization;
 [JsonSerializable(typeof(Response<Update[]>))]
 [JsonSerializable(typeof(Response<User>))]
 [JsonSerializable(typeof(Response<Message>))]
+[JsonSerializable(typeof(Response<bool>))]
 [JsonSerializable(typeof(GetUpdates))]
 [JsonSerializable(typeof(SendMessage))]
 [JsonSerializable(typeof(DeleteMessage))]
