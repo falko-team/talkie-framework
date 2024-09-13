@@ -1,8 +1,8 @@
-using Talkie.Collections;
 using Talkie.Concurrent;
 using Talkie.Flows;
 using Talkie.Handlers;
 using Talkie.Pipelines.Intercepting;
+using Talkie.Sequences;
 using Talkie.Signals;
 
 namespace Talkie.Pipelines.Handling;

@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Sources.Build.props" />
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\Falko.Talkie.Platforms\Falko.Talkie.Platforms.csproj" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" />
+    </ItemGroup>
+</Project>

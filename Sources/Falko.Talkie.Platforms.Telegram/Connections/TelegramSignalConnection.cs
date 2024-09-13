@@ -2,13 +2,13 @@ using System.Net;
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Configurations;
 using Talkie.Bridges.Telegram.Models;
-using Talkie.Collections;
 using Talkie.Concurrent;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
+using Talkie.Sequences;
 using Talkie.Validations;
 
 namespace Talkie.Connections;

@@ -1,5 +1,5 @@
-using Talkie.Collections;
 using Talkie.Interceptors;
+using Talkie.Sequences;
 using Talkie.Signals;
 
 namespace Talkie.Pipelines.Intercepting;

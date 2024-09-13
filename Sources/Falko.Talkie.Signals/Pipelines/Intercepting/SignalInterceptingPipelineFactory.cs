@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using Talkie.Collections;
 using Talkie.Interceptors;
+using Talkie.Sequences;
 
 namespace Talkie.Pipelines.Intercepting;
 

@@ -4,21 +4,21 @@ namespace Talkie.Interceptors;
 
 internal sealed class TakeWhileSignalInterceptor(Func<Signal, CancellationToken, bool> @while) : ISignalInterceptor
 {
-    private readonly object _locker = new();
+    private object _locker = new();
 
-    private bool _done;
+    private volatile bool _completed;
 
     public InterceptionResult Intercept(Signal signal, CancellationToken cancellationToken)
     {
+        if (_completed) return InterceptionResult.Break();
+
         lock (_locker)
         {
-            if (_done) return InterceptionResult.Break();
-
             if (@while(signal, cancellationToken)) return InterceptionResult.Continue();
 
-            _done = true;
-
-            return InterceptionResult.Break();
+            _completed = true;
         }
+
+        return InterceptionResult.Break();
     }
 }

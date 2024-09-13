@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using Talkie.Collections;
+using Talkie.Sequences;
 
 namespace Talkie.Concurrent;
 

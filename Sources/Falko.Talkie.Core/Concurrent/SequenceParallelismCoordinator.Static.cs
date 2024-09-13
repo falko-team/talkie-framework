@@ -1,4 +1,4 @@
-using Talkie.Collections;
+using Talkie.Sequences;
 
 namespace Talkie.Concurrent;
 

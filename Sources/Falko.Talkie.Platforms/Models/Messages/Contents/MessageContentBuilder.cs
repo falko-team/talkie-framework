@@ -1,5 +1,5 @@
 using System.Text;
-using Talkie.Collections;
+using Talkie.Sequences;
 
 namespace Talkie.Models.Messages.Contents;
 
