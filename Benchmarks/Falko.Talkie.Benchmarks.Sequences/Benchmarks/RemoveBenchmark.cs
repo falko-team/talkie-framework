@@ -1,7 +1,7 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using Talkie.Models;
-using Talkie.Collections;
+using Talkie.Sequences;
 
 namespace Talkie.Benchmarks.Benchmarks;
 

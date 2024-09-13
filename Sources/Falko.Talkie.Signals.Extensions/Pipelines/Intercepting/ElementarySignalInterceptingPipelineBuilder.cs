@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
-using Talkie.Collections;
 using Talkie.Interceptors;
+using Talkie.Sequences;
 
 namespace Talkie.Pipelines.Intercepting;
 

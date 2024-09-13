@@ -6,19 +6,19 @@ internal sealed class TakeWhileSignalInterceptor<T>(Func<T, CancellationToken, b
 {
     private readonly object _locker = new();
 
-    private bool _done;
+    private bool _completed;
 
     public override InterceptionResult Intercept(T signal, CancellationToken cancellationToken)
     {
+        if (_completed) return InterceptionResult.Break();
+
         lock (_locker)
         {
-            if (_done) return InterceptionResult.Break();
-
             if (@while(signal, cancellationToken)) return InterceptionResult.Continue();
 
-            _done = true;
-
-            return InterceptionResult.Break();
+            _completed = true;
         }
+
+        return InterceptionResult.Break();
     }
 }

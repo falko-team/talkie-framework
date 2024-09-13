@@ -38,6 +38,12 @@ public static partial class SignalHandlingPipelineBuilderExtensions
         return builder.HandleAsync((signal, _) => handleAsync(signal));
     }
 
+    public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalInterceptingPipelineBuilder builder,
+        Func<ValueTask> handleAsync)
+    {
+        return builder.HandleAsync((_, _) => handleAsync());
+    }
+
     public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalHandlingPipelineBuilder builder,
         Func<ISignalContext, CancellationToken, ValueTask> handleAsync)
     {
@@ -50,6 +56,12 @@ public static partial class SignalHandlingPipelineBuilderExtensions
         return builder.HandleAsync((signal, _) => handleAsync(signal));
     }
 
+    public static ISignalHandlingPipelineBuilder HandleAsync(this ISignalHandlingPipelineBuilder builder,
+        Func<ValueTask> handleAsync)
+    {
+        return builder.HandleAsync((_, _) => handleAsync());
+    }
+
     public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalInterceptingPipelineBuilder<T> builder,
         Func<ISignalContext<T>, CancellationToken, ValueTask> handleAsync) where T : Signal
     {
@@ -62,6 +74,12 @@ public static partial class SignalHandlingPipelineBuilderExtensions
         return builder.HandleAsync((signal, _) => handleAsync(signal));
     }
 
+    public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalInterceptingPipelineBuilder<T> builder,
+        Func<ValueTask> handleAsync) where T : Signal
+    {
+        return builder.HandleAsync((_, _) => handleAsync());
+    }
+
     public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalHandlingPipelineBuilder<T> builder,
         Func<ISignalContext<T>, CancellationToken, ValueTask> handleAsync) where T : Signal
     {
@@ -72,5 +90,11 @@ public static partial class SignalHandlingPipelineBuilderExtensions
         Func<ISignalContext<T>, ValueTask> handleAsync) where T : Signal
     {
         return builder.HandleAsync((signal, _) => handleAsync(signal));
+    }
+
+    public static ISignalHandlingPipelineBuilder<T> HandleAsync<T>(this ISignalHandlingPipelineBuilder<T> builder,
+        Func<ValueTask> handleAsync) where T : Signal
+    {
+        return builder.HandleAsync((_, _) => handleAsync());
     }
 }

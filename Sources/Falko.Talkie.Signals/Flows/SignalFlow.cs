@@ -1,7 +1,7 @@
-using Talkie.Collections;
 using Talkie.Concurrent;
 using Talkie.Exceptions;
 using Talkie.Pipelines.Handling;
+using Talkie.Sequences;
 using Talkie.Signals;
 using Talkie.Validations;
 

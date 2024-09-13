@@ -2,29 +2,26 @@ using Talkie.Signals;
 
 namespace Talkie.Interceptors;
 
-internal sealed class SkipSignalInterceptor<T>(int count) : ISignalInterceptor<T> where T : Signal
+internal sealed class SkipSignalInterceptor(int count) : ISignalInterceptor
 {
-    private readonly object _locker = new();
-
-    private int _iterations;
+    private int _iterations = -1;
 
     public InterceptionResult Intercept(Signal signal, CancellationToken cancellationToken)
     {
-        lock (_locker)
+        for (;;)
         {
-            if (_iterations == count)
+            var currentIterations = _iterations;
+
+            if (currentIterations >= count) return InterceptionResult.Continue();
+
+            var nextIterations = currentIterations + 1;
+
+            if (Interlocked.CompareExchange(ref _iterations, nextIterations, currentIterations) == currentIterations)
             {
-                return InterceptionResult.Continue();
+                return nextIterations == count
+                    ? InterceptionResult.Continue()
+                    : InterceptionResult.Break();
             }
-
-            ++_iterations;
-
-            return InterceptionResult.Break();
         }
-    }
-
-    InterceptionResult ISignalInterceptor<T>.Intercept(T signal, CancellationToken cancellationToken)
-    {
-        return Intercept(signal, cancellationToken);
     }
 }

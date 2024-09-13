@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using Talkie.Collections;
+using Talkie.Sequences;
 
 namespace Talkie.Tests.Testers;
 

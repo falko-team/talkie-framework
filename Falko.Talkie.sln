@@ -39,13 +39,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Platforms", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Platforms.Telegram", "Sources\Falko.Talkie.Platforms.Telegram\Falko.Talkie.Platforms.Telegram.csproj", "{791B0028-509B-41CA-AA0C-08630A0D397A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Examples.SimpleTelegramBot", "Examples\Falko.Talkie.Examples.SimpleTelegramBot\Falko.Talkie.Examples.SimpleTelegramBot.csproj", "{70165E7E-EA74-4F28-8E63-89F181C76CC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Examples.Microsoft.Hosting", "Examples\Falko.Talkie.Examples.Microsoft.Hosting\Falko.Talkie.Examples.Microsoft.Hosting.csproj", "{70165E7E-EA74-4F28-8E63-89F181C76CC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Connections", "Sources\Falko.Talkie.Signals.Connections\Falko.Talkie.Signals.Connections.csproj", "{61BAF50C-1232-4694-9374-A4930A0EC111}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Adapters", "Sources\Falko.Talkie.Signals.Adapters\Falko.Talkie.Signals.Adapters.csproj", "{32351F71-4633-41A3-81CE-1BD70C5028C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Bridges.Telegram", "Sources\Falko.Talkie.Bridges.Telegram\Falko.Talkie.Bridges.Telegram.csproj", "{1BAA0E4A-072F-4DEA-9820-17D796542F01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Microsoft.Hosting", "Sources\Falko.Talkie.Microsoft.Hosting\Falko.Talkie.Microsoft.Hosting.csproj", "{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +66,7 @@ Global
 		{61BAF50C-1232-4694-9374-A4930A0EC111} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
 		{32351F71-4633-41A3-81CE-1BD70C5028C6} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
 		{1BAA0E4A-072F-4DEA-9820-17D796542F01} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
+		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -110,5 +113,9 @@ Global
 		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
