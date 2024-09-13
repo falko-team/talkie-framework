@@ -1,6 +1,6 @@
-using Talkie.Collections;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Incoming;
+using Talkie.Sequences;
 
 namespace Talkie.Models.Messages.Outgoing;
 

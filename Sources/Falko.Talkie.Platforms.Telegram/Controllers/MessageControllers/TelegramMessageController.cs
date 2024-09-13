@@ -1,6 +1,5 @@
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
-using Talkie.Collections;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models;
@@ -8,6 +7,7 @@ using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
 using Talkie.Platforms;
+using Talkie.Sequences;
 using Talkie.Validations;
 
 namespace Talkie.Controllers.MessageControllers;

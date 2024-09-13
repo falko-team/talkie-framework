@@ -4,22 +4,24 @@ namespace Talkie.Interceptors;
 
 internal sealed class TakeSignalInterceptor(int count) : ISignalInterceptor
 {
-    private readonly object _locker = new();
-
-    private int _iterations;
+    private volatile int _iterations = -1;
 
     public InterceptionResult Intercept(Signal signal, CancellationToken cancellationToken)
     {
-        lock (_locker)
+        for (;;)
         {
-            if (_iterations == count)
+            var currentIterations = _iterations;
+
+            if (currentIterations >= count) return InterceptionResult.Break();
+
+            var nextIterations = currentIterations + 1;
+
+            if (Interlocked.CompareExchange(ref _iterations, nextIterations, currentIterations) == currentIterations)
             {
-                return InterceptionResult.Break();
+                return nextIterations == count
+                    ? InterceptionResult.Break()
+                    : InterceptionResult.Continue();
             }
-
-            ++_iterations;
-
-            return InterceptionResult.Continue();
         }
     }
 }

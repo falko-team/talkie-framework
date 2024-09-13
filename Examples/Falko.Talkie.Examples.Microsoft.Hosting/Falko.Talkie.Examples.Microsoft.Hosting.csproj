@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Examples.Build.props" />
+
+    <PropertyGroup Label="Assembly">
+        <AssemblyName>SimpleTelegramBot</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <PackageReference Include="Serilog" />
+        <PackageReference Include="Serilog.Extensions.Hosting" />
+        <PackageReference Include="Serilog.Sinks.Console" />
+        <ProjectReference Include="..\..\Sources\Falko.Talkie.Microsoft.Hosting\Falko.Talkie.Microsoft.Hosting.csproj" />
+        <ProjectReference Include="..\..\Sources\Falko.Talkie.Platforms.Telegram\Falko.Talkie.Platforms.Telegram.csproj" />
+    </ItemGroup>
+</Project>

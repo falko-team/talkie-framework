@@ -2,33 +2,36 @@ using Talkie.Signals;
 
 namespace Talkie.Interceptors;
 
-internal sealed class DistinctUntilChangedSignalInterceptor<TSignal, TValue>(Func<TSignal, CancellationToken, TValue> distinctUntilChanged)
-        : SignalInterceptor<TSignal>
-    where TSignal : Signal
+internal sealed class DistinctUntilChangedSignalInterceptor<TSignal, TValue>(Func<TSignal, CancellationToken, TValue> select)
+    : SignalInterceptor<TSignal> where TSignal : Signal
 {
     private readonly object _locker = new();
 
-    private bool _isInterceptedBefore;
+    private bool _firstTime = true;
 
-    private TValue _last = default!;
+    private TValue _lastValue = default!;
 
     public override InterceptionResult Intercept(TSignal signal, CancellationToken cancellationToken)
     {
-        lock (_locker)
+        for (;;)
         {
-            var current = distinctUntilChanged(signal, cancellationToken);
-            var last = _last;
+            var currentValue = select(signal, cancellationToken);
+            var lastValue = _lastValue;
 
-            _last = current;
-
-            if (_isInterceptedBefore)
+            if (_firstTime is false && Equals(currentValue, lastValue))
             {
-                return Equals(current, last) is false;
+                return InterceptionResult.Break();
             }
 
-            _isInterceptedBefore = true;
+            lock (_locker)
+            {
+                if (_firstTime is false && Equals(_lastValue, lastValue) is false) continue;
 
-            return InterceptionResult.Continue();
+                _firstTime = false;
+                _lastValue = currentValue;
+
+                return InterceptionResult.Continue();
+            }
         }
     }
 }

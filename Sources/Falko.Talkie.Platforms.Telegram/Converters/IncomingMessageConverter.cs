@@ -1,10 +1,10 @@
 using Talkie.Bridges.Telegram.Models;
-using Talkie.Collections;
 using Talkie.Localizations;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
+using Talkie.Sequences;
 using Talkie.Validations;
 
 namespace Talkie.Converters;
