@@ -5,12 +5,11 @@ using Talkie.Subscribers;
 
 namespace Talkie.Examples;
 
-public sealed class TelegramSubscriptor(IConfiguration configuration) : IIntegrationsSubscriber
+public sealed class TelegramSubscriber(IConfiguration configuration) : IIntegrationsSubscriber
 {
     public Task SubscribeAsync(ISignalFlow flow, IRegisterOnlyDisposableScope disposables, CancellationToken cancellationToken)
     {
-        return flow.ConnectTelegramAsync(GetTelegramToken(),
-                cancellationToken: cancellationToken)
+        return flow.ConnectTelegramAsync(GetTelegramToken(), cancellationToken)
             .DisposeAsyncWith(disposables)
             .AsTask();
     }

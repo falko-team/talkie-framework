@@ -5,12 +5,12 @@ namespace Talkie.Pipelines.Intercepting;
 
 public static partial class SignalInterceptingPipelineBuilderExtensions
 {
-    public static ISignalInterceptingPipelineBuilder<MessagePublishedSignal> OnlySelf(this ISignalInterceptingPipelineBuilder<MessagePublishedSignal> builder)
+    public static ISignalInterceptingPipelineBuilder<MessagePublishedSignal> OnlySelfPublish(this ISignalInterceptingPipelineBuilder<MessagePublishedSignal> builder)
     {
         return builder.Where(signal => signal.Message.IsSelf());
     }
 
-    public static ISignalInterceptingPipelineBuilder<MessageExchangedSignal> OnlySelf(this ISignalInterceptingPipelineBuilder<MessageExchangedSignal> builder)
+    public static ISignalInterceptingPipelineBuilder<MessageExchangedSignal> OnlySelfPublish(this ISignalInterceptingPipelineBuilder<MessageExchangedSignal> builder)
     {
         return builder.Where(signal => signal.Message.IsSelf());
     }
