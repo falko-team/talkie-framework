@@ -47,7 +47,7 @@ Or explore [Simple Wallet Bot (Rider Coin Bot)](https://github.com/falko-team/ri
 Or watch simple example of code:
 
 ```C#
-await using var disposables = new DisposableStack();
+await using var disposables = new ReverseDisposableScope();
 
 var flow = new SignalFlow()
     .DisposeWith(disposables);
@@ -55,7 +55,7 @@ var flow = new SignalFlow()
 var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync()
 
 flow.Subscribe<MessagePublishedSignal>(signals => signals
-    .SkipSelf()
+    .SkipSelfPublish()
     .SkipOlderThan(TimeSpan.FromMinutes(1))
     .Where(signal => signal
         .Message
@@ -65,7 +65,8 @@ flow.Subscribe<MessagePublishedSignal>(signals => signals
     .HandleAsync(context => context
         .ToMessageController()
         .PublishMessageAsync("hi")
-        .AsValueTask()));
+        .AsValueTask()))
+    .UnsubscribeWith(disposables);
 
 await flow.ConnectTelegramAsync("YOUR_TOKEN")
     .DisposeAsyncWith(disposables);

@@ -11,12 +11,12 @@ using Talkie.Subscribers;
 
 namespace Talkie.Examples;
 
-public sealed class HelloSubscriptor : IBehaviorsSubscriber
+public sealed class HelloSubscriber : IBehaviorsSubscriber
 {
     public void Subscribe(ISignalFlow flow, IRegisterOnlyDisposableScope disposables, CancellationToken cancellationToken)
     {
         flow.Subscribe<MessagePublishedSignal>(static signals => signals
-            .SkipSelf()
+            .SkipSelfPublish()
             .SkipOlderThan(TimeSpan
                 .FromMinutes(1))
             .Where(signal => signal
@@ -27,8 +27,7 @@ public sealed class HelloSubscriptor : IBehaviorsSubscriber
             .HandleAsync((context, cancellationToken) => context
                 .ToMessageController()
                 .PublishMessageAsync("Hi!", cancellationToken)
-                .AsValueTask())
-            .Handle(_ => throw new Exception()))
+                .AsValueTask()))
             .UnsubscribeWith(disposables);
     }
 }
