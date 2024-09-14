@@ -24,4 +24,11 @@ public static partial class SignalFlowExtensions
 
         return flow.ConnectAsync(new TelegramSignalConnector(serverConfiguration, clientConfiguration), cancellationToken);
     }
+
+    public static ValueTask<IAsyncDisposable> ConnectTelegramAsync(this ISignalFlow flow,
+        ServerConfiguration serverConfiguration,
+        CancellationToken cancellationToken)
+    {
+        return flow.ConnectTelegramAsync(serverConfiguration, default, cancellationToken);
+    }
 }

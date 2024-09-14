@@ -13,7 +13,8 @@ await new HostBuilder()
         .MinimumLevel.Verbose()
         .WriteTo.Console())
     .UseTalkie(configuration => configuration
-        .SetShutdownOnUnobservedExceptions())
-    .AddIntegrations<TelegramSubscriptor>()
-    .AddBehaviors<HelloSubscriptor>()
+        .SetSignalsLogging())
+    .AddIntegrations<TelegramSubscriber>()
+    .AddBehaviors<HelloSubscriber>()
+    .AddBehaviors<StartSubscriber>()
     .RunConsoleAsync();
