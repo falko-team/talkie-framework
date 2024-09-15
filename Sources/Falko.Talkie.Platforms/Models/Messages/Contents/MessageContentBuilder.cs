@@ -32,11 +32,11 @@ public sealed class MessageContentBuilder : IMessageContentBuilder
     {
         ArgumentOutOfRangeException.ThrowIfNegative(repeat, nameof(repeat));
 
-        if (repeat == 0) return this;
+        if (repeat is 0) return this;
 
-        if (token.Length == 0) return this;
+        if (token.Length is 0) return this;
 
-        if (repeat == 1) return AddText(token);
+        if (repeat is 1) return AddText(token);
 
         for (var i = 0; i < repeat; i++)
         {
@@ -50,9 +50,9 @@ public sealed class MessageContentBuilder : IMessageContentBuilder
     {
         ArgumentOutOfRangeException.ThrowIfNegative(repeat, nameof(repeat));
 
-        if (repeat == 0) return this;
+        if (repeat is 0) return this;
 
-        if (repeat == 1) return AddText(new ReadOnlySpan<char>(ref token));
+        if (repeat is 1) return AddText(new ReadOnlySpan<char>(ref token));
 
         _text.Append(token, repeat);
 

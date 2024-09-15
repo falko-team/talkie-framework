@@ -6,7 +6,7 @@ public interface IMessageTextStyle
 
     int Length { get; }
 
-    IMessageTextStyle MutateTextRange(int offset, int length);
+    IMessageTextStyle MutateTextRange(Func<MessageTextRange, MessageTextRange> rangeMutator);
 
     public static IMessageTextStyle FromTextRange(MessageTextRange range) => throw new NotImplementedException();
 }
