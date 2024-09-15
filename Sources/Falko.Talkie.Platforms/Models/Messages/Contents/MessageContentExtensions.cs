@@ -1,3 +1,5 @@
+using Talkie.Models.Messages.Contents.Styles;
+
 namespace Talkie.Models.Messages.Contents;
 
 public static partial class MessageContentExtensions

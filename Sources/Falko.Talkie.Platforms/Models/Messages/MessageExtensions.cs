@@ -1,4 +1,4 @@
-using Talkie.Models.Messages.Contents;
+using Talkie.Models.Messages.Contents.Styles;
 
 namespace Talkie.Models.Messages;
 
