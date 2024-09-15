@@ -10,5 +10,7 @@ public static class MessageEntities
 
     public const string Strikethrough = "strikethrough";
 
+    public const string BlockQuote = "blockquote";
+
     public const string Code = "code";
 }
