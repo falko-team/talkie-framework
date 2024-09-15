@@ -3,7 +3,7 @@ using Talkie.Bridges.Telegram.Models;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models;
-using Talkie.Models.Messages.Contents;
+using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
 using Talkie.Platforms;
@@ -120,6 +120,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 UnderlineTextStyle => new MessageEntity(MessageEntities.Underline, style.Offset, style.Length),
                 StrikethroughTextStyle => new MessageEntity(MessageEntities.Strikethrough, style.Offset, style.Length),
                 MonospaceTextStyle => new MessageEntity(MessageEntities.Code, style.Offset, style.Length),
+                QuotationTextStyle => new MessageEntity(MessageEntities.BlockQuote, style.Offset, style.Length),
                 _ => null
             })
             .Where(entity => entity is not null)

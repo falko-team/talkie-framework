@@ -5,6 +5,7 @@ using Talkie.Flows;
 using Talkie.Handlers;
 using Talkie.Models.Messages;
 using Talkie.Models.Messages.Contents;
+using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Outgoing;
 using Talkie.Models.Profiles;
 using Talkie.Pipelines.Handling;
@@ -30,8 +31,8 @@ public sealed class StartSubscriber : IBehaviorsSubscriber
                 .PublishMessageAsync(message => message
                     .SetReply(context.GetMessage())
                     .SetContent(content => content
-                        .AddText(nameof(Talkie), BoldTextStyle.FromRange)
-                        .AddText(" is a library for building chatbots in .NET.", ItalicTextStyle.FromRange)),
+                        .AddText(nameof(Talkie), BoldTextStyle.FromTextRange)
+                        .AddText(" is a library for building chatbots in .NET.", ItalicTextStyle.FromTextRange)),
                     cancellationToken)
                 .AsValueTask())
             .HandleAsync((context, cancellationToken) => context
@@ -39,10 +40,10 @@ public sealed class StartSubscriber : IBehaviorsSubscriber
                 .PublishMessageAsync(message => message
                     .SetReply(context.GetMessage())
                     .SetContent(content => content
-                        .AddText("Hello, ", BoldTextStyle.FromRange)
+                        .AddText("Hello, ", BoldTextStyle.FromTextRange)
                         .AddText(GetProfileDisplayName(context
                             .GetMessage()
-                            .PublisherProfile), MonospaceTextStyle.FromRange)),
+                            .PublisherProfile), MonospaceTextStyle.FromTextRange)),
                     cancellationToken)
                 .AsValueTask()))
             .UnsubscribeWith(disposables);

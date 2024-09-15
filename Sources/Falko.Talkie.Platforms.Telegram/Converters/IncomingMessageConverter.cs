@@ -1,6 +1,7 @@
 using Talkie.Bridges.Telegram.Models;
 using Talkie.Localizations;
 using Talkie.Models.Messages.Contents;
+using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
@@ -53,6 +54,7 @@ internal static class IncomingMessageConverter
                 MessageEntities.Underline => new UnderlineTextStyle(entity.Offset, entity.Length),
                 MessageEntities.Strikethrough => new StrikethroughTextStyle(entity.Offset, entity.Length),
                 MessageEntities.Code => new MonospaceTextStyle(entity.Offset, entity.Length),
+                MessageEntities.BlockQuote => new QuotationTextStyle(entity.Offset, entity.Length),
                 _ => null
             })
             .Where(style => style is not null)
