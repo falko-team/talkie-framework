@@ -9,15 +9,23 @@ public static class MessageTextRangeExtensions
         return new MessageTextRange(style.Offset, style.Length);
     }
 
-    public static ReadOnlySpan<char> GetTextRange(this MessageContent content, MessageTextRange textRange)
+    public static ReadOnlySpan<char> GetTextRange(this MessageContent content, int offset, int length)
     {
-        if (textRange.Offset >= content.Text.Length) return ReadOnlySpan<char>.Empty;
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
 
-        var length = Math.Min(textRange.Length, content.Text.Length - textRange.Offset);
+        if (offset >= content.Text.Length) return ReadOnlySpan<char>.Empty;
+
+        length = Math.Min(length, content.Text.Length - offset);
 
         if (length <= 0) return ReadOnlySpan<char>.Empty;
 
-        return content.Text.AsSpan(textRange.Offset, length);
+        return content.Text.AsSpan(offset, length);
+    }
+
+    public static ReadOnlySpan<char> GetTextRange(this MessageContent content, MessageTextRange textRange)
+    {
+        return GetTextRange(content, textRange.Offset, textRange.Length);
     }
 
     public static ReadOnlySpan<char> GetTextRange(this MessageContent content, IMessageTextStyle style)
