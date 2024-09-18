@@ -6,7 +6,6 @@ using System.Text.Json;
 using Talkie.Bridges.Telegram.Configurations;
 using Talkie.Bridges.Telegram.Models;
 using Talkie.Bridges.Telegram.Serialization;
-using Talkie.Validations;
 using ClientHttpVersion = System.Net.HttpVersion;
 
 namespace Talkie.Bridges.Telegram.Clients;
@@ -30,7 +29,8 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     public TelegramBotApiClient(ServerConfiguration serverConfiguration,
         ClientConfiguration? clientConfiguration = null)
     {
-        serverConfiguration.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(serverConfiguration);
+
         clientConfiguration ??= new ClientConfiguration();
 
         _useGzipCompression = clientConfiguration.UseGzipCompression;
@@ -41,8 +41,8 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     async Task<TResult> ITelegramBotApiClient.SendAsync<TResult, TRequest>(string methodName, TRequest request,
         CancellationToken cancellationToken)
     {
-        methodName.ThrowIf().NullOrWhiteSpace();
-        request.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
 
         using var scopedCancellationTokenSource = CancellationTokenSource
             .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
@@ -55,14 +55,14 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     async Task<TResult> ITelegramBotApiClient.SendAsync<TResult>(string methodName,
         CancellationToken cancellationToken)
     {
-        methodName.ThrowIf().NullOrWhiteSpace();
+        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
 
         using var scopedCancellationTokenSource = CancellationTokenSource
             .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
 
         var result = await SendRepeatableRequestAsync<TResult, object>(methodName, null, scopedCancellationTokenSource.Token);
 
-        result.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(result);
 
         return result;
     }
@@ -70,8 +70,8 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     Task ITelegramBotApiClient.SendAsync<TRequest>(string methodName, TRequest request,
         CancellationToken cancellationToken)
     {
-        methodName.ThrowIf().NullOrWhiteSpace();
-        request.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
 
         using var scopedCancellationTokenSource = CancellationTokenSource
             .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);

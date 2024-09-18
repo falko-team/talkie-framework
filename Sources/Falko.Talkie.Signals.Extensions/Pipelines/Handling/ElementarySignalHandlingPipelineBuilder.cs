@@ -1,7 +1,6 @@
 using Talkie.Handlers;
 using Talkie.Pipelines.Intercepting;
 using Talkie.Sequences;
-using Talkie.Validations;
 
 namespace Talkie.Pipelines.Handling;
 
@@ -13,7 +12,7 @@ public abstract class ElementarySignalHandlingPipelineBuilder : IReadOnlySignalH
 
     protected ElementarySignalHandlingPipelineBuilder(ISignalInterceptingPipeline? interceptingPipeline)
     {
-        interceptingPipeline.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(interceptingPipeline);
 
         Intercepting = interceptingPipeline;
     }

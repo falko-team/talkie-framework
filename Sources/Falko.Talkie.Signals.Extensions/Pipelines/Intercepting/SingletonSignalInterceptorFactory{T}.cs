@@ -1,6 +1,5 @@
 using Talkie.Interceptors;
 using Talkie.Signals;
-using Talkie.Validations;
 
 namespace Talkie.Pipelines.Intercepting;
 
@@ -14,7 +13,7 @@ public sealed class SingletonSignalInterceptorFactory<T> : ISignalInterceptorFac
 
     public SingletonSignalInterceptorFactory(Func<ISignalInterceptor<T>> interceptorFactory)
     {
-        interceptorFactory.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(interceptorFactory);
 
         _interceptorFactory = interceptorFactory;
     }
@@ -31,7 +30,7 @@ public sealed class SingletonSignalInterceptorFactory<T> : ISignalInterceptorFac
 
             _interceptorFactory = null;
 
-            _interceptor.ThrowIf().Null();
+            ArgumentNullException.ThrowIfNull(_interceptor);
 
             return _interceptor;
         }

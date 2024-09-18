@@ -3,7 +3,6 @@ using Talkie.Exceptions;
 using Talkie.Pipelines.Handling;
 using Talkie.Sequences;
 using Talkie.Signals;
-using Talkie.Validations;
 
 namespace Talkie.Flows;
 
@@ -26,7 +25,7 @@ public sealed class SignalFlow : ISignalFlow
 
     public Subscription Subscribe(ISignalHandlingPipeline handlingPipeline)
     {
-        _disposed.ThrowIf().Disposed<SignalFlow>();
+        ObjectDisposedException.ThrowIf(_disposed, this);
 
         lock (_locker)
         {

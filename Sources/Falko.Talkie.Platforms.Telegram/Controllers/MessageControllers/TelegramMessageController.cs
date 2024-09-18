@@ -8,7 +8,6 @@ using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
 using Talkie.Platforms;
 using Talkie.Sequences;
-using Talkie.Validations;
 
 namespace Talkie.Controllers.MessageControllers;
 
@@ -20,7 +19,10 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default)
     {
-        message.Content.ThrowIf().Null();
+        if (message.Content.IsEmpty)
+        {
+            throw new ArgumentException("Message content is required.");
+        }
 
         if (environmentProfileIdentifier.TryGetValue(out long receiverId) is not true)
         {
