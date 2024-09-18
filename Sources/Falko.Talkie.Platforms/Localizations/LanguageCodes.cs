@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using System.Reflection;
-using Talkie.Validations;
 
 namespace Talkie.Localizations;
 
@@ -31,7 +30,7 @@ public static class LanguageCodes
 
     public static bool TryGetLanguageCode(string languageCodeName, out LanguageCode languageCode)
     {
-        languageCodeName.ThrowIf().NullOrEmpty();
+        ArgumentException.ThrowIfNullOrWhiteSpace(languageCodeName);
 
         if (LanguageCodesByLanguageCodeName.TryGetValue(languageCodeName, out languageCode)) return true;
 

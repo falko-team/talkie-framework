@@ -9,7 +9,6 @@ using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 using Talkie.Sequences;
-using Talkie.Validations;
 
 namespace Talkie.Connections;
 
@@ -23,8 +22,8 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
     protected override async Task WhenInitializingAsync(CancellationToken cancellationToken)
     {
-        serverConfiguration.ThrowIf().Null();
-        clientConfiguration.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(serverConfiguration);
+        ArgumentNullException.ThrowIfNull(clientConfiguration);
 
         var client = new TelegramBotApiClient(serverConfiguration, clientConfiguration);
 

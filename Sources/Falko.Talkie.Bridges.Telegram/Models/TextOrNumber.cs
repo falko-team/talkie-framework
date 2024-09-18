@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using Talkie.Validations;
 
 namespace Talkie.Bridges.Telegram.Models;
 
@@ -16,7 +15,7 @@ public readonly struct TextOrNumber
 
     public TextOrNumber(string text)
     {
-        text.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(text);
 
         _text = text;
         _containsTextOrNumber = true;

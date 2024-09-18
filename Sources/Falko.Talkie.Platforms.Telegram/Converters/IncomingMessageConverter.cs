@@ -6,15 +6,14 @@ using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 using Talkie.Sequences;
-using Talkie.Validations;
-
 namespace Talkie.Converters;
 
 internal static class IncomingMessageConverter
 {
     public static TelegramIncomingMessage? Convert(TelegramPlatform platform, Message message)
     {
-        message.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(platform);
+        ArgumentNullException.ThrowIfNull(message);
 
         if (message.Text is not { } text) return null;
 

@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Talkie.Validations;
 
 namespace Talkie.Models;
 
@@ -116,7 +115,7 @@ public readonly struct Identifier
     /// <exception cref="ArgumentNullException">The value is <b>Null</b>.</exception>
     public static Identifier FromValue<T>(T value) where T : notnull
     {
-        value.ThrowIf().Null();
+        ArgumentNullException.ThrowIfNull(value);
 
         return new Identifier(value);
     }

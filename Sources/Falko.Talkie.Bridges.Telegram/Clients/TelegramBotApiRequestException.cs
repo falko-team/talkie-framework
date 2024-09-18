@@ -2,7 +2,6 @@ using System.Collections.Frozen;
 using System.Net;
 using System.Text;
 using Talkie.Bridges.Telegram.Models;
-using Talkie.Validations;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
@@ -14,8 +13,8 @@ public sealed partial class TelegramBotApiRequestException : Exception
         IReadOnlyDictionary<string, TextOrNumber>? parameters = null,
         Exception? innerException = null) : base(null, innerException)
     {
-        client.ThrowIf().Null();
-        methodName.ThrowIf().NullOrWhiteSpace();
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
 
         Client = client;
         MethodName = methodName;
