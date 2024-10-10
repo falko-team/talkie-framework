@@ -9,7 +9,7 @@
         <File Path="Examples.Build.props" />
         <File Path="Logo512.png" />
         <File Path="Sources.Build.props" />
-        <File Path="Tests.Build.props"d />
+        <File Path="Tests.Build.props" />
         <File Path="Directory.Packages.props" />
         <File Path="Icon64.png" />
         <File Path="License.md" />
