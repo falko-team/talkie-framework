@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Talkie.Models;
+namespace Talkie.Models.Identifiers;
 
 /// <summary>
 /// Represents an identifier that contains not type strongly value and provides a <b>type-safe</b> way to work with it.

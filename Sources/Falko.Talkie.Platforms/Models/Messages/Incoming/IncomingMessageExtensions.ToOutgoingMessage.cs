@@ -9,7 +9,7 @@ public static partial class IncomingMessageExtensions
         return new OutgoingMessage
         {
             Content = message.Content,
-            Reply = message.Reply?.ToGlobalIdentifier()
+            Reply = message.Reply?.ToGlobalMessageIdentifier()
         };
     }
 

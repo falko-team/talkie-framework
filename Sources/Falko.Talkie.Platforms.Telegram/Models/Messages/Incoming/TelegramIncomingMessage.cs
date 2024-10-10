@@ -1,6 +1,9 @@
+using Talkie.Models.Identifiers;
+using Talkie.Models.Messages.Attachments;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
+using Talkie.Sequences;
 
 namespace Talkie.Models.Messages.Incoming;
 
@@ -23,6 +26,8 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
     public MessageContent Content { get; init; } = MessageContent.Empty;
 
     public TelegramIncomingMessage? Reply { get; init; }
+
+    public IReadOnlySequence<IMessageAttachment> Attachments { get; }
 
     IIncomingMessage? IIncomingMessage.Reply => Reply;
 

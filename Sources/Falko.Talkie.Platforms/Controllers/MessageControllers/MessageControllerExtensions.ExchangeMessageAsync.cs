@@ -1,4 +1,6 @@
 using Talkie.Models;
+using Talkie.Models.Identifiers;
+using Talkie.Models.Messages;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
@@ -8,7 +10,7 @@ namespace Talkie.Controllers.MessageControllers;
 public static partial class MessageControllerExtensions
 {
     public static Task<IIncomingMessage> ExchangeMessageAsync(this IMessageController controller,
-        GlobalIdentifier messageIdentifier,
+        GlobalMessageIdentifier messageIdentifier,
         MessageContent content,
         CancellationToken cancellationToken = default)
     {
@@ -18,7 +20,7 @@ public static partial class MessageControllerExtensions
     }
 
     public static Task<IIncomingMessage> ExchangeMessageAsync(this IMessageController controller,
-        GlobalIdentifier messageIdentifier,
+        GlobalMessageIdentifier messageIdentifier,
         IOutgoingMessageMutator messageMutator,
         CancellationToken cancellationToken = default)
     {
@@ -28,7 +30,7 @@ public static partial class MessageControllerExtensions
     }
 
     public static Task<IIncomingMessage> ExchangeMessageAsync(this IMessageController controller,
-        GlobalIdentifier messageIdentifier,
+        GlobalMessageIdentifier messageIdentifier,
         IOutgoingMessageBuilder messageBuilder,
         CancellationToken cancellationToken = default)
     {
@@ -38,7 +40,7 @@ public static partial class MessageControllerExtensions
     }
 
     public static Task<IIncomingMessage> ExchangeMessageAsync(this IMessageController controller,
-        GlobalIdentifier messageIdentifier,
+        GlobalMessageIdentifier messageIdentifier,
         Func<IOutgoingMessageBuilder, IOutgoingMessageBuilder> messageBuilderFactory,
         CancellationToken cancellationToken = default)
     {
