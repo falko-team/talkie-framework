@@ -1,11 +1,16 @@
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Common;
 using Talkie.Localizations;
+using Talkie.Models.Identifiers;
+using Talkie.Models.Messages.Attachments;
+using Talkie.Models.Messages.Attachments.Variants;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 using Talkie.Sequences;
+
 namespace Talkie.Converters;
 
 internal static class IncomingMessageConverter
@@ -15,15 +20,22 @@ internal static class IncomingMessageConverter
         ArgumentNullException.ThrowIfNull(platform);
         ArgumentNullException.ThrowIfNull(message);
 
-        if (message.Text is not { } text) return null;
+        if (message.Text.IsNullOrEmpty() is false)
+        {
+            return Convert(message.Text!, platform, message);
+        }
 
-        var sender = GetSender(message);
+        if (message.Sticker is { Type: StickerType.Regular } sticker)
+        {
+            return Convert(sticker, platform, message);
+        }
 
-        var environment = GetEnvironment(message);
+        return null;
+    }
 
-        if (sender is null || environment is null) return null;
-
-        var received = DateTime.UtcNow;
+    private static TelegramIncomingMessage? Convert(string text, TelegramPlatform platform, Message message)
+    {
+        if (TryGetProfilesContext(message, out var profilesContext) is false) return null;
 
         return new TelegramIncomingMessage
         {
@@ -33,12 +45,81 @@ internal static class IncomingMessageConverter
             Reply = message.ReplyToMessage is { } reply
                 ? Convert(platform, reply)
                 : null,
-            PublisherProfile = sender,
-            PublishedDate = message.Date ?? received,
+            PublisherProfile = profilesContext.PublisherProfile,
+            PublishedDate = message.Date ?? DateTime.UtcNow,
             ReceiverProfile = platform.BotProfile,
-            ReceivedDate = received,
-            EnvironmentProfile = environment
+            ReceivedDate = DateTime.UtcNow,
+            EnvironmentProfile = profilesContext.EnvironmentProfile
         };
+    }
+
+    private static TelegramIncomingMessage? Convert(Sticker sticker, TelegramPlatform platform, Message message)
+    {
+        if (TryGetProfilesContext(message, out var profilesContext) is false) return null;
+
+        var variants = new Sequence<TelegramMessageImageVariant>()
+        {
+            Convert(sticker)
+        };
+
+        if (sticker.Thumbnail is { } thumbnail)
+        {
+            variants.Add(Convert(thumbnail));
+        }
+
+        var telegramSticker = new TelegramMessageStickerAttachment
+        {
+            Identifier = Identifier.FromValue(sticker.FileUniqueId),
+            Variants = variants.ToFrozenSequence()
+        };
+
+        return new TelegramIncomingMessage
+        {
+            Identifier = message.MessageId,
+            Platform = platform,
+            Reply = message.ReplyToMessage is { } reply
+                ? Convert(platform, reply)
+                : null,
+            Content = MessageContent.Empty,
+            Attachments = new FrozenSequence<IMessageAttachment>([telegramSticker]),
+            PublisherProfile = profilesContext.PublisherProfile,
+            PublishedDate = message.Date ?? DateTime.UtcNow,
+            ReceiverProfile = platform.BotProfile,
+            ReceivedDate = DateTime.UtcNow,
+            EnvironmentProfile = profilesContext.EnvironmentProfile
+        };
+    }
+
+    private static TelegramMessageImageVariant Convert(PhotoSize photo, string? name = null, string? type = null)
+    {
+        return new TelegramMessageImageVariant
+        {
+            Identifier = Identifier.FromValue(photo.FileUniqueId),
+            Size = photo.FileSize ?? 0,
+            Area = new Area(photo.Width, photo.Height)
+        };
+    }
+
+    private static bool TryGetProfilesContext(Message message, out ProfilesContext context)
+    {
+        var sender = GetSender(message);
+
+        if (sender is null)
+        {
+            context = default;
+            return false;
+        }
+
+        var environment = GetEnvironment(message);
+
+        if (environment is null)
+        {
+            context = default;
+            return false;
+        }
+
+        context = new ProfilesContext(sender, environment);
+        return true;
     }
 
     private static IReadOnlyCollection<IMessageTextStyle> GetStyles(IReadOnlyCollection<MessageEntity>? entities)
@@ -131,4 +212,6 @@ internal static class IncomingMessageConverter
 
         return null;
     }
+
+    private readonly record struct ProfilesContext(IProfile PublisherProfile, IProfile EnvironmentProfile);
 }

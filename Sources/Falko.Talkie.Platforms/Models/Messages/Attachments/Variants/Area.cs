@@ -2,7 +2,7 @@ namespace Talkie.Models.Messages.Attachments.Variants;
 
 public readonly partial struct Area : IComparable<Area>, IComparable, IEquatable<Area>
 {
-    public Area(long width, long height)
+    public Area(int width, int height)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(width, nameof(width));
         ArgumentOutOfRangeException.ThrowIfNegative(height, nameof(height));
@@ -11,9 +11,9 @@ public readonly partial struct Area : IComparable<Area>, IComparable, IEquatable
         Height = height;
     }
 
-    public readonly long Width;
+    public readonly int Width;
 
-    public readonly long Height;
+    public readonly int Height;
 
     public int CompareTo(Area other) => Width > Height
         ? Width.CompareTo(other.Width)

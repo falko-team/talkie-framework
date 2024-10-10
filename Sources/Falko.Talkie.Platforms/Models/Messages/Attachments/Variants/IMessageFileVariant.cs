@@ -12,5 +12,5 @@ public interface IMessageFileVariant
 
     long Size { get; }
 
-    Stream ToStream();
+    Task<Stream> ToStreamAsync(CancellationToken cancellationToken = default);
 }

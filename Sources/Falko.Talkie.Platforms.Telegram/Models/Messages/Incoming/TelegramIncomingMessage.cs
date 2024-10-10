@@ -27,7 +27,8 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
 
     public TelegramIncomingMessage? Reply { get; init; }
 
-    public IReadOnlySequence<IMessageAttachment> Attachments { get; }
+    public IReadOnlySequence<IMessageAttachment> Attachments { get; init; }
+        = FrozenSequence<IMessageAttachment>.Empty;
 
     IIncomingMessage? IIncomingMessage.Reply => Reply;
 
