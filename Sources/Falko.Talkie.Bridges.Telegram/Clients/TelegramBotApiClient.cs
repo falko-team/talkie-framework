@@ -88,6 +88,26 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         return SendRepeatableRequestAsync<object, object>(methodName, null, scopedCancellationTokenSource.Token);
     }
 
+    public async Task<Stream> DownloadAsync(string fileIdentifier, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(fileIdentifier);
+
+        try
+        {
+            return await _client.GetStreamAsync(fileIdentifier, cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            throw new TelegramBotApiRequestException(this, "download",
+                description: "Unknown error occurred while downloading file",
+                innerException: exception);
+        }
+    }
+
     private async Task<TResult?> SendRepeatableRequestAsync<TResult, TRequest>(string method, TRequest? request,
         CancellationToken cancellationToken)
     {

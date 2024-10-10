@@ -1,10 +1,12 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class GetUpdates(
+public sealed class GetUpdates
+(
     int? offset = null,
     int? limit = null,
     long? timeout = null,
-    IReadOnlyList<string>? allowedUpdates = null)
+    IReadOnlyList<string>? allowedUpdates = null
+)
 {
     public readonly long? Offset = offset;
 

@@ -1,11 +1,13 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class SendMessage(
+public sealed class SendMessage
+(
     long chatId,
     string text,
     IReadOnlyCollection<MessageEntity>? entities = null,
     bool? disableNotification = null,
-    ReplyParameters? replyParameters = null)
+    ReplyParameters? replyParameters = null
+)
 {
 
     public readonly long ChatId = chatId;

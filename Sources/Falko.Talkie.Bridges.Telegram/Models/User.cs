@@ -1,6 +1,7 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class User(
+public sealed class User
+(
     long id,
     bool isBot,
     string firstName,
@@ -12,7 +13,8 @@ public sealed class User(
     bool? canJoinGroups = null,
     bool? canReadAllGroupMessages = null,
     bool? supportsInlineQueries = null,
-    bool? canConnectToBusiness = null)
+    bool? canConnectToBusiness = null
+)
 {
     public readonly long Id = id;
 
