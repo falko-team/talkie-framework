@@ -3,6 +3,8 @@ using Talkie.Bridges.Telegram.Models;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models;
+using Talkie.Models.Identifiers;
+using Talkie.Models.Messages;
 using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
@@ -51,7 +53,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         return sentIncomingMessage;
     }
 
-    public async Task<IIncomingMessage> ExchangeMessageAsync(GlobalIdentifier messageIdentifier, IOutgoingMessage message,
+    public async Task<IIncomingMessage> ExchangeMessageAsync(GlobalMessageIdentifier messageIdentifier, IOutgoingMessage message,
         CancellationToken cancellationToken = default)
     {
         if (message.Content.IsEmpty)
@@ -90,7 +92,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         return sentIncomingMessage;
     }
 
-    public async Task UnpublishMessageAsync(GlobalIdentifier messageIdentifier, CancellationToken cancellationToken = default)
+    public async Task UnpublishMessageAsync(GlobalMessageIdentifier messageIdentifier, CancellationToken cancellationToken = default)
     {
         if (messageIdentifier.EnvironmentIdentifier.TryGetValue(out long environmentTelegramId) is false)
         {

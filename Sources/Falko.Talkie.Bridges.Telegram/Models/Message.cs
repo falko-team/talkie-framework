@@ -1,6 +1,7 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class Message(
+public sealed class Message
+(
     long messageId,
     long? messageThreadId = null,
     User? from = null,
@@ -14,7 +15,9 @@ public sealed class Message(
     bool? isAutomaticForward = null,
     Message? replyToMessage = null,
     string? text = null,
-    IReadOnlyCollection<MessageEntity>? entities = null)
+    IReadOnlyCollection<MessageEntity>? entities = null,
+    Sticker? sticker = null
+)
 {
     public readonly long MessageId = messageId;
 
@@ -43,4 +46,6 @@ public sealed class Message(
     public readonly string? Text = text;
 
     public readonly IReadOnlyCollection<MessageEntity>? Entities = entities;
+
+    public readonly Sticker? Sticker = sticker;
 }

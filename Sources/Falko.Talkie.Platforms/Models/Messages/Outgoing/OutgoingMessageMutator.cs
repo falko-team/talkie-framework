@@ -1,3 +1,4 @@
+using Talkie.Models.Identifiers;
 using Talkie.Models.Messages.Contents;
 
 namespace Talkie.Models.Messages.Outgoing;
@@ -8,7 +9,7 @@ public sealed class OutgoingMessageMutator : IOutgoingMessageMutator
 
     private MessageContent _content;
 
-    private GlobalIdentifier? _reply;
+    private GlobalMessageIdentifier? _reply;
 
     internal OutgoingMessageMutator(OutgoingMessage message)
     {
@@ -17,7 +18,7 @@ public sealed class OutgoingMessageMutator : IOutgoingMessageMutator
         _reply = message.Reply;
     }
 
-    public IOutgoingMessageMutator MutateReply(Func<GlobalIdentifier?, GlobalIdentifier?> replyMutationFactory)
+    public IOutgoingMessageMutator MutateReply(Func<GlobalMessageIdentifier?, GlobalMessageIdentifier?> replyMutationFactory)
     {
         _reply = replyMutationFactory(_reply);
 

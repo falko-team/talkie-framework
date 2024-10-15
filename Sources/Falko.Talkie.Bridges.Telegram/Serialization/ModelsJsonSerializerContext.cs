@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Talkie.Bridges.Telegram.Models;
+using File = Talkie.Bridges.Telegram.Models.File;
 
 namespace Talkie.Bridges.Telegram.Serialization;
 
@@ -17,6 +18,8 @@ namespace Talkie.Bridges.Telegram.Serialization;
 [JsonSerializable(typeof(Response<User>))]
 [JsonSerializable(typeof(Response<Message>))]
 [JsonSerializable(typeof(Response<bool>))]
+[JsonSerializable(typeof(Response<File>))]
+[JsonSerializable(typeof(GetFile))]
 [JsonSerializable(typeof(GetUpdates))]
 [JsonSerializable(typeof(SendMessage))]
 [JsonSerializable(typeof(DeleteMessage))]

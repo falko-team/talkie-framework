@@ -16,7 +16,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddContent(this IMessageContentBuilder builder, MessageContent content,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         if (content.IsEmpty) return builder;
 

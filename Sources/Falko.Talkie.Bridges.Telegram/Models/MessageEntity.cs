@@ -1,9 +1,11 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class MessageEntity(
+public sealed class MessageEntity
+(
     string type,
     int offset,
-    int length)
+    int length
+)
 {
     public readonly string Type = type;
 

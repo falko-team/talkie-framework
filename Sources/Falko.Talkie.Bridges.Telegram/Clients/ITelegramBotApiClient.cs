@@ -13,4 +13,7 @@ public interface ITelegramBotApiClient : IDisposable
 
     internal Task SendAsync(string methodName,
         CancellationToken cancellationToken = default);
+
+    Task<Stream> DownloadAsync(string file,
+        CancellationToken cancellationToken = default);
 }

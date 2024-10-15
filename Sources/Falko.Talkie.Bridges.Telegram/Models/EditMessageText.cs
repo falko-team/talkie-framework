@@ -1,11 +1,13 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class EditMessageText(
+public sealed class EditMessageText
+(
     string text,
     long? chatId = null,
     long? messageId = null,
     string? businessConnectionId = null,
-    IReadOnlyCollection<MessageEntity>? entities = null)
+    IReadOnlyCollection<MessageEntity>? entities = null
+)
 {
     public readonly string Text = text;
 

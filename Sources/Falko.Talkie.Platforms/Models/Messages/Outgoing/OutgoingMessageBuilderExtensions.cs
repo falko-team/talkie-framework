@@ -46,6 +46,6 @@ public static partial class OutgoingMessageBuilderExtensions
     public static IOutgoingMessageBuilder SetReply(this IOutgoingMessageBuilder builder,
         IIncomingMessage message)
     {
-        return builder.SetReply(message.ToGlobalIdentifier());
+        return builder.SetReply(message.ToGlobalMessageIdentifier());
     }
 }

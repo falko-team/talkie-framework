@@ -3,6 +3,7 @@ using Talkie.Controllers;
 using Talkie.Controllers.MessageControllers;
 using Talkie.Flows;
 using Talkie.Models;
+using Talkie.Models.Identifiers;
 using Talkie.Models.Profiles;
 
 namespace Talkie.Platforms;
