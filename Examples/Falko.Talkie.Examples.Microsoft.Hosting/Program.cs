@@ -16,5 +16,5 @@ await new HostBuilder()
         .SetSignalsLogging())
     .AddIntegrations<TelegramSubscriber>()
     .AddBehaviors<HelloSubscriber>()
-    .AddBehaviors<StickerDownloaderSubscriber>()
+    .AddBehaviors<StartSubscriber>()
     .RunConsoleAsync();

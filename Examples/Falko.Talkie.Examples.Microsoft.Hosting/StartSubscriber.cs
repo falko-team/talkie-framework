@@ -4,8 +4,6 @@ using Talkie.Disposables;
 using Talkie.Flows;
 using Talkie.Handlers;
 using Talkie.Models.Messages;
-using Talkie.Models.Messages.Attachments;
-using Talkie.Models.Messages.Attachments.Variants;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Outgoing;
@@ -17,7 +15,7 @@ using Talkie.Subscribers;
 
 namespace Talkie.Examples;
 
-public sealed class StickerDownloaderSubscriber : IBehaviorsSubscriber
+public sealed class StartSubscriber : IBehaviorsSubscriber
 {
     public void Subscribe(ISignalFlow flow, IRegisterOnlyDisposableScope disposables, CancellationToken cancellationToken)
     {
