@@ -1,13 +1,15 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class Update(
+public sealed class Update
+(
     int updateId,
     Message? message = null,
     Message? editedMessage = null,
     Message? channelPost = null,
     Message? editedChannelPost = null,
     Message? businessMessage = null,
-    Message? editedBusinessMessage = null)
+    Message? editedBusinessMessage = null
+)
 {
     public readonly int UpdateId = updateId;
 

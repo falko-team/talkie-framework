@@ -5,7 +5,7 @@ namespace Talkie.Models.Messages.Contents;
 public static partial class MessageContentBuilderExtensions
 {
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, char text,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         AddStylesForText(builder, 1, styleFactories);
 
@@ -13,7 +13,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, string text,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         AddStylesForText(builder, text.Length, styleFactories);
 
@@ -21,7 +21,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, ReadOnlyMemory<char> text,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         AddStylesForText(builder, text.Length, styleFactories);
 
@@ -29,7 +29,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, ReadOnlySpan<char> text,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         AddStylesForText(builder, text.Length, styleFactories);
 
@@ -37,7 +37,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, string token, int repeat,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(repeat, nameof(repeat));
 
@@ -53,7 +53,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, char token, int repeat,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(repeat, nameof(repeat));
 
@@ -67,7 +67,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, ReadOnlySpan<char> token, int repeat,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         if (token.Length is 0) return builder;
 
@@ -75,7 +75,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, ReadOnlyMemory<char> token, int repeat,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         if (token.Length is 0) return builder;
 
@@ -83,7 +83,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, string separator, IReadOnlyCollection<string> tokens,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         if (separator.Length is 0) return builder;
 
@@ -95,7 +95,7 @@ public static partial class MessageContentBuilderExtensions
     }
 
     public static IMessageContentBuilder AddText(this IMessageContentBuilder builder, char separator, IReadOnlyCollection<string> tokens,
-        params Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
         if (tokens.Count is 1) return builder.AddText(tokens.First(), styleFactories);
 
@@ -110,9 +110,9 @@ public static partial class MessageContentBuilderExtensions
     }
 
     private static void AddStylesForText(IMessageContentBuilder builder, int length,
-        Func<MessageTextRange, IMessageTextStyle>[] styleFactories)
+        IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
     {
-        if (styleFactories.Length is 0) return;
+        if (styleFactories.Count is 0) return;
 
         var styleContext = new MessageTextRange(builder.TextLength, length);
 

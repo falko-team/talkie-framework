@@ -1,13 +1,15 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class Chat(
+public sealed class Chat
+(
     long id,
     ChatType type,
     string? title = null,
     string? firstName = null,
     string? lastName = null,
     string? username = null,
-    bool? isForum = null)
+    bool? isForum = null
+)
 {
     public readonly long Id = id;
 

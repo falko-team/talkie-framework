@@ -1,4 +1,6 @@
 using Talkie.Models;
+using Talkie.Models.Identifiers;
+using Talkie.Models.Messages;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
 
@@ -10,10 +12,10 @@ public interface IMessageController : IController<Identifier>
         MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default);
 
-    Task<IIncomingMessage> ExchangeMessageAsync(GlobalIdentifier messageIdentifier,
+    Task<IIncomingMessage> ExchangeMessageAsync(GlobalMessageIdentifier messageIdentifier,
         IOutgoingMessage message,
         CancellationToken cancellationToken = default);
 
-    Task UnpublishMessageAsync(GlobalIdentifier messageIdentifier,
+    Task UnpublishMessageAsync(GlobalMessageIdentifier messageIdentifier,
         CancellationToken cancellationToken = default);
 }

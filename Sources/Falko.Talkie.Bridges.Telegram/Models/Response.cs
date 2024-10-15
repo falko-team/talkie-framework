@@ -1,16 +1,12 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class Response<T>(
-    bool ok,
-    T? result = default,
+public sealed class Response
+(
     int? errorCode = null,
     string? description = null,
-    IReadOnlyDictionary<string, TextOrNumber>? parameters = null)
+    IReadOnlyDictionary<string, TextOrNumber>? parameters = null
+)
 {
-    public readonly bool Ok = ok;
-
-    public readonly T? Result = result;
-
     public readonly int? ErrorCode = errorCode;
 
     public readonly string? Description = description;

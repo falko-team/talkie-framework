@@ -1,8 +1,10 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class ReplyParameters(
+public sealed class ReplyParameters
+(
     long messageId,
-    long? chatId = null)
+    long? chatId = null
+)
 {
     public readonly long MessageId = messageId;
 

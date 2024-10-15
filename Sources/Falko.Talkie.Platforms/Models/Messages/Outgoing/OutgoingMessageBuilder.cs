@@ -1,3 +1,4 @@
+using Talkie.Models.Identifiers;
 using Talkie.Models.Messages.Contents;
 
 namespace Talkie.Models.Messages.Outgoing;
@@ -6,9 +7,9 @@ public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 {
     public MessageContent Content { get; private set; }
 
-    public GlobalIdentifier? Reply { get; private set; }
+    public GlobalMessageIdentifier? Reply { get; private set; }
 
-    public IOutgoingMessageBuilder SetReply(GlobalIdentifier reply)
+    public IOutgoingMessageBuilder SetReply(GlobalMessageIdentifier reply)
     {
         Reply = reply;
 
