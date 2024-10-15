@@ -2,7 +2,7 @@ using Talkie.Models.Identifiers;
 
 namespace Talkie.Models.Messages.Attachments.Variants;
 
-public sealed record TelegramMessageImageVariant : IMessageImageVariant
+public sealed record TelegramMessageImageVariant(Func<CancellationToken, Task<Stream>> streamFactory) : IMessageImageVariant
 {
     public required Identifier Identifier { get; init; }
 
@@ -14,8 +14,5 @@ public sealed record TelegramMessageImageVariant : IMessageImageVariant
 
     public long Size { get; init; }
 
-    public Task<Stream> ToStreamAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<Stream> ToStreamAsync(CancellationToken cancellationToken = default) => streamFactory(cancellationToken);
 }

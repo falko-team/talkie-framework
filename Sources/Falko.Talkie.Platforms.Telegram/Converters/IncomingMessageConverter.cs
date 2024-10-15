@@ -1,3 +1,4 @@
+using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
 using Talkie.Common;
 using Talkie.Localizations;
@@ -57,14 +58,16 @@ internal static class IncomingMessageConverter
     {
         if (TryGetProfilesContext(message, out var profilesContext) is false) return null;
 
+        var client = platform.BotApiClient;
+
         var variants = new Sequence<TelegramMessageImageVariant>()
         {
-            Convert(sticker)
+            Convert(sticker, client)
         };
 
         if (sticker.Thumbnail is { } thumbnail)
         {
-            variants.Add(Convert(thumbnail));
+            variants.Add(Convert(thumbnail, client));
         }
 
         var telegramSticker = new TelegramMessageStickerAttachment
@@ -90,9 +93,16 @@ internal static class IncomingMessageConverter
         };
     }
 
-    private static TelegramMessageImageVariant Convert(PhotoSize photo, string? name = null, string? type = null)
+    private static TelegramMessageImageVariant Convert(PhotoSize photo, ITelegramBotApiClient client)
     {
-        return new TelegramMessageImageVariant
+        return new TelegramMessageImageVariant(async cancellation =>
+        {
+            var file = await client.GetFileAsync(new GetFile(photo.FileId), cancellation);
+
+            if (file.FilePath is null) throw new InvalidOperationException();
+
+            return await client.DownloadAsync(file.FilePath, cancellation);
+        })
         {
             Identifier = Identifier.FromValue(photo.FileUniqueId),
             Size = photo.FileSize ?? 0,

@@ -20,9 +20,9 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
 
     private readonly HttpClient _client;
 
-    private readonly bool _useGzipCompression;
+    private readonly ServerConfiguration _serverConfiguration;
 
-    private readonly TimeSpan _defaultRetryDelay;
+    private readonly ClientConfiguration _clientConfiguration;
 
     private readonly CancellationTokenSource _globalCancellationTokenSource = new();
 
@@ -31,11 +31,10 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
     {
         ArgumentNullException.ThrowIfNull(serverConfiguration);
 
-        clientConfiguration ??= new ClientConfiguration();
+        _serverConfiguration = serverConfiguration;
+        _clientConfiguration = clientConfiguration ?? new ClientConfiguration();
 
-        _useGzipCompression = clientConfiguration.UseGzipCompression;
-        _defaultRetryDelay = serverConfiguration.DefaultRetryDelay;
-        _client = BuildHttpClient(serverConfiguration, clientConfiguration);
+        _client = BuildHttpClient(serverConfiguration, _clientConfiguration);
     }
 
     async Task<TResult> ITelegramBotApiClient.SendAsync<TResult, TRequest>(string methodName, TRequest request,
@@ -88,13 +87,66 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         return SendRepeatableRequestAsync<object, object>(methodName, null, scopedCancellationTokenSource.Token);
     }
 
-    public async Task<Stream> DownloadAsync(string fileIdentifier, CancellationToken cancellationToken = default)
+    public async Task<Stream> DownloadAsync(string file, CancellationToken cancellationToken)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(fileIdentifier);
+        ArgumentException.ThrowIfNullOrWhiteSpace(file);
+
+        while (true)
+        {
+            try
+            {
+                return await DownloadCoreAsync(file, cancellationToken);
+            }
+            catch (TelegramBotApiRequestException exception)
+            {
+                if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
+                {
+                    throw;
+                }
+
+                await WaitRetryDelayAsync(exception, cancellationToken);
+            }
+        }
+    }
+
+    private async Task<Stream> DownloadCoreAsync(string file,
+        CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
 
         try
         {
-            return await _client.GetStreamAsync(fileIdentifier, cancellationToken);
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, file)
+            {
+                RequestUri = new Uri($"https://{_serverConfiguration.Domain}/file/bot{_serverConfiguration.Token}/{file}")
+            };
+
+            Console.WriteLine(httpRequest.RequestUri);
+
+            var httpResponse = await _client.SendAsync(httpRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return await httpResponse.Content.ReadAsStreamAsync(cancellationToken);
+            }
+
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+
+            if (JsonSerializer.Deserialize(jsonResponse, typeof(Response), ModelsJsonSerializerContext.Default)
+                is not Response response)
+            {
+                throw new TelegramBotApiRequestException(this, "download",
+                    description: "Failed to deserialize response");
+            }
+
+            throw new TelegramBotApiRequestException(this, "download",
+                statusCode: (HttpStatusCode?)response.ErrorCode,
+                description: response.Description,
+                parameters: response.Parameters);
+        }
+        catch (TelegramBotApiRequestException)
+        {
+            throw;
         }
         catch (OperationCanceledException)
         {
@@ -103,7 +155,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         catch (Exception exception)
         {
             throw new TelegramBotApiRequestException(this, "download",
-                description: "Unknown error occurred while downloading file",
+                description: "Unknown error occurred while sending request",
                 innerException: exception);
         }
     }
@@ -195,7 +247,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
 
         var requestJson = JsonSerializer.Serialize(request, typeof(TRequest), ModelsJsonSerializerContext.Default);
 
-        if (_useGzipCompression)
+        if (_clientConfiguration.UseGzipCompression)
         {
             await AddGzipJsonContentAsync(httpRequest, requestJson, cancellationToken);
         }
@@ -242,7 +294,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         }
         else
         {
-            await Task.Delay(_defaultRetryDelay, cancellationToken);
+            await Task.Delay(_serverConfiguration.DefaultRetryDelay, cancellationToken);
         }
     }
 
