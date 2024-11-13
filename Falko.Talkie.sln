@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{71996DB2-3C64-47AD-8956-FFE6024886D8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{A9CB452E-D878-4F88-B390-78310EF6ED47}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{6238E320-EE4C-D029-EFFE-AD85B0DD0E70}"
 	ProjectSection(SolutionItems) = preProject
 		Common.Build.props = Common.Build.props
 		nuget.config = nuget.config
@@ -19,103 +17,105 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{A9CB45
 		License.md = License.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Core", "Sources\Falko.Talkie.Core\Falko.Talkie.Core.csproj", "{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{72AC464F-63B3-964F-C686-0B1ED26D9D4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals", "Sources\Falko.Talkie.Signals\Falko.Talkie.Signals.csproj", "{67DE8184-0444-4B6C-9570-3BDF1FD94276}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Benchmarks.Sequences", "Benchmarks\Falko.Talkie.Benchmarks.Sequences\Falko.Talkie.Benchmarks.Sequences.csproj", "{F49A3119-94B3-7E9D-AF08-46AF621124CC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{DE9BDD77-C26B-4618-9723-E176586CFBCC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{04BF01EB-A0C9-A7E8-1C45-816513DF424F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{057D15CE-3FA1-41A1-8C15-8832D4A33611}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Examples.Microsoft.Hosting", "Examples\Falko.Talkie.Examples.Microsoft.Hosting\Falko.Talkie.Examples.Microsoft.Hosting.csproj", "{E5CE9730-8A3B-6EAA-1F42-B5FCBDF0843A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Benchmarks.Sequences", "Benchmarks\Falko.Talkie.Benchmarks.Sequences\Falko.Talkie.Benchmarks.Sequences.csproj", "{CAD7A274-0631-4CB8-8D7C-35D7E03FA760}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6CCA9BF3-E306-428F-9B49-3BF4779DE028}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Bridges.Telegram", "Sources\Falko.Talkie.Bridges.Telegram\Falko.Talkie.Bridges.Telegram.csproj", "{2376C083-2017-FA43-D643-BDEC7434D733}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Tests.Sequences", "Tests\Falko.Talkie.Tests.Sequences\Falko.Talkie.Tests.Sequences.csproj", "{4BA068AD-BB4B-40AC-B5C6-771EA1CF19C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Core", "Sources\Falko.Talkie.Core\Falko.Talkie.Core.csproj", "{EE184AA3-5725-20E2-6C37-AD991E24E7F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Extensions", "Sources\Falko.Talkie.Signals.Extensions\Falko.Talkie.Signals.Extensions.csproj", "{4F6613AA-A7DE-43BB-81BA-700F8A2DE765}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Microsoft.Hosting", "Sources\Falko.Talkie.Microsoft.Hosting\Falko.Talkie.Microsoft.Hosting.csproj", "{3AD699A8-31C8-138E-7A6B-0E5B7F73389A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Platforms", "Sources\Falko.Talkie.Platforms\Falko.Talkie.Platforms.csproj", "{DFB41BB0-49E7-4F7C-968D-282E92A46D3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Platforms.Telegram", "Sources\Falko.Talkie.Platforms.Telegram\Falko.Talkie.Platforms.Telegram.csproj", "{F1786BF7-5E62-CA80-8FD3-BE84154FF8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Platforms.Telegram", "Sources\Falko.Talkie.Platforms.Telegram\Falko.Talkie.Platforms.Telegram.csproj", "{791B0028-509B-41CA-AA0C-08630A0D397A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Platforms", "Sources\Falko.Talkie.Platforms\Falko.Talkie.Platforms.csproj", "{0B543AE2-1685-7F4B-7AA1-7C7D4B2D35F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Examples.Microsoft.Hosting", "Examples\Falko.Talkie.Examples.Microsoft.Hosting\Falko.Talkie.Examples.Microsoft.Hosting.csproj", "{70165E7E-EA74-4F28-8E63-89F181C76CC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Adapters", "Sources\Falko.Talkie.Signals.Adapters\Falko.Talkie.Signals.Adapters.csproj", "{D301063E-A124-A6ED-4707-D360C94AB865}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Connections", "Sources\Falko.Talkie.Signals.Connections\Falko.Talkie.Signals.Connections.csproj", "{61BAF50C-1232-4694-9374-A4930A0EC111}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Connections", "Sources\Falko.Talkie.Signals.Connections\Falko.Talkie.Signals.Connections.csproj", "{ED0BDC22-CC7B-FA40-D73F-DAEAC53BF9F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Adapters", "Sources\Falko.Talkie.Signals.Adapters\Falko.Talkie.Signals.Adapters.csproj", "{32351F71-4633-41A3-81CE-1BD70C5028C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals.Extensions", "Sources\Falko.Talkie.Signals.Extensions\Falko.Talkie.Signals.Extensions.csproj", "{92219BD0-EEBE-6E91-F28C-CA8DBCABE057}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Bridges.Telegram", "Sources\Falko.Talkie.Bridges.Telegram\Falko.Talkie.Bridges.Telegram.csproj", "{1BAA0E4A-072F-4DEA-9820-17D796542F01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Signals", "Sources\Falko.Talkie.Signals\Falko.Talkie.Signals.csproj", "{FDDD8B4D-EBFD-7864-D2C1-334A26FC1DAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Microsoft.Hosting", "Sources\Falko.Talkie.Microsoft.Hosting\Falko.Talkie.Microsoft.Hosting.csproj", "{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{11ECFD39-D994-1242-B871-A28B2AA04A73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falko.Talkie.Tests.Sequences", "Tests\Falko.Talkie.Tests.Sequences\Falko.Talkie.Tests.Sequences.csproj", "{8C90B910-2E79-CBFA-F9BE-9B154B656B71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-		{67DE8184-0444-4B6C-9570-3BDF1FD94276} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-		{CAD7A274-0631-4CB8-8D7C-35D7E03FA760} = {057D15CE-3FA1-41A1-8C15-8832D4A33611}
-		{4BA068AD-BB4B-40AC-B5C6-771EA1CF19C7} = {6CCA9BF3-E306-428F-9B49-3BF4779DE028}
-		{4F6613AA-A7DE-43BB-81BA-700F8A2DE765} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-		{DFB41BB0-49E7-4F7C-968D-282E92A46D3D} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-		{791B0028-509B-41CA-AA0C-08630A0D397A} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-		{70165E7E-EA74-4F28-8E63-89F181C76CC7} = {DE9BDD77-C26B-4618-9723-E176586CFBCC}
-		{61BAF50C-1232-4694-9374-A4930A0EC111} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-		{32351F71-4633-41A3-81CE-1BD70C5028C6} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-		{1BAA0E4A-072F-4DEA-9820-17D796542F01} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64} = {71996DB2-3C64-47AD-8956-FFE6024886D8}
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{696A99D6-3EFD-4EF9-9ECC-EE30F051EE87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67DE8184-0444-4B6C-9570-3BDF1FD94276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67DE8184-0444-4B6C-9570-3BDF1FD94276}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67DE8184-0444-4B6C-9570-3BDF1FD94276}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67DE8184-0444-4B6C-9570-3BDF1FD94276}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAD7A274-0631-4CB8-8D7C-35D7E03FA760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAD7A274-0631-4CB8-8D7C-35D7E03FA760}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAD7A274-0631-4CB8-8D7C-35D7E03FA760}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAD7A274-0631-4CB8-8D7C-35D7E03FA760}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BA068AD-BB4B-40AC-B5C6-771EA1CF19C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BA068AD-BB4B-40AC-B5C6-771EA1CF19C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BA068AD-BB4B-40AC-B5C6-771EA1CF19C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BA068AD-BB4B-40AC-B5C6-771EA1CF19C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F6613AA-A7DE-43BB-81BA-700F8A2DE765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F6613AA-A7DE-43BB-81BA-700F8A2DE765}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F6613AA-A7DE-43BB-81BA-700F8A2DE765}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F6613AA-A7DE-43BB-81BA-700F8A2DE765}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFB41BB0-49E7-4F7C-968D-282E92A46D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFB41BB0-49E7-4F7C-968D-282E92A46D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFB41BB0-49E7-4F7C-968D-282E92A46D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFB41BB0-49E7-4F7C-968D-282E92A46D3D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{791B0028-509B-41CA-AA0C-08630A0D397A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{791B0028-509B-41CA-AA0C-08630A0D397A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{791B0028-509B-41CA-AA0C-08630A0D397A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{791B0028-509B-41CA-AA0C-08630A0D397A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70165E7E-EA74-4F28-8E63-89F181C76CC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70165E7E-EA74-4F28-8E63-89F181C76CC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70165E7E-EA74-4F28-8E63-89F181C76CC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70165E7E-EA74-4F28-8E63-89F181C76CC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61BAF50C-1232-4694-9374-A4930A0EC111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61BAF50C-1232-4694-9374-A4930A0EC111}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61BAF50C-1232-4694-9374-A4930A0EC111}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61BAF50C-1232-4694-9374-A4930A0EC111}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32351F71-4633-41A3-81CE-1BD70C5028C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32351F71-4633-41A3-81CE-1BD70C5028C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32351F71-4633-41A3-81CE-1BD70C5028C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32351F71-4633-41A3-81CE-1BD70C5028C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1BAA0E4A-072F-4DEA-9820-17D796542F01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{201BFD12-EF68-4BFC-96C8-EEF650ED8C64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F49A3119-94B3-7E9D-AF08-46AF621124CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F49A3119-94B3-7E9D-AF08-46AF621124CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F49A3119-94B3-7E9D-AF08-46AF621124CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F49A3119-94B3-7E9D-AF08-46AF621124CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5CE9730-8A3B-6EAA-1F42-B5FCBDF0843A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5CE9730-8A3B-6EAA-1F42-B5FCBDF0843A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5CE9730-8A3B-6EAA-1F42-B5FCBDF0843A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5CE9730-8A3B-6EAA-1F42-B5FCBDF0843A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2376C083-2017-FA43-D643-BDEC7434D733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2376C083-2017-FA43-D643-BDEC7434D733}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2376C083-2017-FA43-D643-BDEC7434D733}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2376C083-2017-FA43-D643-BDEC7434D733}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE184AA3-5725-20E2-6C37-AD991E24E7F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE184AA3-5725-20E2-6C37-AD991E24E7F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE184AA3-5725-20E2-6C37-AD991E24E7F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE184AA3-5725-20E2-6C37-AD991E24E7F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AD699A8-31C8-138E-7A6B-0E5B7F73389A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AD699A8-31C8-138E-7A6B-0E5B7F73389A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AD699A8-31C8-138E-7A6B-0E5B7F73389A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AD699A8-31C8-138E-7A6B-0E5B7F73389A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1786BF7-5E62-CA80-8FD3-BE84154FF8F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1786BF7-5E62-CA80-8FD3-BE84154FF8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1786BF7-5E62-CA80-8FD3-BE84154FF8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1786BF7-5E62-CA80-8FD3-BE84154FF8F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B543AE2-1685-7F4B-7AA1-7C7D4B2D35F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B543AE2-1685-7F4B-7AA1-7C7D4B2D35F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B543AE2-1685-7F4B-7AA1-7C7D4B2D35F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B543AE2-1685-7F4B-7AA1-7C7D4B2D35F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D301063E-A124-A6ED-4707-D360C94AB865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D301063E-A124-A6ED-4707-D360C94AB865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D301063E-A124-A6ED-4707-D360C94AB865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D301063E-A124-A6ED-4707-D360C94AB865}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED0BDC22-CC7B-FA40-D73F-DAEAC53BF9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED0BDC22-CC7B-FA40-D73F-DAEAC53BF9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED0BDC22-CC7B-FA40-D73F-DAEAC53BF9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED0BDC22-CC7B-FA40-D73F-DAEAC53BF9F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92219BD0-EEBE-6E91-F28C-CA8DBCABE057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92219BD0-EEBE-6E91-F28C-CA8DBCABE057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92219BD0-EEBE-6E91-F28C-CA8DBCABE057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92219BD0-EEBE-6E91-F28C-CA8DBCABE057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDDD8B4D-EBFD-7864-D2C1-334A26FC1DAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDDD8B4D-EBFD-7864-D2C1-334A26FC1DAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDDD8B4D-EBFD-7864-D2C1-334A26FC1DAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDDD8B4D-EBFD-7864-D2C1-334A26FC1DAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C90B910-2E79-CBFA-F9BE-9B154B656B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C90B910-2E79-CBFA-F9BE-9B154B656B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C90B910-2E79-CBFA-F9BE-9B154B656B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C90B910-2E79-CBFA-F9BE-9B154B656B71}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F49A3119-94B3-7E9D-AF08-46AF621124CC} = {72AC464F-63B3-964F-C686-0B1ED26D9D4C}
+		{E5CE9730-8A3B-6EAA-1F42-B5FCBDF0843A} = {04BF01EB-A0C9-A7E8-1C45-816513DF424F}
+		{2376C083-2017-FA43-D643-BDEC7434D733} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{EE184AA3-5725-20E2-6C37-AD991E24E7F7} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{3AD699A8-31C8-138E-7A6B-0E5B7F73389A} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{F1786BF7-5E62-CA80-8FD3-BE84154FF8F8} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{0B543AE2-1685-7F4B-7AA1-7C7D4B2D35F5} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{D301063E-A124-A6ED-4707-D360C94AB865} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{ED0BDC22-CC7B-FA40-D73F-DAEAC53BF9F2} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{92219BD0-EEBE-6E91-F28C-CA8DBCABE057} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{FDDD8B4D-EBFD-7864-D2C1-334A26FC1DAE} = {E36BB52E-D9C2-DA3C-B0C5-2E677E3167DF}
+		{8C90B910-2E79-CBFA-F9BE-9B154B656B71} = {11ECFD39-D994-1242-B871-A28B2AA04A73}
 	EndGlobalSection
 EndGlobal
