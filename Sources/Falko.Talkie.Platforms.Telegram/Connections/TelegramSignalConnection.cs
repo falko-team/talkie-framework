@@ -34,7 +34,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
         {
             self = GetSelf(await client.GetMeAsync(cancellationToken));
         }
-        catch (TelegramRequestException exception)
+        catch (TelegramException exception)
         {
             if (exception.StatusCode is null or not HttpStatusCode.Unauthorized) throw;
 

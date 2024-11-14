@@ -1,6 +1,7 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public class TelegramPhotoSize(
+public class TelegramPhotoSize
+(
     string fileId,
     string fileUniqueId,
     int width,

@@ -42,7 +42,7 @@ public sealed class TelegramClient : ITelegramClient
             .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
 
         return await SendRepeatableRequestAsync<TResult, TRequest>(methodName, request, scopedCancellationTokenSource.Token)
-            ?? throw new TelegramRequestException(this, methodName,
+            ?? throw new TelegramException(this, methodName,
                 description: "Result is null");
     }
 
@@ -92,7 +92,7 @@ public sealed class TelegramClient : ITelegramClient
             {
                 return await DownloadCoreAsync(file, cancellationToken);
             }
-            catch (TelegramRequestException exception)
+            catch (TelegramException exception)
             {
                 if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
                 {
@@ -132,16 +132,16 @@ public sealed class TelegramClient : ITelegramClient
             if (JsonSerializer.Deserialize(jsonResponse, typeof(TelegramResponse), ModelsJsonSerializerContext.Default)
                 is not TelegramResponse response)
             {
-                throw new TelegramRequestException(this, "download",
+                throw new TelegramException(this, "download",
                     description: "Failed to deserialize response");
             }
 
-            throw new TelegramRequestException(this, "download",
+            throw new TelegramException(this, "download",
                 statusCode: (HttpStatusCode?)response.ErrorCode,
                 description: response.Description,
                 parameters: response.Parameters);
         }
-        catch (TelegramRequestException)
+        catch (TelegramException)
         {
             throw;
         }
@@ -151,7 +151,7 @@ public sealed class TelegramClient : ITelegramClient
         }
         catch (Exception exception)
         {
-            throw new TelegramRequestException(this, "download",
+            throw new TelegramException(this, "download",
                 description: "Unknown error occurred while sending request",
                 innerException: exception);
         }
@@ -166,7 +166,7 @@ public sealed class TelegramClient : ITelegramClient
             {
                 return await SendRequestAsync<TResult, TRequest>(method, request, cancellationToken);
             }
-            catch (TelegramRequestException exception)
+            catch (TelegramException exception)
             {
                 if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
                 {
@@ -191,7 +191,7 @@ public sealed class TelegramClient : ITelegramClient
 
             return await ParseHttpResponseAsync<TResult>(method, httpResponse, cancellationToken);
         }
-        catch (TelegramRequestException)
+        catch (TelegramException)
         {
             throw;
         }
@@ -201,7 +201,7 @@ public sealed class TelegramClient : ITelegramClient
         }
         catch (Exception exception)
         {
-            throw new TelegramRequestException(this, method,
+            throw new TelegramException(this, method,
                 description: "Unknown error occurred while sending request",
                 innerException: exception);
         }
@@ -220,13 +220,13 @@ public sealed class TelegramClient : ITelegramClient
         if (JsonSerializer.Deserialize(responseJson, typeof(TelegramResponse<TResult>), ModelsJsonSerializerContext.Default)
             is not TelegramResponse<TResult> response)
         {
-            throw new TelegramRequestException(this, method,
+            throw new TelegramException(this, method,
                 description: "Failed to deserialize response");
         }
 
         if (response.Ok is false || httpResponse.IsSuccessStatusCode is false)
         {
-            throw new TelegramRequestException(this, method,
+            throw new TelegramException(this, method,
                 statusCode: (HttpStatusCode?)response.ErrorCode,
                 description: response.Description,
                 parameters: response.Parameters);
@@ -279,12 +279,12 @@ public sealed class TelegramClient : ITelegramClient
         httpRequest.Content.Headers.ContentEncoding.Add(Gzip);
     }
 
-    private async Task WaitRetryDelayAsync(TelegramRequestException exception,
+    private async Task WaitRetryDelayAsync(TelegramException exception,
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (exception.Parameters.TryGetValue(TelegramRequestException.ParameterNames.RetryAfter, out var delay)
+        if (exception.Parameters.TryGetValue(TelegramException.ParameterNames.RetryAfter, out var delay)
             && delay.TryGetNumber(out var delaySeconds))
         {
             await Task.Delay(TimeSpan.FromSeconds(delaySeconds), cancellationToken);

@@ -1,6 +1,6 @@
 namespace Talkie.Bridges.Telegram.Clients;
 
-public sealed partial class TelegramRequestException
+public sealed partial class TelegramException
 {
     public static class ParameterNames
     {
