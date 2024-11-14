@@ -5,7 +5,7 @@ using Talkie.Bridges.Telegram.Models;
 
 namespace Talkie.Bridges.Telegram.Serialization;
 
-internal sealed class ReadOnlyStringsToTextOrNumberDictionaryConverter
+internal sealed class TextOrNumberValueDictionaryConverter
     : JsonConverter<IReadOnlyDictionary<string, TextOrNumberValue>>
 {
     public override IReadOnlyDictionary<string, TextOrNumberValue> Read(ref Utf8JsonReader reader,
