@@ -54,7 +54,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
             {
                 var updates = await Platform!.BotApiClient.GetUpdatesAsync(new TelegramGetUpdatesRequest(offset), cancellationToken);
 
-                if (updates.Length is 0) continue;
+                if (updates.Count is 0) continue;
 
                 offset = updates[^1].UpdateId + 1;
 
