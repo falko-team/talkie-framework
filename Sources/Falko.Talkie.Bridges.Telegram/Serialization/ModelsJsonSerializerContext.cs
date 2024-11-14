@@ -14,7 +14,7 @@ namespace Talkie.Bridges.Telegram.Serialization;
     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
     DictionaryKeyPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
-    Converters = [typeof(DateTimeUnixConverter), typeof(ReadOnlyStringsToTextOrNumberDictionaryConverter)])]
+    Converters = [typeof(DateTimeUnixConverter), typeof(TextOrNumberValueDictionaryConverter)])]
 [JsonSerializable(typeof(TelegramResponse<TelegramUpdate[]>))]
 [JsonSerializable(typeof(TelegramResponse<TelegramUser>))]
 [JsonSerializable(typeof(TelegramResponse<TelegramMessage>))]
