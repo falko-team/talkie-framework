@@ -5,9 +5,9 @@ using Talkie.Bridges.Telegram.Models;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
-public sealed partial class TelegramRequestException : Exception
+public sealed partial class TelegramException : Exception
 {
-    public TelegramRequestException(ITelegramClient client, string methodName,
+    public TelegramException(ITelegramClient client, string methodName,
         HttpStatusCode? statusCode = null,
         string? description = null,
         IReadOnlyDictionary<string, TextOrNumberValue>? parameters = null,
