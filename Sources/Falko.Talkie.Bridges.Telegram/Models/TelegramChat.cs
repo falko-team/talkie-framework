@@ -1,9 +1,9 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class Chat
+public sealed class TelegramChat
 (
     long id,
-    ChatType type,
+    TelegramChatType type,
     string? title = null,
     string? firstName = null,
     string? lastName = null,
@@ -13,7 +13,7 @@ public sealed class Chat
 {
     public readonly long Id = id;
 
-    public readonly ChatType Type = type;
+    public readonly TelegramChatType Type = type;
 
     public readonly string? Title = title;
 

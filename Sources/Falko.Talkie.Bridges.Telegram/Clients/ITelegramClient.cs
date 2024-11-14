@@ -1,6 +1,6 @@
 namespace Talkie.Bridges.Telegram.Clients;
 
-public interface ITelegramBotApiClient : IDisposable
+public interface ITelegramClient : IDisposable
 {
     internal Task<TResult> SendAsync<TResult, TRequest>(string methodName, TRequest request,
         CancellationToken cancellationToken = default);

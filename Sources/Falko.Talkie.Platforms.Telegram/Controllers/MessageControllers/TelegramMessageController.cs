@@ -1,5 +1,6 @@
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Requests;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models;
@@ -31,7 +32,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Environment id is required.");
         }
 
-        var sendMessage = new SendMessage(
+        var sendMessage = new TelegramSendMessageRequest(
             receiverId,
             message.Content,
             GetEnitites(message.Content.Styles),
@@ -71,7 +72,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message id is required.");
         }
 
-        var editMessageText = new EditMessageText(
+        var editMessageText = new TelegramEditMessageTextRequest(
             message.Content.Text,
             entities: GetEnitites(message.Content.Styles),
             messageId: messageTelegramId,
@@ -104,7 +105,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message id is required.");
         }
 
-        var deleteMessage = new DeleteMessage(messageTelegramId, environmentTelegramId);
+        var deleteMessage = new TelegramDeleteMessageRequest(messageTelegramId, environmentTelegramId);
 
         if (await platform.BotApiClient.DeleteMessageAsync(deleteMessage, cancellationToken) is false)
         {
@@ -112,27 +113,27 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         }
     }
 
-    private IReadOnlyCollection<MessageEntity>? GetEnitites(IReadOnlyCollection<IMessageTextStyle> styles)
+    private IReadOnlyCollection<TelegramMessageEntity>? GetEnitites(IReadOnlyCollection<IMessageTextStyle> styles)
     {
         if (styles.Count is 0) return null;
 
         return styles
             .Select(style => style switch
             {
-                BoldTextStyle => new MessageEntity(MessageEntities.Bold, style.Offset, style.Length),
-                ItalicTextStyle => new MessageEntity(MessageEntities.Italic, style.Offset, style.Length),
-                UnderlineTextStyle => new MessageEntity(MessageEntities.Underline, style.Offset, style.Length),
-                StrikethroughTextStyle => new MessageEntity(MessageEntities.Strikethrough, style.Offset, style.Length),
-                MonospaceTextStyle => new MessageEntity(MessageEntities.Code, style.Offset, style.Length),
-                QuotationTextStyle => new MessageEntity(MessageEntities.BlockQuote, style.Offset, style.Length),
+                BoldTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Bold, style.Offset, style.Length),
+                ItalicTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Italic, style.Offset, style.Length),
+                UnderlineTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Underline, style.Offset, style.Length),
+                StrikethroughTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Strikethrough, style.Offset, style.Length),
+                MonospaceTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Code, style.Offset, style.Length),
+                QuotationTextStyle => new TelegramMessageEntity(TelegramMessageEntities.BlockQuote, style.Offset, style.Length),
                 _ => null
             })
             .Where(entity => entity is not null)
-            .Cast<MessageEntity>()
+            .Cast<TelegramMessageEntity>()
             .ToFrozenSequence();
     }
 
-    private ReplyParameters? GetReplyParameters(IOutgoingMessage outgoingMessage)
+    private TelegramReplyParameters? GetReplyParameters(IOutgoingMessage outgoingMessage)
     {
         if (outgoingMessage.Reply is null)
         {
@@ -146,7 +147,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
 
         if (environmentProfileIdentifier == outgoingMessage.Reply.EnvironmentIdentifier)
         {
-            return new ReplyParameters(replyMessageTelegramId);
+            return new TelegramReplyParameters(replyMessageTelegramId);
         }
 
         if (outgoingMessage.Reply.EnvironmentIdentifier.TryGetValue(out long replyMessageEnvironmentTelegramId) is false)
@@ -154,6 +155,6 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Reply message environment telegram id is required.");
         }
 
-        return new ReplyParameters(replyMessageTelegramId, replyMessageEnvironmentTelegramId);
+        return new TelegramReplyParameters(replyMessageTelegramId, replyMessageEnvironmentTelegramId);
     }
 }

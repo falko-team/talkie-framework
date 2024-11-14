@@ -1,6 +1,6 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class ReplyParameters
+public sealed class TelegramReplyParameters
 (
     long messageId,
     long? chatId = null

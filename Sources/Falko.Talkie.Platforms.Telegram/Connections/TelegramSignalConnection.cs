@@ -2,6 +2,7 @@ using System.Net;
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Configurations;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Requests;
 using Talkie.Concurrent;
 using Talkie.Converters;
 using Talkie.Flows;
@@ -13,8 +14,8 @@ using Talkie.Sequences;
 namespace Talkie.Connections;
 
 public sealed class TelegramSignalConnection(ISignalFlow flow,
-    ServerConfiguration serverConfiguration,
-    ClientConfiguration clientConfiguration) : SignalConnection(flow), IWithPlatformSignalConnection
+    TelegramServerConfiguration serverConfiguration,
+    TelegramClientConfiguration clientConfiguration) : SignalConnection(flow), IWithPlatformSignalConnection
 {
     public TelegramPlatform? Platform { get; private set; }
 
@@ -25,7 +26,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
         ArgumentNullException.ThrowIfNull(serverConfiguration);
         ArgumentNullException.ThrowIfNull(clientConfiguration);
 
-        var client = new TelegramBotApiClient(serverConfiguration, clientConfiguration);
+        var client = new TelegramClient(new TelegramConfiguration(serverConfiguration, clientConfiguration));
 
         TelegramBotProfile self;
 
@@ -33,7 +34,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
         {
             self = GetSelf(await client.GetMeAsync(cancellationToken));
         }
-        catch (TelegramBotApiRequestException exception)
+        catch (TelegramRequestException exception)
         {
             if (exception.StatusCode is null or not HttpStatusCode.Unauthorized) throw;
 
@@ -51,13 +52,16 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
         {
             try
             {
-                var updates = await Platform!.BotApiClient.GetUpdatesAsync(new GetUpdates(offset), cancellationToken);
+                var updates = await Platform!.BotApiClient.GetUpdatesAsync(new TelegramGetUpdatesRequest(offset), cancellationToken);
 
                 if (updates.Length is 0) continue;
 
                 offset = updates[^1].UpdateId + 1;
 
-                _ = updates.ToFrozenSequence().Parallelize().ForEachAsync((update, scopedCancellationToken) =>
+                _ = updates
+                    .ToFrozenSequence()
+                    .Parallelize()
+                    .ForEachAsync((update, scopedCancellationToken) =>
                         ProcessUpdate(Platform!, update, scopedCancellationToken), cancellationToken)
                     .ContinueWith(task =>
                         HandleProcessUpdateFaults(cancellationToken, task), TaskContinuationOptions.ExecuteSynchronously);
@@ -71,12 +75,12 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
 
     protected override Task WhenDisposingAsync()
     {
-        Platform!.BotApiClient.Dispose();
+        Platform?.Dispose();
 
         return Task.CompletedTask;
     }
 
-    private async ValueTask ProcessUpdate(TelegramPlatform platform, Update update, CancellationToken cancellationToken)
+    private async ValueTask ProcessUpdate(TelegramPlatform platform, TelegramUpdate update, CancellationToken cancellationToken)
     {
         if (update.Message is { } message)
         {
@@ -111,7 +115,7 @@ public sealed class TelegramSignalConnection(ISignalFlow flow,
         }
     }
 
-    private static TelegramBotProfile GetSelf(User self)
+    private static TelegramBotProfile GetSelf(TelegramUser self)
     {
         return new TelegramBotProfile
         {

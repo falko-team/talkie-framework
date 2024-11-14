@@ -1,6 +1,6 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class User
+public sealed class TelegramUser
 (
     long id,
     bool isBot,

@@ -1,6 +1,8 @@
+using Talkie.Bridges.Telegram.Models;
+
 namespace Talkie.Bridges.Telegram.Configurations;
 
-public sealed record ClientConfiguration
+public sealed record TelegramClientConfiguration
 {
     public HttpProtocol ProtocolVersion { get; init; } = HttpProtocol.Version20;
 

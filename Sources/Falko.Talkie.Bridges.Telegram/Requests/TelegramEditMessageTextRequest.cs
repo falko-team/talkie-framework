@@ -1,12 +1,14 @@
-namespace Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Models;
 
-public sealed class EditMessageText
+namespace Talkie.Bridges.Telegram.Requests;
+
+public sealed class TelegramEditMessageTextRequest
 (
     string text,
     long? chatId = null,
     long? messageId = null,
     string? businessConnectionId = null,
-    IReadOnlyCollection<MessageEntity>? entities = null
+    IReadOnlyCollection<TelegramMessageEntity>? entities = null
 )
 {
     public readonly string Text = text;
@@ -17,5 +19,5 @@ public sealed class EditMessageText
 
     public readonly string? BusinessConnectionId = businessConnectionId;
 
-    public readonly IReadOnlyCollection<MessageEntity>? Entities = entities;
+    public readonly IReadOnlyCollection<TelegramMessageEntity>? Entities = entities;
 }

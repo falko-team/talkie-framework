@@ -1,6 +1,6 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class MessageEntity
+public sealed class TelegramMessageEntity
 (
     string type,
     int offset,

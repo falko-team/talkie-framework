@@ -3,9 +3,9 @@ using System.Globalization;
 
 namespace Talkie.Bridges.Telegram.Models;
 
-public readonly struct TextOrNumber
+public readonly struct TextOrNumberValue
 {
-    public static readonly TextOrNumber Empty = default;
+    public static readonly TextOrNumberValue Empty = default;
 
     private readonly string? _text;
 
@@ -13,7 +13,7 @@ public readonly struct TextOrNumber
 
     private readonly bool _containsTextOrNumber;
 
-    public TextOrNumber(string text)
+    public TextOrNumberValue(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
 
@@ -21,7 +21,7 @@ public readonly struct TextOrNumber
         _containsTextOrNumber = true;
     }
 
-    public TextOrNumber(long number)
+    public TextOrNumberValue(long number)
     {
         _number = number;
         _containsTextOrNumber = true;

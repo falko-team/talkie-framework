@@ -1,29 +1,29 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public sealed class Sticker
+public sealed class TelegramSticker
 (
     string fileId,
     string fileUniqueId,
-    StickerType type,
+    TelegramStickerType type,
     int width,
     int height,
     bool isAnimated,
     bool isVideo,
-    PhotoSize? thumbnail = null,
+    TelegramPhotoSize? thumbnail = null,
     string? emoji = null,
     string? setName = null,
     string? customEmojiId = null,
     bool? needsRepainting = null,
     long? fileSize = null
-) : PhotoSize(fileId, fileUniqueId, width, height, fileSize)
+) : TelegramPhotoSize(fileId, fileUniqueId, width, height, fileSize)
 {
-    public readonly StickerType Type = type;
+    public readonly TelegramStickerType Type = type;
 
     public readonly bool IsAnimated = isAnimated;
 
     public readonly bool IsVideo = isVideo;
 
-    public readonly PhotoSize? Thumbnail = thumbnail;
+    public readonly TelegramPhotoSize? Thumbnail = thumbnail;
 
     public readonly string? Emoji = emoji;
 
