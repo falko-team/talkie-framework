@@ -1,5 +1,6 @@
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Requests;
 using Talkie.Common;
 using Talkie.Localizations;
 using Talkie.Models.Identifiers;
@@ -16,7 +17,7 @@ namespace Talkie.Converters;
 
 internal static class IncomingMessageConverter
 {
-    public static TelegramIncomingMessage? Convert(TelegramPlatform platform, Message message)
+    public static TelegramIncomingMessage? Convert(TelegramPlatform platform, TelegramMessage message)
     {
         ArgumentNullException.ThrowIfNull(platform);
         ArgumentNullException.ThrowIfNull(message);
@@ -26,7 +27,7 @@ internal static class IncomingMessageConverter
             return Convert(message.Text!, platform, message);
         }
 
-        if (message.Sticker is { Type: StickerType.Regular } sticker)
+        if (message.Sticker is { Type: TelegramStickerType.Regular } sticker)
         {
             return Convert(sticker, platform, message);
         }
@@ -34,7 +35,7 @@ internal static class IncomingMessageConverter
         return null;
     }
 
-    private static TelegramIncomingMessage? Convert(string text, TelegramPlatform platform, Message message)
+    private static TelegramIncomingMessage? Convert(string text, TelegramPlatform platform, TelegramMessage message)
     {
         if (TryGetProfilesContext(message, out var profilesContext) is false) return null;
 
@@ -54,7 +55,7 @@ internal static class IncomingMessageConverter
         };
     }
 
-    private static TelegramIncomingMessage? Convert(Sticker sticker, TelegramPlatform platform, Message message)
+    private static TelegramIncomingMessage? Convert(TelegramSticker sticker, TelegramPlatform platform, TelegramMessage message)
     {
         if (TryGetProfilesContext(message, out var profilesContext) is false) return null;
 
@@ -93,11 +94,11 @@ internal static class IncomingMessageConverter
         };
     }
 
-    private static TelegramMessageImageVariant Convert(PhotoSize photo, ITelegramBotApiClient client)
+    private static TelegramMessageImageVariant Convert(TelegramPhotoSize photo, ITelegramClient client)
     {
         return new TelegramMessageImageVariant(async cancellation =>
         {
-            var file = await client.GetFileAsync(new GetFile(photo.FileId), cancellation);
+            var file = await client.GetFileAsync(new TelegramGetFileRequest(photo.FileId), cancellation);
 
             if (file.FilePath is null) throw new InvalidOperationException();
 
@@ -110,7 +111,7 @@ internal static class IncomingMessageConverter
         };
     }
 
-    private static bool TryGetProfilesContext(Message message, out ProfilesContext context)
+    private static bool TryGetProfilesContext(TelegramMessage message, out ProfilesContext context)
     {
         var sender = GetSender(message);
 
@@ -132,19 +133,19 @@ internal static class IncomingMessageConverter
         return true;
     }
 
-    private static IReadOnlyCollection<IMessageTextStyle> GetStyles(IReadOnlyCollection<MessageEntity>? entities)
+    private static IReadOnlyCollection<IMessageTextStyle> GetStyles(IReadOnlyCollection<TelegramMessageEntity>? entities)
     {
         if (entities is null || entities.Count is 0) return [];
 
         return entities
-            .Select<MessageEntity, IMessageTextStyle?>(entity => entity.Type switch
+            .Select<TelegramMessageEntity, IMessageTextStyle?>(entity => entity.Type switch
             {
-                MessageEntities.Bold => new BoldTextStyle(entity.Offset, entity.Length),
-                MessageEntities.Italic => new ItalicTextStyle(entity.Offset, entity.Length),
-                MessageEntities.Underline => new UnderlineTextStyle(entity.Offset, entity.Length),
-                MessageEntities.Strikethrough => new StrikethroughTextStyle(entity.Offset, entity.Length),
-                MessageEntities.Code => new MonospaceTextStyle(entity.Offset, entity.Length),
-                MessageEntities.BlockQuote => new QuotationTextStyle(entity.Offset, entity.Length),
+                TelegramMessageEntities.Bold => new BoldTextStyle(entity.Offset, entity.Length),
+                TelegramMessageEntities.Italic => new ItalicTextStyle(entity.Offset, entity.Length),
+                TelegramMessageEntities.Underline => new UnderlineTextStyle(entity.Offset, entity.Length),
+                TelegramMessageEntities.Strikethrough => new StrikethroughTextStyle(entity.Offset, entity.Length),
+                TelegramMessageEntities.Code => new MonospaceTextStyle(entity.Offset, entity.Length),
+                TelegramMessageEntities.BlockQuote => new QuotationTextStyle(entity.Offset, entity.Length),
                 _ => null
             })
             .Where(style => style is not null)
@@ -152,11 +153,11 @@ internal static class IncomingMessageConverter
             .ToFrozenSequence();
     }
 
-    private static IProfile? GetEnvironment(Message message)
+    private static IProfile? GetEnvironment(TelegramMessage message)
     {
         if (message.Chat is not { } chat) return null;
 
-        if (chat.Type is ChatType.Private)
+        if (chat.Type is TelegramChatType.Private)
         {
             return new TelegramUserProfile
             {
@@ -174,7 +175,7 @@ internal static class IncomingMessageConverter
         };
     }
 
-    private static IProfile? GetSender(Message message)
+    private static IProfile? GetSender(TelegramMessage message)
     {
         if (message.From is { } sender)
         {

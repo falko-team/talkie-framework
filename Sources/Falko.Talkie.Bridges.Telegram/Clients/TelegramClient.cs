@@ -5,12 +5,12 @@ using System.Text;
 using System.Text.Json;
 using Talkie.Bridges.Telegram.Configurations;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Responses;
 using Talkie.Bridges.Telegram.Serialization;
-using ClientHttpVersion = System.Net.HttpVersion;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
-public sealed class TelegramBotApiClient : ITelegramBotApiClient
+public sealed class TelegramClient : ITelegramClient
 {
     private const string Gzip = "gzip";
 
@@ -20,24 +20,19 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
 
     private readonly HttpClient _client;
 
-    private readonly ServerConfiguration _serverConfiguration;
-
-    private readonly ClientConfiguration _clientConfiguration;
+    private readonly TelegramConfiguration _configuration;
 
     private readonly CancellationTokenSource _globalCancellationTokenSource = new();
 
-    public TelegramBotApiClient(ServerConfiguration serverConfiguration,
-        ClientConfiguration? clientConfiguration = null)
+    public TelegramClient(TelegramConfiguration configuration)
     {
-        ArgumentNullException.ThrowIfNull(serverConfiguration);
+        configuration.ThrowIfInvalid();
 
-        _serverConfiguration = serverConfiguration;
-        _clientConfiguration = clientConfiguration ?? new ClientConfiguration();
-
-        _client = BuildHttpClient(serverConfiguration, _clientConfiguration);
+        _configuration = configuration;
+        _client = BuildHttpClient(configuration);
     }
 
-    async Task<TResult> ITelegramBotApiClient.SendAsync<TResult, TRequest>(string methodName, TRequest request,
+    async Task<TResult> ITelegramClient.SendAsync<TResult, TRequest>(string methodName, TRequest request,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -47,11 +42,11 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
             .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
 
         return await SendRepeatableRequestAsync<TResult, TRequest>(methodName, request, scopedCancellationTokenSource.Token)
-            ?? throw new TelegramBotApiRequestException(this, methodName,
+            ?? throw new TelegramRequestException(this, methodName,
                 description: "Result is null");
     }
 
-    async Task<TResult> ITelegramBotApiClient.SendAsync<TResult>(string methodName,
+    async Task<TResult> ITelegramClient.SendAsync<TResult>(string methodName,
         CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
@@ -66,7 +61,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         return result;
     }
 
-    Task ITelegramBotApiClient.SendAsync<TRequest>(string methodName, TRequest request,
+    Task ITelegramClient.SendAsync<TRequest>(string methodName, TRequest request,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -78,7 +73,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         return SendRepeatableRequestAsync<object, TRequest>(methodName, request, scopedCancellationTokenSource.Token);
     }
 
-    Task ITelegramBotApiClient.SendAsync(string methodName,
+    Task ITelegramClient.SendAsync(string methodName,
         CancellationToken cancellationToken)
     {
         using var scopedCancellationTokenSource = CancellationTokenSource
@@ -97,7 +92,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
             {
                 return await DownloadCoreAsync(file, cancellationToken);
             }
-            catch (TelegramBotApiRequestException exception)
+            catch (TelegramRequestException exception)
             {
                 if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
                 {
@@ -116,9 +111,11 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
 
         try
         {
+            var serverConfiguration = _configuration.ServerConfiguration;
+
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, file)
             {
-                RequestUri = new Uri($"https://{_serverConfiguration.Domain}/file/bot{_serverConfiguration.Token}/{file}")
+                RequestUri = new Uri($"https://{serverConfiguration.Domain}/file/bot{serverConfiguration.Token}/{file}")
             };
 
             Console.WriteLine(httpRequest.RequestUri);
@@ -132,19 +129,19 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
 
             var jsonResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
 
-            if (JsonSerializer.Deserialize(jsonResponse, typeof(Response), ModelsJsonSerializerContext.Default)
-                is not Response response)
+            if (JsonSerializer.Deserialize(jsonResponse, typeof(TelegramResponse), ModelsJsonSerializerContext.Default)
+                is not TelegramResponse response)
             {
-                throw new TelegramBotApiRequestException(this, "download",
+                throw new TelegramRequestException(this, "download",
                     description: "Failed to deserialize response");
             }
 
-            throw new TelegramBotApiRequestException(this, "download",
+            throw new TelegramRequestException(this, "download",
                 statusCode: (HttpStatusCode?)response.ErrorCode,
                 description: response.Description,
                 parameters: response.Parameters);
         }
-        catch (TelegramBotApiRequestException)
+        catch (TelegramRequestException)
         {
             throw;
         }
@@ -154,7 +151,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         }
         catch (Exception exception)
         {
-            throw new TelegramBotApiRequestException(this, "download",
+            throw new TelegramRequestException(this, "download",
                 description: "Unknown error occurred while sending request",
                 innerException: exception);
         }
@@ -169,7 +166,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
             {
                 return await SendRequestAsync<TResult, TRequest>(method, request, cancellationToken);
             }
-            catch (TelegramBotApiRequestException exception)
+            catch (TelegramRequestException exception)
             {
                 if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
                 {
@@ -194,7 +191,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
 
             return await ParseHttpResponseAsync<TResult>(method, httpResponse, cancellationToken);
         }
-        catch (TelegramBotApiRequestException)
+        catch (TelegramRequestException)
         {
             throw;
         }
@@ -204,7 +201,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         }
         catch (Exception exception)
         {
-            throw new TelegramBotApiRequestException(this, method,
+            throw new TelegramRequestException(this, method,
                 description: "Unknown error occurred while sending request",
                 innerException: exception);
         }
@@ -220,16 +217,16 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
 
         var responseJson = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
 
-        if (JsonSerializer.Deserialize(responseJson, typeof(Response<TResult>), ModelsJsonSerializerContext.Default)
-            is not Response<TResult> response)
+        if (JsonSerializer.Deserialize(responseJson, typeof(TelegramResponse<TResult>), ModelsJsonSerializerContext.Default)
+            is not TelegramResponse<TResult> response)
         {
-            throw new TelegramBotApiRequestException(this, method,
+            throw new TelegramRequestException(this, method,
                 description: "Failed to deserialize response");
         }
 
         if (response.Ok is false || httpResponse.IsSuccessStatusCode is false)
         {
-            throw new TelegramBotApiRequestException(this, method,
+            throw new TelegramRequestException(this, method,
                 statusCode: (HttpStatusCode?)response.ErrorCode,
                 description: response.Description,
                 parameters: response.Parameters);
@@ -247,7 +244,7 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
 
         var requestJson = JsonSerializer.Serialize(request, typeof(TRequest), ModelsJsonSerializerContext.Default);
 
-        if (_clientConfiguration.UseGzipCompression)
+        if (_configuration.ClientConfiguration.UseGzipCompression)
         {
             await AddGzipJsonContentAsync(httpRequest, requestJson, cancellationToken);
         }
@@ -282,19 +279,19 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         httpRequest.Content.Headers.ContentEncoding.Add(Gzip);
     }
 
-    private async Task WaitRetryDelayAsync(TelegramBotApiRequestException exception,
+    private async Task WaitRetryDelayAsync(TelegramRequestException exception,
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (exception.Parameters.TryGetValue(TelegramBotApiRequestException.ParameterNames.RetryAfter, out var delay)
+        if (exception.Parameters.TryGetValue(TelegramRequestException.ParameterNames.RetryAfter, out var delay)
             && delay.TryGetNumber(out var delaySeconds))
         {
             await Task.Delay(TimeSpan.FromSeconds(delaySeconds), cancellationToken);
         }
         else
         {
-            await Task.Delay(_serverConfiguration.DefaultRetryDelay, cancellationToken);
+            await Task.Delay(_configuration.ServerConfiguration.DefaultRetryDelay, cancellationToken);
         }
     }
 
@@ -306,8 +303,11 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         _client.Dispose();
     }
 
-    private static HttpClient BuildHttpClient(ServerConfiguration serverConfiguration, ClientConfiguration clientConfiguration)
+    private static HttpClient BuildHttpClient(TelegramConfiguration configuration)
     {
+        var clientConfiguration = configuration.ClientConfiguration;
+        var serverConfiguration = configuration.ServerConfiguration;
+
         var client = new HttpClient(new SocketsHttpHandler
         {
             EnableMultipleHttp2Connections = true,
@@ -326,9 +326,9 @@ public sealed class TelegramBotApiClient : ITelegramBotApiClient
         {
             DefaultRequestVersion = clientConfiguration.ProtocolVersion switch
             {
-                HttpProtocol.Version10 => ClientHttpVersion.Version10,
-                HttpProtocol.Version11 => ClientHttpVersion.Version11,
-                HttpProtocol.Version20 => ClientHttpVersion.Version20,
+                HttpProtocol.Version10 => HttpVersion.Version10,
+                HttpProtocol.Version11 => HttpVersion.Version11,
+                HttpProtocol.Version20 => HttpVersion.Version20,
                 _ => throw new ArgumentOutOfRangeException(nameof(clientConfiguration.ProtocolVersion))
             },
             BaseAddress = new Uri($"https://{serverConfiguration.Domain}/bot{serverConfiguration.Token}/")

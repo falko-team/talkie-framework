@@ -1,6 +1,6 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public enum ChatType
+public enum TelegramChatType
 {
     Private,
     Group,

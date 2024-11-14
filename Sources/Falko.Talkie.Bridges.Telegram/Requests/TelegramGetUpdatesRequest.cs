@@ -1,6 +1,6 @@
-namespace Talkie.Bridges.Telegram.Models;
+namespace Talkie.Bridges.Telegram.Requests;
 
-public sealed class GetUpdates
+public sealed class TelegramGetUpdatesRequest
 (
     int? offset = null,
     int? limit = null,

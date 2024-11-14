@@ -35,6 +35,7 @@ public class FrozenSequenceTester
     public void TestFrozenSequenceFrom10()
     {
         const int capacity = 10;
+
         var sequence = new Sequence<int>();
 
         for (var index = 0; index < capacity; index++)

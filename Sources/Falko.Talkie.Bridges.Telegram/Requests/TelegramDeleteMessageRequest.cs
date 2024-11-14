@@ -1,6 +1,6 @@
-namespace Talkie.Bridges.Telegram.Models;
+namespace Talkie.Bridges.Telegram.Requests;
 
-public sealed class DeleteMessage
+public sealed class TelegramDeleteMessageRequest
 (
     long messageId,
     long chatId

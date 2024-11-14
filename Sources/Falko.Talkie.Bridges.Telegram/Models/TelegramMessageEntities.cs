@@ -1,6 +1,6 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public static class MessageEntities
+public static class TelegramMessageEntities
 {
     public const string Bold = "bold";
 

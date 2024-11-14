@@ -6,9 +6,9 @@ using Talkie.Bridges.Telegram.Models;
 namespace Talkie.Bridges.Telegram.Serialization;
 
 internal sealed class ReadOnlyStringsToTextOrNumberDictionaryConverter
-    : JsonConverter<IReadOnlyDictionary<string, TextOrNumber>>
+    : JsonConverter<IReadOnlyDictionary<string, TextOrNumberValue>>
 {
-    public override IReadOnlyDictionary<string, TextOrNumber> Read(ref Utf8JsonReader reader,
+    public override IReadOnlyDictionary<string, TextOrNumberValue> Read(ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options)
     {
@@ -17,7 +17,7 @@ internal sealed class ReadOnlyStringsToTextOrNumberDictionaryConverter
             throw new JsonException("Expected start object");
         }
 
-        var dictionary = new Dictionary<string, TextOrNumber>();
+        var dictionary = new Dictionary<string, TextOrNumberValue>();
 
         while (reader.Read())
         {
@@ -40,13 +40,13 @@ internal sealed class ReadOnlyStringsToTextOrNumberDictionaryConverter
 
             if (reader.TokenType is JsonTokenType.String)
             {
-                var value = new TextOrNumber(reader.GetString() ?? throw new JsonException("Value is null"));
+                var value = new TextOrNumberValue(reader.GetString() ?? throw new JsonException("Value is null"));
 
                 dictionary.Add(key, value);
             }
             else if (reader.TokenType is JsonTokenType.Number)
             {
-                var value = new TextOrNumber(reader.GetInt64());
+                var value = new TextOrNumberValue(reader.GetInt64());
 
                 dictionary.Add(key, value);
             }
@@ -56,7 +56,7 @@ internal sealed class ReadOnlyStringsToTextOrNumberDictionaryConverter
     }
 
     public override void Write(Utf8JsonWriter writer,
-        IReadOnlyDictionary<string, TextOrNumber> dictionary,
+        IReadOnlyDictionary<string, TextOrNumberValue> dictionary,
         JsonSerializerOptions options)
     {
         writer.WriteStartObject();

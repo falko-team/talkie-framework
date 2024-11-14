@@ -1,4 +1,4 @@
-namespace Talkie.Bridges.Telegram.Configurations;
+namespace Talkie.Bridges.Telegram.Models;
 
 public enum HttpProtocol
 {

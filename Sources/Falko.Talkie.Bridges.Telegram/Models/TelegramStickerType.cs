@@ -1,6 +1,6 @@
 namespace Talkie.Bridges.Telegram.Models;
 
-public enum StickerType
+public enum TelegramStickerType
 {
     Regular,
     Mask,

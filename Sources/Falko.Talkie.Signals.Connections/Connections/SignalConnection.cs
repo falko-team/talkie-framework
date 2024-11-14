@@ -2,7 +2,7 @@ using Talkie.Flows;
 
 namespace Talkie.Connections;
 
-public abstract class SignalConnection(ISignalFlow flow) : ISignalConnection
+public abstract class SignalConnection : ISignalConnection
 {
     private readonly SemaphoreSlim _locker = new(1, 1);
 
@@ -12,17 +12,24 @@ public abstract class SignalConnection(ISignalFlow flow) : ISignalConnection
 
     private volatile bool _disposed;
 
-    public ISignalFlow Flow { get; } = flow;
+    protected SignalConnection(ISignalFlow flow)
+    {
+        ArgumentNullException.ThrowIfNull(flow);
 
-    public bool Initialized => _initialized;
+        Flow = flow;
+    }
+
+    public ISignalFlow Flow { get; }
+
+    public bool IsInitialized => _initialized;
 
     public Task? Executing { get; private set; }
 
-    public bool Disposed => _disposed;
+    public bool IsDisposed => _disposed;
 
     public async ValueTask InitializeAsync(CancellationToken cancellationToken = default)
     {
-        if (_initialized) throw new InvalidOperationException(nameof(Initialized));
+        if (_initialized) throw new InvalidOperationException(nameof(IsInitialized));
 
         try
         {

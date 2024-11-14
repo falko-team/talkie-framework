@@ -5,12 +5,12 @@ using Talkie.Bridges.Telegram.Models;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
-public sealed partial class TelegramBotApiRequestException : Exception
+public sealed partial class TelegramRequestException : Exception
 {
-    public TelegramBotApiRequestException(ITelegramBotApiClient client, string methodName,
+    public TelegramRequestException(ITelegramClient client, string methodName,
         HttpStatusCode? statusCode = null,
         string? description = null,
-        IReadOnlyDictionary<string, TextOrNumber>? parameters = null,
+        IReadOnlyDictionary<string, TextOrNumberValue>? parameters = null,
         Exception? innerException = null) : base(null, innerException)
     {
         ArgumentNullException.ThrowIfNull(client);
@@ -19,11 +19,11 @@ public sealed partial class TelegramBotApiRequestException : Exception
         Client = client;
         MethodName = methodName;
         StatusCode = statusCode;
-        Parameters = parameters ?? FrozenDictionary<string, TextOrNumber>.Empty;
+        Parameters = parameters ?? FrozenDictionary<string, TextOrNumberValue>.Empty;
         Description = description;
     }
 
-    public ITelegramBotApiClient Client { get; }
+    public ITelegramClient Client { get; }
 
     public HttpStatusCode? StatusCode { get; }
 
@@ -31,7 +31,7 @@ public sealed partial class TelegramBotApiRequestException : Exception
 
     public string? Description { get; }
 
-    public IReadOnlyDictionary<string, TextOrNumber> Parameters { get; }
+    public IReadOnlyDictionary<string, TextOrNumberValue> Parameters { get; }
 
     public override string HelpLink => $"https://core.telegram.org/bots/api#{MethodName}";
 

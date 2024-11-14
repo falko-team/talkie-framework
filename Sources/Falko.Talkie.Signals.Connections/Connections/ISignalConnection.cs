@@ -1,5 +1,3 @@
-using Talkie.Flows;
-
 namespace Talkie.Connections;
 
 /// <summary>
@@ -8,24 +6,14 @@ namespace Talkie.Connections;
 public interface ISignalConnection : IAsyncDisposable
 {
     /// <summary>
-    /// Gets the <see cref="ISignalFlow"/> that the connection is connected to.
-    /// </summary>
-    ISignalFlow Flow { get; }
-
-    /// <summary>
     /// Gets the connection initialization status.
     /// </summary>
-    bool Initialized { get; }
-
-    /// <summary>
-    /// Gets the connection execution task.
-    /// </summary>
-    Task? Executing { get; }
+    bool IsInitialized { get; }
 
     /// <summary>
     /// Gets the connection disposal status.
     /// </summary>
-    bool Disposed { get; }
+    bool IsDisposed { get; }
 
     /// <summary>
     /// Initializes the connection.

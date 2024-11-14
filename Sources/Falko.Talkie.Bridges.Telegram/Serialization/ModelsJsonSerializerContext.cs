@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Talkie.Bridges.Telegram.Models;
-using File = Talkie.Bridges.Telegram.Models.File;
+using Talkie.Bridges.Telegram.Requests;
+using Talkie.Bridges.Telegram.Responses;
 
 namespace Talkie.Bridges.Telegram.Serialization;
 
@@ -14,14 +15,14 @@ namespace Talkie.Bridges.Telegram.Serialization;
     PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
     DictionaryKeyPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
     Converters = [typeof(DateTimeUnixConverter), typeof(ReadOnlyStringsToTextOrNumberDictionaryConverter)])]
-[JsonSerializable(typeof(Response<Update[]>))]
-[JsonSerializable(typeof(Response<User>))]
-[JsonSerializable(typeof(Response<Message>))]
-[JsonSerializable(typeof(Response<bool>))]
-[JsonSerializable(typeof(Response<File>))]
-[JsonSerializable(typeof(GetFile))]
-[JsonSerializable(typeof(GetUpdates))]
-[JsonSerializable(typeof(SendMessage))]
-[JsonSerializable(typeof(DeleteMessage))]
-[JsonSerializable(typeof(EditMessageText))]
+[JsonSerializable(typeof(TelegramResponse<TelegramUpdate[]>))]
+[JsonSerializable(typeof(TelegramResponse<TelegramUser>))]
+[JsonSerializable(typeof(TelegramResponse<TelegramMessage>))]
+[JsonSerializable(typeof(TelegramResponse<bool>))]
+[JsonSerializable(typeof(TelegramResponse<TelegramFile>))]
+[JsonSerializable(typeof(TelegramGetFileRequest))]
+[JsonSerializable(typeof(TelegramGetUpdatesRequest))]
+[JsonSerializable(typeof(TelegramSendMessageRequest))]
+[JsonSerializable(typeof(TelegramDeleteMessageRequest))]
+[JsonSerializable(typeof(TelegramEditMessageTextRequest))]
 internal sealed partial class ModelsJsonSerializerContext : JsonSerializerContext;
