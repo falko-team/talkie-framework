@@ -6,7 +6,7 @@ namespace Talkie.Sequences;
 
 public partial class FrozenSequence<T>
 {
-    public struct Enumerator : IEnumerator<T>
+    public struct HeapEnumerator : IEnumerator<T>
     {
         private readonly T[] _values;
 
@@ -14,10 +14,10 @@ public partial class FrozenSequence<T>
 
         private int _currentIndex;
 
-        private T _currentValue;
+        private T _currentValue = default!;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal Enumerator(T[] values, int valuesCount)
+        internal HeapEnumerator(T[] values, int valuesCount)
         {
             _values = values;
             _valuesCount = valuesCount;

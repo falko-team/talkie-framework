@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Diagnostics;
 using Talkie.Concurrent;
 
 namespace Talkie.Sequences;
 
+[DebuggerDisplay("Count = {Count}")]
 public partial class Sequence<T> : ISequence<T>
 {
     private Node? _first;
