@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Diagnostics;
 using Talkie.Concurrent;
 
 namespace Talkie.Sequences;
 
+[DebuggerDisplay("Count = {Count}")]
 public partial class FrozenSequence<T> : IReadOnlySequence<T>
 {
     private readonly T[] _items;
@@ -11,17 +13,18 @@ public partial class FrozenSequence<T> : IReadOnlySequence<T>
 
     public FrozenSequence(IEnumerable<T> values)
     {
+        var list = new List<T>();
         _items = values.ToArray();
         _itemsCount = _items.Length;
     }
 
     public int Count => _itemsCount;
 
-    public Enumerator GetEnumerator() => new(_items, _itemsCount);
+    public StackEnumerator GetEnumerator() => new(_items, _itemsCount);
 
-    IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
+    IEnumerator<T> IEnumerable<T>.GetEnumerator() => new HeapEnumerator(_items, _itemsCount);
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => new HeapEnumerator(_items, _itemsCount);
 
     public IParallelEnumerator<T> GetParallelEnumerator() => new ParallelEnumerator(_items, _itemsCount);
 
