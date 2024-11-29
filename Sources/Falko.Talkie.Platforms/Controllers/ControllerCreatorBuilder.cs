@@ -9,7 +9,9 @@ public sealed class ControllerCreatorBuilder : IControllerCreatorBuilder
 
     private ControllerCreatorBuilder() { }
 
-    public IControllerCreatorBuilder Add<TController, TContext>(Func<TContext, TController> factory) where TController : class, IController<TContext> where TContext : notnull
+    public IControllerCreatorBuilder Add<TController, TContext>(Func<TContext, TController> factory)
+        where TController : class, IController<TContext>
+        where TContext : notnull
     {
         _factories.Add(typeof(TController), context =>
         {

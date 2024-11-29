@@ -1,41 +1,37 @@
 ﻿<Solution>
-    <Folder Name="/Assets/">
-        <File Path="Common.Build.props" />
-        <File Path="nuget.config" />
-        <File Path=".gitignore" />
-        <File Path=".gitattributes" />
-        <File Path="ReadMe.md" />
-        <File Path="Benchmarks.Build.props" />
-        <File Path="Examples.Build.props" />
-        <File Path="Logo512.png" />
-        <File Path="Sources.Build.props" />
-        <File Path="Tests.Build.props" />
-        <File Path="Directory.Packages.props" />
-        <File Path="Icon64.png" />
-        <File Path="License.md" />
-    </Folder>
-
-    <Folder Name="/Benchmarks/">
-        <Project Path="Benchmarks\Falko.Talkie.Benchmarks.Sequences\Falko.Talkie.Benchmarks.Sequences.csproj" Type="Classic C#" />
-    </Folder>
-
-    <Folder Name="/Examples/">
-        <Project Path="Examples\Falko.Talkie.Examples.Microsoft.Hosting\Falko.Talkie.Examples.Microsoft.Hosting.csproj" Type="Classic C#" />
-    </Folder>
-
-    <Folder Name="/Sources/">
-        <Project Path="Sources\Falko.Talkie.Bridges.Telegram\Falko.Talkie.Bridges.Telegram.csproj" Type="Classic C#" />
-        <Project Path="Sources\Falko.Talkie.Core\Falko.Talkie.Core.csproj" Type="Classic C#" />
-        <Project Path="Sources\Falko.Talkie.Microsoft.Hosting\Falko.Talkie.Microsoft.Hosting.csproj" Type="Classic C#" />
-        <Project Path="Sources\Falko.Talkie.Platforms.Telegram\Falko.Talkie.Platforms.Telegram.csproj" Type="Classic C#" />
-        <Project Path="Sources\Falko.Talkie.Platforms\Falko.Talkie.Platforms.csproj" Type="Classic C#" />
-        <Project Path="Sources\Falko.Talkie.Signals.Adapters\Falko.Talkie.Signals.Adapters.csproj" Type="Classic C#" />
-        <Project Path="Sources\Falko.Talkie.Signals.Connections\Falko.Talkie.Signals.Connections.csproj" Type="Classic C#" />
-        <Project Path="Sources\Falko.Talkie.Signals.Extensions\Falko.Talkie.Signals.Extensions.csproj" Type="Classic C#" />
-        <Project Path="Sources\Falko.Talkie.Signals\Falko.Talkie.Signals.csproj" Type="Classic C#" />
-    </Folder>
-
-    <Folder Name="/Tests/">
-        <Project Path="Tests\Falko.Talkie.Tests.Sequences\Falko.Talkie.Tests.Sequences.csproj" Type="Classic C#" />
-    </Folder>
+  <Folder Name="/Assets/">
+    <File Path="Common.Build.props" />
+    <File Path="nuget.config" />
+    <File Path=".gitignore" />
+    <File Path=".gitattributes" />
+    <File Path="ReadMe.md" />
+    <File Path="Benchmarks.Build.props" />
+    <File Path="Examples.Build.props" />
+    <File Path="Logo512.png" />
+    <File Path="Sources.Build.props" />
+    <File Path="Tests.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="Icon64.png" />
+    <File Path="License.md" />
+  </Folder>
+  <Folder Name="/Benchmarks/">
+    <Project Path="Benchmarks\Falko.Talkie.Benchmarks.Sequences\Falko.Talkie.Benchmarks.Sequences.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Examples/">
+    <Project Path="Examples\Falko.Talkie.Examples.Microsoft.Hosting\Falko.Talkie.Examples.Microsoft.Hosting.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Sources/">
+    <Project Path="Sources\Falko.Talkie.Bridges.Telegram\Falko.Talkie.Bridges.Telegram.csproj" Type="Classic C#" />
+    <Project Path="Sources\Falko.Talkie.Core\Falko.Talkie.Core.csproj" Type="Classic C#" />
+    <Project Path="Sources\Falko.Talkie.Microsoft.Hosting\Falko.Talkie.Microsoft.Hosting.csproj" Type="Classic C#" />
+    <Project Path="Sources\Falko.Talkie.Platforms.Telegram\Falko.Talkie.Platforms.Telegram.csproj" Type="Classic C#" />
+    <Project Path="Sources\Falko.Talkie.Platforms\Falko.Talkie.Platforms.csproj" Type="Classic C#" />
+    <Project Path="Sources\Falko.Talkie.Signals.Adapters\Falko.Talkie.Signals.Adapters.csproj" Type="Classic C#" />
+    <Project Path="Sources\Falko.Talkie.Signals.Connections\Falko.Talkie.Signals.Connections.csproj" Type="Classic C#" />
+    <Project Path="Sources\Falko.Talkie.Signals.Extensions\Falko.Talkie.Signals.Extensions.csproj" Type="Classic C#" />
+    <Project Path="Sources\Falko.Talkie.Signals\Falko.Talkie.Signals.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests\Falko.Talkie.Tests.Sequences\Falko.Talkie.Tests.Sequences.csproj" Type="Classic C#" />
+  </Folder>
 </Solution>

@@ -15,21 +15,31 @@ public static partial class ParallelEnumerableExtensions
         return new SequenceParallelismCoordinator<T>.Static(sequence);
     }
 
-    public static SequenceParallelismCoordinator<T>.Dynamic Parallelize<T>(this IReadOnlySequence<T> sequence, ParallelismMeter meter)
+    public static SequenceParallelismCoordinator<T>.Dynamic Parallelize<T>
+    (
+        this IReadOnlySequence<T> sequence,
+        ParallelismMeter meter
+    )
     {
         return new SequenceParallelismCoordinator<T>.Dynamic(sequence, meter);
     }
 
-    public static Task ForEachAsync<T>(this SequenceParallelismCoordinator<T>.Static parallel,
+    public static Task ForEachAsync<T>
+    (
+        this SequenceParallelismCoordinator<T>.Static parallel,
         Func<T, CancellationToken, ValueTask> @do,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         return Parallel.ForEachAsync(parallel.Sequence, cancellationToken, @do);
     }
 
-    public static async Task ForEachAsync<T>(this SequenceParallelismCoordinator<T>.Dynamic parallel,
+    public static async Task ForEachAsync<T>
+    (
+        this SequenceParallelismCoordinator<T>.Dynamic parallel,
         Func<T, CancellationToken, ValueTask> @do,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var startTicks = Environment.TickCount64;
 
@@ -58,8 +68,12 @@ public static partial class ParallelEnumerableExtensions
         parallel.Meter.Measure(endTicks - startTicks, parallel.Sequence.Count);
     }
 
-    public static void ForEach<T>(this SequenceParallelismCoordinator<T>.Static parallel, Action<T, CancellationToken> @do,
-        CancellationToken cancellationToken = default)
+    public static void ForEach<T>
+    (
+        this SequenceParallelismCoordinator<T>.Static parallel,
+        Action<T, CancellationToken> @do,
+        CancellationToken cancellationToken = default
+    )
     {
         var options = new ParallelOptions
         {
@@ -69,8 +83,12 @@ public static partial class ParallelEnumerableExtensions
         Parallel.ForEach(parallel.Sequence.ToPartitioner(), options, item => @do(item, cancellationToken));
     }
 
-    public static void ForEach<T>(this SequenceParallelismCoordinator<T>.Dynamic parallel, Action<T, CancellationToken> @do,
-        CancellationToken cancellationToken = default)
+    public static void ForEach<T>
+    (
+        this SequenceParallelismCoordinator<T>.Dynamic parallel,
+        Action<T, CancellationToken> @do,
+        CancellationToken cancellationToken = default
+    )
     {
         var startTicks = Environment.TickCount64;
 

@@ -13,7 +13,6 @@ public partial class FrozenSequence<T> : IReadOnlySequence<T>
 
     public FrozenSequence(IEnumerable<T> values)
     {
-        var list = new List<T>();
         _items = values.ToArray();
         _itemsCount = _items.Length;
     }

@@ -1,13 +1,15 @@
 using Talkie.Controllers.MessageControllers;
-using Talkie.Models;
 using Talkie.Models.Identifiers;
 
 namespace Talkie.Controllers;
 
 public static partial class ControllerCreatorExtensions
 {
-    public static IMessageController CreateMessageController(this IControllerCreator creator,
-        Identifier environmentProfileIdentifier)
+    public static IMessageController CreateMessageController
+    (
+        this IControllerCreator creator,
+        Identifier environmentProfileIdentifier
+    )
     {
         return creator.Create<IMessageController, Identifier>(environmentProfileIdentifier);
     }

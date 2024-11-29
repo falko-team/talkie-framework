@@ -14,7 +14,8 @@ await new HostBuilder()
         .WriteTo.Console())
     .UseTalkie(configuration => configuration
         .SetSignalsLogging())
-    .AddIntegrations<TelegramSubscriber>()
-    .AddBehaviors<HelloSubscriber>()
-    .AddBehaviors<StartSubscriber>()
+    .ConfigureServices(services => services
+        .AddIntegrations<TelegramSubscriber>()
+        .AddBehaviors<HelloSubscriber>()
+        .AddBehaviors<StartSubscriber>())
     .RunConsoleAsync();
