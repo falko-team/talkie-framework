@@ -20,7 +20,7 @@ public sealed class StartSubscriber : IBehaviorsSubscriber
     public void Subscribe(ISignalFlow flow, IRegisterOnlyDisposableScope disposables, CancellationToken cancellationToken)
     {
         flow.Subscribe<MessagePublishedSignal>(signals => signals
-            .SkipSelfPublish()
+            .SkipSelfPublished()
             .Where(signal => signal
                 .Message
                 .GetText()
