@@ -4,8 +4,11 @@ namespace Talkie.Flows;
 
 public static partial class SubscriptionExtensions
 {
-    public static void UnsubscribeWith(this Subscription subscription,
-        IRegisterOnlyDisposableScope disposables)
+    public static void UnsubscribeWith
+    (
+        this Subscription subscription,
+        IRegisterOnlyDisposableScope disposables
+    )
     {
         disposables.Register(new SubscriptionDisposableWrapper(subscription));
     }

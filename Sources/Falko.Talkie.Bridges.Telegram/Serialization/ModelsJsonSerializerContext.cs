@@ -5,7 +5,8 @@ using Talkie.Bridges.Telegram.Responses;
 
 namespace Talkie.Bridges.Telegram.Serialization;
 
-[JsonSourceGenerationOptions(WriteIndented = false,
+[JsonSourceGenerationOptions(
+    WriteIndented = false,
     GenerationMode = JsonSourceGenerationMode.Metadata,
     UseStringEnumConverter = true,
     IgnoreReadOnlyFields = false,
@@ -14,8 +15,9 @@ namespace Talkie.Bridges.Telegram.Serialization;
     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
     DictionaryKeyPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
-    Converters = [typeof(DateTimeUnixConverter), typeof(TextOrNumberValueDictionaryConverter)])]
-[JsonSerializable(typeof(TelegramResponse<TelegramUpdate[]>))]
+    Converters = [typeof(DateTimeUnixConverter), typeof(TextOrNumberValueDictionaryConverter)]
+)]
+[JsonSerializable(typeof(TelegramResponse<IReadOnlyList<TelegramUpdate>>))]
 [JsonSerializable(typeof(TelegramResponse<TelegramUser>))]
 [JsonSerializable(typeof(TelegramResponse<TelegramMessage>))]
 [JsonSerializable(typeof(TelegramResponse<bool>))]

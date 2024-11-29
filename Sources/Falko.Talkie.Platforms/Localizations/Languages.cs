@@ -1,43 +1,56 @@
 using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Reflection;
 
 namespace Talkie.Localizations;
 
 public static class Languages
 {
-    private static readonly ConcurrentDictionary<LanguageCode, Language> LanguagesByLanguageCode = new();
-
     private static readonly ConcurrentDictionary<string, Language> LanguagesByLanguageName = new();
 
-    public static bool TryGetLanguage(this LanguageCode languageCode, out Language language)
+    private static readonly FrozenDictionary<string, Language> LanguagesByLanguageCodeName;
+
+    static Languages()
     {
-        language = Language.Unknown;
+        var fields = typeof(Language).GetFields();
 
-        if (languageCode is LanguageCode.Unknown) return false;
+        var languages = new KeyValuePair<string, Language>[fields.Length];
 
-        if (LanguagesByLanguageCode.TryGetValue(languageCode, out language)) return true;
+        var iterator = 0;
 
-        var field = typeof(LanguageCode).GetField(languageCode.ToString());
+        foreach (var context in fields)
+        {
+            if (context.GetCustomAttribute<LanguageCodeAttribute>() is not { } attribute) continue;
 
-        if (field?.GetCustomAttribute<LanguageAttribute>() is not { } attribute) return false;
+            if (context.GetValue(null) is not Language language) continue;
 
-        language = attribute.Language;
+            languages[iterator] = new KeyValuePair<string, Language>(attribute.LanguageCode, language);
 
-        LanguagesByLanguageCode.TryAdd(languageCode, language);
+            ++iterator;
+        }
+
+        if (iterator != languages.Length) languages = languages[..iterator];
+
+        LanguagesByLanguageCodeName = languages.ToFrozenDictionary();
+    }
+
+    public static bool TryGetFromLanguageName(string name, out Language language)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
+        if (LanguagesByLanguageName.TryGetValue(name, out language)) return true;
+
+        if (Enum.TryParse(name, true, out language) is false) return false;
+
+        LanguagesByLanguageName.TryAdd(name, language);
 
         return true;
     }
 
-    public static bool TryGetLanguage(string languageName, out Language language)
+    public static bool TryGetFromLanguageCodeName(string name, out Language language)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(languageName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
-        if (LanguagesByLanguageName.TryGetValue(languageName, out language)) return true;
-
-        if (Enum.TryParse(languageName, true, out language) is false) return false;
-
-        LanguagesByLanguageName.TryAdd(languageName, language);
-
-        return true;
+        return LanguagesByLanguageCodeName.TryGetValue(name, out language);
     }
 }

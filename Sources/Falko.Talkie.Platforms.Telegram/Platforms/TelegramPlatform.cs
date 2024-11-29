@@ -13,7 +13,7 @@ public sealed record TelegramPlatform : IPlatform, IDisposable
     (
         ISignalFlow flow,
         ITelegramClient botApiClient,
-        TelegramBotProfile botProfile
+        IBotProfile botProfile
     )
     {
         BotApiClient = botApiClient;
@@ -30,7 +30,7 @@ public sealed record TelegramPlatform : IPlatform, IDisposable
 
     public ITelegramClient BotApiClient { get; }
 
-    public TelegramBotProfile BotProfile { get; }
+    public IBotProfile BotProfile { get; }
 
     public IControllerCreator ControllerCreator { get; }
 

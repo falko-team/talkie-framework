@@ -21,6 +21,20 @@ public partial class Sequence<T>
             : _first.Value;
     }
 
+    public T? SingleOrDefault()
+    {
+        return _first is not null && _first == _last
+            ? _first.Value
+            : default;
+    }
+
+    public T Single()
+    {
+        return _first is not null && _first == _last
+            ? _first.Value
+            : throw new InvalidOperationException();
+    }
+
     public T Last()
     {
         return _last is null

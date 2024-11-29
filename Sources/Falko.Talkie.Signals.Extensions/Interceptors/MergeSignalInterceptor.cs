@@ -3,8 +3,11 @@ using Talkie.Signals;
 
 namespace Talkie.Interceptors;
 
-internal sealed class MergeSignalInterceptor<T>(ISignalInterceptingPipeline targetPipeline,
-    ISignalInterceptingPipeline mergePipeline) : ISignalInterceptor<T> where T : Signal
+internal sealed class MergeSignalInterceptor<T>
+(
+    ISignalInterceptingPipeline targetPipeline,
+    ISignalInterceptingPipeline mergePipeline
+) : ISignalInterceptor<T> where T : Signal
 {
     public InterceptionResult Intercept(Signal signal, CancellationToken cancellationToken)
     {

@@ -4,7 +4,6 @@ using Talkie.Disposables;
 using Talkie.Flows;
 using Talkie.Handlers;
 using Talkie.Models.Messages;
-using Talkie.Models.Messages.Attachments;
 using Talkie.Pipelines.Handling;
 using Talkie.Pipelines.Intercepting;
 using Talkie.Signals;

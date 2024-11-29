@@ -3,9 +3,7 @@ using Talkie.Bridges.Telegram.Models;
 using Talkie.Bridges.Telegram.Requests;
 using Talkie.Converters;
 using Talkie.Flows;
-using Talkie.Models;
 using Talkie.Models.Identifiers;
-using Talkie.Models.Messages;
 using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
@@ -27,7 +25,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message content is required.");
         }
 
-        if (environmentProfileIdentifier.TryGetValue(out long receiverId) is not true)
+        if (environmentProfileIdentifier.TryGetValue(out long receiverId) is false)
         {
             throw new ArgumentException("Environment id is required.");
         }
@@ -42,16 +40,14 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         var sentMessage = await platform.BotApiClient.SendMessageAsync(sendMessage,
             cancellationToken: cancellationToken);
 
-        var sentIncomingMessage = IncomingMessageConverter.Convert(platform, sentMessage)
-            ?? throw new InvalidOperationException("Failed to convert sent message.");
-
-        _ = flow.PublishAsync(sentIncomingMessage.ToMessageReceivedSignal(), cancellationToken).ContinueWith((e, _) =>
+        if (sentMessage.TryGetIncomingMessage(platform, out var incomingMessage) is false)
         {
-            flow.PublishUnobservedPublishingExceptionAsync(e.Exception
-                ?? new Exception("Failed to publish self sent incoming message."), cancellationToken);
-        }, TaskContinuationOptions.ExecuteSynchronously, TaskContinuationOptions.OnlyOnFaulted);
+            throw new InvalidOperationException("Failed to convert sent message.");
+        }
 
-        return sentIncomingMessage;
+        flow.Publish(incomingMessage.ToMessagePublishedSignal(), cancellationToken);
+
+        return incomingMessage;
     }
 
     public async Task<IIncomingMessage> ExchangeMessageAsync(GlobalMessageIdentifier messageIdentifier, IOutgoingMessage message,
@@ -81,16 +77,14 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         var sentMessage = await platform.BotApiClient.EditMessageTextAsync(editMessageText,
             cancellationToken: cancellationToken);
 
-        var sentIncomingMessage = IncomingMessageConverter.Convert(platform, sentMessage)
-                                  ?? throw new InvalidOperationException("Failed to convert sent message.");
-
-        _ = flow.PublishAsync(sentIncomingMessage.ToMessageReceivedSignal(), cancellationToken).ContinueWith((e, _) =>
+        if (sentMessage.TryGetIncomingMessage(platform, out var incomingMessage) is false)
         {
-            flow.PublishUnobservedPublishingExceptionAsync(e.Exception
-                                                           ?? new Exception("Failed to publish self sent incoming message."), cancellationToken);
-        }, TaskContinuationOptions.ExecuteSynchronously, TaskContinuationOptions.OnlyOnFaulted);
+            throw new InvalidOperationException("Failed to convert sent message.");
+        }
 
-        return sentIncomingMessage;
+        flow.Publish(incomingMessage.ToMessageExchangedSignal(), cancellationToken);
+
+        return incomingMessage;
     }
 
     public async Task UnpublishMessageAsync(GlobalMessageIdentifier messageIdentifier, CancellationToken cancellationToken = default)
@@ -135,10 +129,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
 
     private TelegramReplyParameters? GetReplyParameters(IOutgoingMessage outgoingMessage)
     {
-        if (outgoingMessage.Reply is null)
-        {
-            return null;
-        }
+        if (outgoingMessage.Reply is null) return null;
 
         if (outgoingMessage.Reply.MessageIdentifier.TryGetValue(out long replyMessageTelegramId) is false)
         {

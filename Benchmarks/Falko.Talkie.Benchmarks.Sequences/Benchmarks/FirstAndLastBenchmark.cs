@@ -7,8 +7,10 @@ namespace Talkie.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [SimpleJob(RunStrategy.Throughput)]
-public class ForeachBenchmark
+public class FirstAndLastBenchmark
 {
+    private const int Capacity = 10;
+
     private FrozenSequence<Reference>? _frozenSequence;
 
     private IEnumerable<Reference>? _referenceFrozenSequence;
@@ -20,11 +22,6 @@ public class ForeachBenchmark
     private LinkedList<Reference>? _linkedList;
 
     private List<Reference>? _list;
-
-    private IEnumerable<Reference>? _referenceList;
-
-    [Params(0, 1, 10, 100, 1000, 10000)]
-    public int Capacity { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -95,69 +92,54 @@ public class ForeachBenchmark
         }
 
         _list = list;
-        _referenceList = _list;
     }
 
     [Benchmark]
-    public void RunFrozenSequenceForeach()
+    public void RunFrozenSequenceFirstAndLast()
     {
-        foreach (var value in _frozenSequence!)
-        {
-            _ = value;
-        }
+        _ = _frozenSequence!.First();
+        _ = _frozenSequence!.Last();
     }
 
     [Benchmark]
-    public void RunReferenceFrozenSequenceForeach()
+    public void RunReferenceFrozenSequenceFirstAndLast()
     {
-        foreach (var value in _referenceFrozenSequence!)
-        {
-            _ = value;
-        }
+        _ = _referenceFrozenSequence!.First();
+        _ = _referenceFrozenSequence!.Last();
     }
 
     [Benchmark]
-    public void RunRemovableSequenceForeach()
+    public void RunReferenceSequencingFrozenSequenceFirstAndLast()
     {
-        foreach (var value in _removableSequence!)
-        {
-            _ = value;
-        }
+        _ = _referenceFrozenSequence!.Sequencing().First();
+        _ = _referenceFrozenSequence!.Sequencing().Last();
     }
 
     [Benchmark]
-    public void RunSequenceForeach()
+    public void RunRemovableSequenceFirstAndLast()
     {
-        foreach (var value in _sequence!)
-        {
-            _ = value;
-        }
+        _ = _removableSequence!.First();
+        _ = _removableSequence!.Last();
     }
 
     [Benchmark]
-    public void RunLinkedListForeach()
+    public void RunSequenceFirstAndLast()
     {
-        foreach (var value in _linkedList!)
-        {
-            _ = value;
-        }
+        _ = _sequence!.First();
+        _ = _sequence!.Last();
     }
 
     [Benchmark]
-    public void RunListForeach()
+    public void RunLinkedListFirstAndLast()
     {
-        foreach (var value in _list!)
-        {
-            _ = value;
-        }
+        _ = _linkedList!.First();
+        _ = _linkedList!.Last();
     }
 
     [Benchmark]
-    public void RunReferenceListForeach()
+    public void RunListFirstAndLast()
     {
-        foreach (var value in _referenceList!)
-        {
-            _ = value;
-        }
+        _ = _list!.First();
+        _ = _list!.Last();
     }
 }

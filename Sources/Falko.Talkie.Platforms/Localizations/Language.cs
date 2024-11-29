@@ -2,326 +2,326 @@ namespace Talkie.Localizations;
 
 public enum Language
 {
-    Unknown = 0,
+    Unknown = default,
 
-    [LanguageCode(LanguageCode.Af)]
+    [LanguageCode("af")]
     Afrikaans,
 
-    [LanguageCode(LanguageCode.Sq)]
+    [LanguageCode("sq")]
     Albanian,
 
-    [LanguageCode(LanguageCode.Am)]
+    [LanguageCode("am")]
     Amharic,
 
-    [LanguageCode(LanguageCode.Ar)]
+    [LanguageCode("ar")]
     Arabic,
 
-    [LanguageCode(LanguageCode.Hy)]
+    [LanguageCode("hy")]
     Armenian,
 
-    [LanguageCode(LanguageCode.Az)]
+    [LanguageCode("az")]
     Azerbaijani,
 
-    [LanguageCode(LanguageCode.Eu)]
+    [LanguageCode("eu")]
     Basque,
 
-    [LanguageCode(LanguageCode.Be)]
+    [LanguageCode("be")]
     Belarusian,
 
-    [LanguageCode(LanguageCode.Bn)]
+    [LanguageCode("bn")]
     Bengali,
 
-    [LanguageCode(LanguageCode.Bs)]
+    [LanguageCode("bs")]
     Bosnian,
 
-    [LanguageCode(LanguageCode.Bg)]
+    [LanguageCode("bg")]
     Bulgarian,
 
-    [LanguageCode(LanguageCode.Ca)]
+    [LanguageCode("ca")]
     Catalan,
 
-    [LanguageCode(LanguageCode.Ceb)]
+    [LanguageCode("ceb")]
     Cebuano,
 
-    [LanguageCode(LanguageCode.Ny)]
+    [LanguageCode("ny")]
     Chichewa,
 
-    [LanguageCode(LanguageCode.Zh)]
+    [LanguageCode("zh")]
     Chinese,
 
-    [LanguageCode(LanguageCode.Co)]
+    [LanguageCode("co")]
     Corsican,
 
-    [LanguageCode(LanguageCode.Hr)]
+    [LanguageCode("hr")]
     Croatian,
 
-    [LanguageCode(LanguageCode.Cs)]
+    [LanguageCode("cs")]
     Czech,
 
-    [LanguageCode(LanguageCode.Da)]
+    [LanguageCode("da")]
     Danish,
 
-    [LanguageCode(LanguageCode.Nl)]
+    [LanguageCode("nl")]
     Dutch,
 
-    [LanguageCode(LanguageCode.En)]
+    [LanguageCode("en")]
     English,
 
-    [LanguageCode(LanguageCode.Eo)]
+    [LanguageCode("eo")]
     Esperanto,
 
-    [LanguageCode(LanguageCode.Et)]
+    [LanguageCode("et")]
     Estonian,
 
-    [LanguageCode(LanguageCode.Tl)]
+    [LanguageCode("tl")]
     Filipino,
 
-    [LanguageCode(LanguageCode.Fi)]
+    [LanguageCode("fi")]
     Finnish,
 
-    [LanguageCode(LanguageCode.Fr)]
+    [LanguageCode("fr")]
     French,
 
-    [LanguageCode(LanguageCode.Fy)]
+    [LanguageCode("fy")]
     Frisian,
 
-    [LanguageCode(LanguageCode.Gl)]
+    [LanguageCode("gl")]
     Galician,
 
-    [LanguageCode(LanguageCode.Ka)]
+    [LanguageCode("ka")]
     Georgian,
 
-    [LanguageCode(LanguageCode.De)]
+    [LanguageCode("de")]
     German,
 
-    [LanguageCode(LanguageCode.El)]
+    [LanguageCode("el")]
     Greek,
 
-    [LanguageCode(LanguageCode.Gu)]
+    [LanguageCode("gu")]
     Gujarati,
 
-    [LanguageCode(LanguageCode.Ht)]
+    [LanguageCode("ht")]
     HaitianCreole,
 
-    [LanguageCode(LanguageCode.Ha)]
+    [LanguageCode("ha")]
     Hausa,
 
-    [LanguageCode(LanguageCode.Haw)]
+    [LanguageCode("haw")]
     Hawaiian,
 
-    [LanguageCode(LanguageCode.He)]
+    [LanguageCode("he")]
     Hebrew,
 
-    [LanguageCode(LanguageCode.Hi)]
+    [LanguageCode("hi")]
     Hindi,
 
-    [LanguageCode(LanguageCode.Hmn)]
+    [LanguageCode("hmn")]
     Hmong,
 
-    [LanguageCode(LanguageCode.Hu)]
+    [LanguageCode("hu")]
     Hungarian,
 
-    [LanguageCode(LanguageCode.Is)]
+    [LanguageCode("is")]
     Icelandic,
 
-    [LanguageCode(LanguageCode.Ig)]
+    [LanguageCode("ig")]
     Igbo,
 
-    [LanguageCode(LanguageCode.Id)]
+    [LanguageCode("id")]
     Indonesian,
 
-    [LanguageCode(LanguageCode.Ga)]
+    [LanguageCode("ga")]
     Irish,
 
-    [LanguageCode(LanguageCode.It)]
+    [LanguageCode("it")]
     Italian,
 
-    [LanguageCode(LanguageCode.Ja)]
+    [LanguageCode("ja")]
     Japanese,
 
-    [LanguageCode(LanguageCode.Jw)]
+    [LanguageCode("jw")]
     Javanese,
 
-    [LanguageCode(LanguageCode.Kn)]
+    [LanguageCode("kn")]
     Kannada,
 
-    [LanguageCode(LanguageCode.Kk)]
+    [LanguageCode("kk")]
     Kazakh,
 
-    [LanguageCode(LanguageCode.Km)]
+    [LanguageCode("km")]
     Khmer,
 
-    [LanguageCode(LanguageCode.Ko)]
+    [LanguageCode("ko")]
     Korean,
 
-    [LanguageCode(LanguageCode.Ku)]
+    [LanguageCode("ku")]
     Kurdish,
 
-    [LanguageCode(LanguageCode.Ky)]
+    [LanguageCode("ky")]
     Kyrgyz,
 
-    [LanguageCode(LanguageCode.Lo)]
+    [LanguageCode("lo")]
     Lao,
 
-    [LanguageCode(LanguageCode.La)]
+    [LanguageCode("la")]
     Latin,
 
-    [LanguageCode(LanguageCode.Lv)]
+    [LanguageCode("lv")]
     Latvian,
 
-    [LanguageCode(LanguageCode.Lt)]
+    [LanguageCode("lt")]
     Lithuanian,
 
-    [LanguageCode(LanguageCode.Lb)]
+    [LanguageCode("lb")]
     Luxembourgish,
 
-    [LanguageCode(LanguageCode.Mk)]
+    [LanguageCode("mk")]
     Macedonian,
 
-    [LanguageCode(LanguageCode.Mg)]
+    [LanguageCode("mg")]
     Malagasy,
 
-    [LanguageCode(LanguageCode.Ms)]
+    [LanguageCode("ms")]
     Malay,
 
-    [LanguageCode(LanguageCode.Ml)]
+    [LanguageCode("ml")]
     Malayalam,
 
-    [LanguageCode(LanguageCode.Mt)]
+    [LanguageCode("mt")]
     Maltese,
 
-    [LanguageCode(LanguageCode.Mi)]
+    [LanguageCode("mi")]
     Maori,
 
-    [LanguageCode(LanguageCode.Mr)]
+    [LanguageCode("mr")]
     Marathi,
 
-    [LanguageCode(LanguageCode.Mn)]
+    [LanguageCode("mn")]
     Mongolian,
 
-    [LanguageCode(LanguageCode.My)]
+    [LanguageCode("my")]
     MyanmarBurmese,
 
-    [LanguageCode(LanguageCode.Ne)]
+    [LanguageCode("ne")]
     Nepali,
 
-    [LanguageCode(LanguageCode.No)]
+    [LanguageCode("no")]
     Norwegian,
 
-    [LanguageCode(LanguageCode.Or)]
+    [LanguageCode("or")]
     OdiaOriya,
 
-    [LanguageCode(LanguageCode.Ps)]
+    [LanguageCode("ps")]
     Pashto,
 
-    [LanguageCode(LanguageCode.Fa)]
+    [LanguageCode("fa")]
     Persian,
 
-    [LanguageCode(LanguageCode.Pl)]
+    [LanguageCode("pl")]
     Polish,
 
-    [LanguageCode(LanguageCode.Pt)]
+    [LanguageCode("pt")]
     Portuguese,
 
-    [LanguageCode(LanguageCode.Pa)]
+    [LanguageCode("pa")]
     Punjabi,
 
-    [LanguageCode(LanguageCode.Ro)]
+    [LanguageCode("ro")]
     Romanian,
 
-    [LanguageCode(LanguageCode.Ru)]
+    [LanguageCode("ru")]
     Russian,
 
-    [LanguageCode(LanguageCode.Sm)]
+    [LanguageCode("sm")]
     Samoan,
 
-    [LanguageCode(LanguageCode.Gd)]
+    [LanguageCode("gd")]
     ScotsGaelic,
 
-    [LanguageCode(LanguageCode.Sr)]
+    [LanguageCode("sr")]
     Serbian,
 
-    [LanguageCode(LanguageCode.St)]
+    [LanguageCode("st")]
     Sesotho,
 
-    [LanguageCode(LanguageCode.Sn)]
+    [LanguageCode("sn")]
     Shona,
 
-    [LanguageCode(LanguageCode.Sd)]
+    [LanguageCode("sd")]
     Sindhi,
 
-    [LanguageCode(LanguageCode.Si)]
+    [LanguageCode("si")]
     Sinhala,
 
-    [LanguageCode(LanguageCode.Sk)]
+    [LanguageCode("sk")]
     Slovak,
 
-    [LanguageCode(LanguageCode.Sl)]
+    [LanguageCode("sl")]
     Slovenian,
 
-    [LanguageCode(LanguageCode.So)]
+    [LanguageCode("so")]
     Somali,
 
-    [LanguageCode(LanguageCode.Es)]
+    [LanguageCode("es")]
     Spanish,
 
-    [LanguageCode(LanguageCode.Su)]
+    [LanguageCode("su")]
     Sundanese,
 
-    [LanguageCode(LanguageCode.Sw)]
+    [LanguageCode("sw")]
     Swahili,
 
-    [LanguageCode(LanguageCode.Sv)]
+    [LanguageCode("sv")]
     Swedish,
 
-    [LanguageCode(LanguageCode.Tg)]
+    [LanguageCode("tg")]
     Tajik,
 
-    [LanguageCode(LanguageCode.Ta)]
+    [LanguageCode("ta")]
     Tamil,
 
-    [LanguageCode(LanguageCode.Tt)]
+    [LanguageCode("tt")]
     Tatar,
 
-    [LanguageCode(LanguageCode.Te)]
+    [LanguageCode("te")]
     Telugu,
 
-    [LanguageCode(LanguageCode.Th)]
+    [LanguageCode("th")]
     Thai,
 
-    [LanguageCode(LanguageCode.Tr)]
+    [LanguageCode("tr")]
     Turkish,
 
-    [LanguageCode(LanguageCode.Tk)]
+    [LanguageCode("tk")]
     Turkmen,
 
-    [LanguageCode(LanguageCode.Uk)]
+    [LanguageCode("uk")]
     Ukrainian,
 
-    [LanguageCode(LanguageCode.Ur)]
+    [LanguageCode("ur")]
     Urdu,
 
-    [LanguageCode(LanguageCode.Ug)]
+    [LanguageCode("ug")]
     Uyghur,
 
-    [LanguageCode(LanguageCode.Uz)]
+    [LanguageCode("uz")]
     Uzbek,
 
-    [LanguageCode(LanguageCode.Vi)]
+    [LanguageCode("vi")]
     Vietnamese,
 
-    [LanguageCode(LanguageCode.Cy)]
+    [LanguageCode("cy")]
     Welsh,
 
-    [LanguageCode(LanguageCode.Xh)]
+    [LanguageCode("xh")]
     Xhosa,
 
-    [LanguageCode(LanguageCode.Yi)]
+    [LanguageCode("yi")]
     Yiddish,
 
-    [LanguageCode(LanguageCode.Yo)]
+    [LanguageCode("yo")]
     Yoruba,
 
-    [LanguageCode(LanguageCode.Zu)]
+    [LanguageCode("zu")]
     Zulu
 }
