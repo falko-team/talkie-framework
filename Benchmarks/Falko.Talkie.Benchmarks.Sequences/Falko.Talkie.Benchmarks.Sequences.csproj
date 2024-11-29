@@ -4,5 +4,6 @@
     <ItemGroup Label="Dependencies">
         <ProjectReference Include="..\..\Sources\Falko.Talkie.Core\Falko.Talkie.Core.csproj" />
         <PackageReference Include="BenchmarkDotNet" />
+        <ProjectReference Include="..\..\Sources\Falko.Talkie.Signals.Extensions\Falko.Talkie.Signals.Extensions.csproj" />
     </ItemGroup>
 </Project>

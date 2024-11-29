@@ -4,11 +4,12 @@ using Talkie.Flows;
 
 namespace Talkie.Connectors;
 
-public sealed class TelegramSignalConnector(TelegramServerConfiguration serverConfiguration,
-    TelegramClientConfiguration clientConfiguration) : ISignalConnector
+public sealed class TelegramSignalConnector(TelegramConfiguration configuration) : ISignalConnector
 {
     public ISignalConnection Connect(ISignalFlow flow)
     {
-        return new TelegramSignalConnection(flow, serverConfiguration, clientConfiguration);
+        ArgumentNullException.ThrowIfNull(flow);
+
+        return new TelegramSignalConnection(flow, configuration);
     }
 }

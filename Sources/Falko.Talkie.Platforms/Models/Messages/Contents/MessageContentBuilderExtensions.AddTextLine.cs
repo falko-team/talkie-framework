@@ -6,43 +6,80 @@ public static partial class MessageContentBuilderExtensions
 {
     private const char NewLine = '\n';
 
-    public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder, string text)
+    public static IMessageContentBuilder AddTextLine
+    (
+        this IMessageContentBuilder builder,
+        string text
+    )
     {
         return builder.AddText(text).AddTextLine();
     }
 
-    public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder, ReadOnlyMemory<char> text)
+    public static IMessageContentBuilder AddTextLine
+    (
+        this IMessageContentBuilder builder,
+        ReadOnlyMemory<char> text
+    )
     {
         return builder.AddText(text).AddTextLine();
     }
 
-    public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder, ReadOnlySpan<char> text)
+    public static IMessageContentBuilder AddTextLine
+    (
+        this IMessageContentBuilder builder,
+        ReadOnlySpan<char> text
+    )
     {
         return builder.AddText(text).AddTextLine();
     }
 
-    public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder, char text,
-        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
+    public static IMessageContentBuilder AddTextLine
+    (
+        this IMessageContentBuilder builder,
+        char text,
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories
+    )
     {
         return builder.AddText(text, styleFactories).AddTextLine();
     }
 
-    public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder, string text,
-        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
+    public static IMessageContentBuilder AddTextLine
+    (
+        this IMessageContentBuilder builder,
+        string text,
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories
+    )
     {
         return builder.AddText(text, styleFactories).AddTextLine();
     }
 
-    public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder, ReadOnlyMemory<char> text,
-        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
+    public static IMessageContentBuilder AddTextLine
+    (
+        this IMessageContentBuilder builder,
+        ReadOnlyMemory<char> text,
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories
+    )
     {
         return builder.AddText(text, styleFactories).AddTextLine();
     }
 
-    public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder, ReadOnlySpan<char> text,
-        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
+    public static IMessageContentBuilder AddTextLine
+    (
+        this IMessageContentBuilder builder,
+        ReadOnlySpan<char> text,
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories
+    )
     {
         return builder.AddText(text, styleFactories).AddTextLine();
+    }
+
+    public static IMessageContentBuilder AddTextLine
+    (
+        this IMessageContentBuilder builder,
+        int repeat
+    )
+    {
+        return builder.AddText(NewLine, repeat);
     }
 
     public static IMessageContentBuilder AddTextLine(this IMessageContentBuilder builder)

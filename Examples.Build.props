@@ -3,7 +3,7 @@
 
     <PropertyGroup Label="Assembly">
         <OutputType>exe</OutputType>
-        <PublishAot>true</PublishAot>
+        <PublishAot>false</PublishAot>
         <OptimizationPreference>speed</OptimizationPreference>
         <TrimMode>full</TrimMode>
         <ServerGarbageCollection>true</ServerGarbageCollection>

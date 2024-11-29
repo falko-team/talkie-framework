@@ -4,8 +4,12 @@ namespace Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {
-    public static async ValueTask<IAsyncDisposable> ConnectAsync(this ISignalFlow flow, ISignalConnector connector,
-        CancellationToken cancellationToken = default)
+    public static async ValueTask<IAsyncDisposable> ConnectAsync
+    (
+        this ISignalFlow flow,
+        ISignalConnector connector,
+        CancellationToken cancellationToken = default
+    )
     {
         var connection = connector.Connect(flow);
 

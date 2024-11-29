@@ -18,9 +18,9 @@ public class FrozenSequenceTester
     [Test]
     public void TestFrozenSequenceFrom1()
     {
-        var frozenSequence = new FrozenSequence<int>(new[] { 0 });
+        var frozenSequence = new FrozenSequence<int>([0]);
 
-        using var enumerator = frozenSequence.GetEnumerator();
+        using var enumerator = frozenSequence.AsEnumerable().GetEnumerator();
 
         Assert.Multiple(() =>
         {
@@ -45,7 +45,7 @@ public class FrozenSequenceTester
 
         var frozenSequence = new FrozenSequence<int>(sequence);
 
-        using var enumerator = frozenSequence.GetEnumerator();
+        using var enumerator = frozenSequence.AsEnumerable().GetEnumerator();
 
         for (var index = 0; index < capacity; index++)
         {

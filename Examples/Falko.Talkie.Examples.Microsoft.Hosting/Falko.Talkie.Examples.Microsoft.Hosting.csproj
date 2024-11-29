@@ -2,7 +2,7 @@
     <Import Project="../../Examples.Build.props" />
 
     <PropertyGroup Label="Assembly">
-        <AssemblyName>SimpleTelegramBot</AssemblyName>
+        <AssemblyName>Bot</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup Label="Dependencies">

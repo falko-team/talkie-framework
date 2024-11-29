@@ -1,11 +1,11 @@
 namespace Talkie.Localizations;
 
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class LanguageCodeAttribute(LanguageCode languageCode) : Attribute
+public sealed class LanguageCodeAttribute(string languageCode) : Attribute
 {
-    public readonly LanguageCode LanguageCode = languageCode;
+    public readonly string LanguageCode = languageCode;
 
-    public override string ToString() => LanguageCode.ToString();
+    public override string ToString() => LanguageCode;
 
     public override int GetHashCode() => LanguageCode.GetHashCode();
 

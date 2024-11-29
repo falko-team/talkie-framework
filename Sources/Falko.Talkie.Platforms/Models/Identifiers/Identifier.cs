@@ -5,7 +5,7 @@ namespace Talkie.Models.Identifiers;
 /// <summary>
 /// Represents an identifier that contains not type strongly value and provides a <b>type-safe</b> way to work with it.
 /// </summary>
-public readonly struct Identifier
+public readonly struct Identifier : IEquatable<Identifier>
 {
     /// <summary>
     /// Gets an empty <see cref="Identifier"/>.
@@ -51,7 +51,7 @@ public readonly struct Identifier
     /// <b>Null</b> or <b>Default</b> if the value type of the identifier is not the specified type;
     /// otherwise, the value of the identifier.
     /// </returns>
-    public T? GetValueOrDefault<T>() where T : notnull
+    public T GetValueOrDefault<T>() where T : notnull
     {
         return _value is T typedValue
             ? typedValue

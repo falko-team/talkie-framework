@@ -2,7 +2,8 @@ using Talkie.Signals;
 
 namespace Talkie.Interceptors;
 
-internal sealed class TakeWhileSignalInterceptor<T>(Func<T, CancellationToken, bool> @while) : SignalInterceptor<T> where T : Signal
+internal sealed class TakeWhileSignalInterceptor<T>(Func<T, CancellationToken, bool> @while)
+    : SignalInterceptor<T> where T : Signal
 {
     private readonly object _locker = new();
 

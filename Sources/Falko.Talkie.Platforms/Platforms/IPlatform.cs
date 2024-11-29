@@ -1,5 +1,4 @@
 using Talkie.Controllers;
-using Talkie.Models;
 using Talkie.Models.Identifiers;
 
 namespace Talkie.Platforms;

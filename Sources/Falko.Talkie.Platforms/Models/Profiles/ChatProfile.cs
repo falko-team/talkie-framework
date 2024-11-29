@@ -3,7 +3,7 @@ using Talkie.Models.Identifiers;
 
 namespace Talkie.Models.Profiles;
 
-public sealed record TelegramChatProfile : IChatProfile
+public sealed class ChatProfile : IChatProfile
 {
     public required Identifier Identifier { get; init; }
 

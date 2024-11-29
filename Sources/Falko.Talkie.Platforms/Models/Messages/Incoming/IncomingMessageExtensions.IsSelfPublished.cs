@@ -7,7 +7,7 @@ public static partial class IncomingMessageExtensions
     /// </summary>
     /// <param name="message">The message.</param>
     /// <returns><c>true</c> if the message was published by the same profile that received it; otherwise, <c>false</c>.</returns>
-    public static bool IsSelf(this IIncomingMessage message)
+    public static bool IsSelfPublished(this IIncomingMessage message)
     {
         return message.ReceiverProfile.Identifier == message.PublisherProfile.Identifier;
     }

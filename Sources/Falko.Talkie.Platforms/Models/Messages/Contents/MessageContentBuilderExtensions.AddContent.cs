@@ -4,7 +4,11 @@ namespace Talkie.Models.Messages.Contents;
 
 public static partial class MessageContentBuilderExtensions
 {
-    public static IMessageContentBuilder AddContent(this IMessageContentBuilder builder, MessageContent content)
+    public static IMessageContentBuilder AddContent
+    (
+        this IMessageContentBuilder builder,
+        MessageContent content
+    )
     {
         if (content.IsEmpty) return builder;
 
@@ -15,8 +19,12 @@ public static partial class MessageContentBuilderExtensions
         return builder.AddText(content.Text);
     }
 
-    public static IMessageContentBuilder AddContent(this IMessageContentBuilder builder, MessageContent content,
-        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories)
+    public static IMessageContentBuilder AddContent
+    (
+        this IMessageContentBuilder builder,
+        MessageContent content,
+        params IReadOnlyCollection<Func<MessageTextRange, IMessageTextStyle>> styleFactories
+    )
     {
         if (content.IsEmpty) return builder;
 
@@ -29,7 +37,11 @@ public static partial class MessageContentBuilderExtensions
         return builder.AddText(content.Text);
     }
 
-    private static void AddStylesForText(IMessageContentBuilder builder, IReadOnlyCollection<IMessageTextStyle> styles)
+    private static void AddStylesForText
+    (
+        IMessageContentBuilder builder,
+        IReadOnlyCollection<IMessageTextStyle> styles
+    )
     {
         foreach (var style in styles)
         {

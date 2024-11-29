@@ -31,7 +31,7 @@ public sealed class StartSubscriber : IBehaviorsSubscriber
                 .PublishMessageAsync(message => message
                     .SetReply(context.GetMessage())
                     .SetContent(content => content
-                        .AddText(nameof(Talkie), [BoldTextStyle.FromTextRange, BoldTextStyle.FromTextRange])
+                        .AddText(nameof(Talkie), BoldTextStyle.FromTextRange)
                         .AddText(" is a library for building chatbots in .NET.", ItalicTextStyle.FromTextRange, BoldTextStyle.FromTextRange)),
                     cancellation)
                 .AsValueTask())

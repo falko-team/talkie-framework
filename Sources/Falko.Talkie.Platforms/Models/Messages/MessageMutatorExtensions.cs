@@ -13,8 +13,11 @@ public static partial class MessageMutatorExtensions
     /// <typeparam name="TMutator">The type of the mutator.</typeparam>
     /// <typeparam name="TMessage">The type of the message.</typeparam>
     /// <returns>The incoming mutator.</returns>
-    public static TMutator MutateContent<TMutator, TMessage>(this IMessageMutator<TMutator, TMessage> mutator,
-            Func<MessageContent, IMessageContentBuilder, IMessageContentBuilder> contentMutationFactory)
+    public static TMutator MutateContent<TMutator, TMessage>
+    (
+        this IMessageMutator<TMutator, TMessage> mutator,
+        Func<MessageContent, IMessageContentBuilder, IMessageContentBuilder> contentMutationFactory
+    )
         where TMutator : IMessageMutator<TMutator, TMessage>
         where TMessage : IMessage
     {

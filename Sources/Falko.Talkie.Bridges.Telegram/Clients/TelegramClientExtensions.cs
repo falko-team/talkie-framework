@@ -5,8 +5,12 @@ namespace Talkie.Bridges.Telegram.Clients;
 
 public static partial class TelegramClientExtensions
 {
-    public static Task<IReadOnlyList<TelegramUpdate>> GetUpdatesAsync(this ITelegramClient client, TelegramGetUpdatesRequest getUpdates,
-        CancellationToken cancellationToken = default)
+    public static Task<IReadOnlyList<TelegramUpdate>> GetUpdatesAsync
+    (
+        this ITelegramClient client,
+        TelegramGetUpdatesRequest getUpdates,
+        CancellationToken cancellationToken = default
+    )
     {
         return client.SendAsync<IReadOnlyList<TelegramUpdate>, TelegramGetUpdatesRequest>
         (
@@ -16,8 +20,11 @@ public static partial class TelegramClientExtensions
         );
     }
 
-    public static Task<TelegramUser> GetMeAsync(this ITelegramClient client,
-        CancellationToken cancellationToken = default)
+    public static Task<TelegramUser> GetMeAsync
+    (
+        this ITelegramClient client,
+        CancellationToken cancellationToken = default
+    )
     {
         return client.SendAsync<TelegramUser>
         (

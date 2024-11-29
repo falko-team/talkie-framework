@@ -23,4 +23,9 @@ public readonly struct TelegramConfiguration
         ArgumentNullException.ThrowIfNull(ServerConfiguration);
         ArgumentNullException.ThrowIfNull(ClientConfiguration);
     }
+
+    public static implicit operator TelegramConfiguration(TelegramServerConfiguration serverConfiguration)
+    {
+        return new TelegramConfiguration(serverConfiguration);
+    }
 }

@@ -6,7 +6,10 @@ using Talkie.Pipelines.Intercepting;
 
 namespace Talkie.Subscribers;
 
-internal sealed class UnobservedExceptionsLoggingSubscriber(ILogger<UnobservedExceptionsShutdownSubscriber> logger) : IBehaviorsSubscriber
+internal sealed class UnobservedExceptionsLoggingSubscriber
+(
+    ILogger<UnobservedExceptionsShutdownSubscriber> logger
+) : IBehaviorsSubscriber
 {
     private static readonly string UnobservedExceptionLogMessage =
         "Unobserved exception occurred in the signal flow";

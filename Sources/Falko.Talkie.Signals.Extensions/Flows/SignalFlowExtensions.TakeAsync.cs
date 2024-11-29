@@ -6,9 +6,12 @@ namespace Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {
-    public static async Task<Signal> TakeAsync(this ISignalFlow flow,
+    public static async Task<Signal> TakeAsync
+    (
+        this ISignalFlow flow,
         Func<ISignalInterceptingPipelineBuilder, ISignalInterceptingPipelineBuilder> pipelineFactory,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var taskSource = new TaskCompletionSource<Signal>();
 
@@ -27,9 +30,12 @@ public static partial class SignalFlowExtensions
         }
     }
 
-    public static async Task<T> TakeAsync<T>(this ISignalFlow flow,
+    public static async Task<T> TakeAsync<T>
+    (
+        this ISignalFlow flow,
         Func<ISignalInterceptingPipelineBuilder, ISignalInterceptingPipelineBuilder<T>> pipelineFactory,
-        CancellationToken cancellationToken = default) where T : Signal
+        CancellationToken cancellationToken = default
+    ) where T : Signal
     {
         var taskSource = new TaskCompletionSource<T>();
 
@@ -48,9 +54,12 @@ public static partial class SignalFlowExtensions
         }
     }
 
-    public static async Task<TTo> TakeAsync<TFrom, TTo>(this ISignalFlow flow,
+    public static async Task<TTo> TakeAsync<TFrom, TTo>
+    (
+        this ISignalFlow flow,
         Func<ISignalInterceptingPipelineBuilder<TFrom>, ISignalInterceptingPipelineBuilder<TTo>> pipelineFactory,
-        CancellationToken cancellationToken = default) where TFrom : Signal where TTo : Signal
+        CancellationToken cancellationToken = default
+    ) where TFrom : Signal where TTo : Signal
     {
         var taskSource = new TaskCompletionSource<TTo>();
 
@@ -69,20 +78,29 @@ public static partial class SignalFlowExtensions
         }
     }
 
-    public static async Task<T> TakeAsync<T>(this ISignalFlow flow,
-        CancellationToken cancellationToken = default) where T : Signal
+    public static async Task<T> TakeAsync<T>
+    (
+        this ISignalFlow flow,
+        CancellationToken cancellationToken = default
+    ) where T : Signal
     {
         return await flow.TakeAsync<T>(signals => signals.OfType<T>(), cancellationToken);
     }
 
-    public static async Task<Signal> TakeAsync(this ISignalFlow flow,
-        CancellationToken cancellationToken = default)
+    public static async Task<Signal> TakeAsync
+    (
+        this ISignalFlow flow,
+        CancellationToken cancellationToken = default
+    )
     {
         return await flow.TakeAsync(signals => signals, cancellationToken);
     }
 
-    private static void SafeSetCancellationForTaskSource<T>(TaskCompletionSource<T> source,
-        CancellationToken cancellationToken) where T : Signal
+    private static void SafeSetCancellationForTaskSource<T>
+    (
+        TaskCompletionSource<T> source,
+        CancellationToken cancellationToken
+    ) where T : Signal
     {
         if (cancellationToken == CancellationToken.None || cancellationToken.CanBeCanceled is false)
         {
@@ -102,9 +120,12 @@ public static partial class SignalFlowExtensions
         });
     }
 
-    private static void SafeSetResultForTaskSource<T>(TaskCompletionSource<T> source,
+    private static void SafeSetResultForTaskSource<T>
+    (
+        TaskCompletionSource<T> source,
         T result,
-        CancellationToken cancellationToken) where T : Signal
+        CancellationToken cancellationToken
+    ) where T : Signal
     {
         try
         {

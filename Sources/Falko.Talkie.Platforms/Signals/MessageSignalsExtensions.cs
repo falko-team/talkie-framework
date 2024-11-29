@@ -4,15 +4,21 @@ namespace Talkie.Signals;
 
 public static partial class MessageSignalsExtensions
 {
-    public static MessagePublishedSignal MutateMessage(this MessagePublishedSignal signal,
-        Func<IIncomingMessageMutator, IIncomingMessageMutator> messageMutationFactory)
+    public static MessagePublishedSignal MutateMessage
+    (
+        this MessagePublishedSignal signal,
+        Func<IIncomingMessageMutator, IIncomingMessageMutator> messageMutationFactory
+    )
     {
-        return messageMutationFactory(signal.Message.ToMutator()).Mutate().ToMessageReceivedSignal();
+        return messageMutationFactory(signal.Message.ToMutator()).Mutate().ToMessagePublishedSignal();
     }
 
-    public static MessageExchangedSignal MutateMessage(this MessageExchangedSignal signal,
-        Func<IIncomingMessageMutator, IIncomingMessageMutator> messageMutationFactory)
+    public static MessageExchangedSignal MutateMessage
+    (
+        this MessageExchangedSignal signal,
+        Func<IIncomingMessageMutator, IIncomingMessageMutator> messageMutationFactory
+    )
     {
-        return messageMutationFactory(signal.Message.ToMutator()).Mutate().ToMessageEditedSignal();
+        return messageMutationFactory(signal.Message.ToMutator()).Mutate().ToMessageExchangedSignal();
     }
 }
