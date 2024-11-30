@@ -6,7 +6,7 @@ namespace Talkie.Hosting;
 
 public static partial class HostingExtensions
 {
-    public static IServiceCollection AddBehaviors<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>
+    public static IServiceCollection AddBehaviorsSubscriber<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>
     (
         this IServiceCollection services
     ) where T : class, IBehaviorsSubscriber
