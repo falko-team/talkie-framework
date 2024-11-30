@@ -50,8 +50,8 @@ Or watch simple example of code:
 await new HostBuilder()
     .UseTalkie(configuration => configuration)
     .ConfigureServices(services => services
-        .AddIntegrations<TelegramSubscriber>()
-        .AddBehaviors<HelloWorldSubscriber>())
+        .AddIntegrationSubscriber<TelegramSubscriber>()
+        .AddBehaviorsSubscriber<HelloWorldSubscriber>())
     .RunConsoleAsync();
 
 file sealed class HelloWorldSubscriber : IBehaviorsSubscriber
