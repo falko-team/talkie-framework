@@ -7,7 +7,7 @@ Talkie is a framework for creating bots across messaging platforms. Write code o
 ## <img src="Icon64.png" width="18" hspace="5" /> Features
 
 - **Fast and Lightweight**: Talkie is designed to be fast and lightweight, making it ideal for use in resource-constrained environments or high-traffic, large-scale bots.
-- **Native-AOT Support (Latest .NET 8)**: Talkie provides native Ahead-of-Time (AOT) compilation support with the latest .NET 8 framework, enabling developers to compile bots to native code for enhanced performance and memory efficiency.
+- **Native-AOT Support (Latest .NET 9)**: Talkie provides native Ahead-of-Time (AOT) compilation support with the latest .NET 8 framework, enabling developers to compile bots to native code for enhanced performance and memory efficiency.
 - **Parallel Processing**: Talkie is optimized to leverage multi-core processors, empowering developers to create bots capable of handling multiple messages concurrently.
 - **OOP and Functional Programming**: Talkie offers flexibility by supporting both object-oriented and functional programming paradigms, allowing developers to choose the style that best aligns with their preferences and project requirements.
 - **Self-Contained and Independent**: Talkie is self-contained and does not rely on external libraries. This eliminates compatibility concerns, reduces the overall footprint, and simplifies deployment.
@@ -47,31 +47,50 @@ Or explore [Simple Wallet Bot (Rider Coin Bot)](https://github.com/falko-team/ri
 Or watch simple example of code:
 
 ```C#
-await using var disposables = new ReverseDisposableScope();
+await new HostBuilder()
+    .UseTalkie(configuration => configuration)
+    .ConfigureServices(services => services
+        .AddIntegrations<TelegramSubscriber>()
+        .AddBehaviors<HelloWorldSubscriber>())
+    .RunConsoleAsync();
 
-var flow = new SignalFlow()
-    .DisposeWith(disposables);
+file sealed class HelloWorldSubscriber : IBehaviorsSubscriber
+{
+    public void Subscribe
+    (
+        ISignalFlow flow,
+        IRegisterOnlyDisposableScope disposables,
+        CancellationToken cancellationToken
+    )
+    {
+        flow.Subscribe<MessagePublishedSignal>(signals => signals
+            .SkipSelfPublished()
+            .SkipOlderThan(TimeSpan.FromMinutes(1))
+            .Where(signal => signal
+                .Message
+                .GetText()
+                .StartsWith("/hello", StringComparison.InvariantCultureIgnoreCase))
+            .HandleAsync(context => context
+                .ToMessageController()
+                .PublishMessageAsync("Hi!", cancellationToken)
+                .AsValueTask()))
+            .UnsubscribeWith(disposables);
+    }
+}
 
-var unobservedExceptionTask = flow.TakeUnobservedExceptionAsync()
-
-flow.Subscribe<MessagePublishedSignal>(signals => signals
-    .SkipSelfPublish()
-    .SkipOlderThan(TimeSpan.FromMinutes(1))
-    .Where(signal => signal
-        .Message
-        .GetText()
-        .ToLowerInvariant()
-        .Contains("hello"))
-    .HandleAsync(context => context
-        .ToMessageController()
-        .PublishMessageAsync("hi")
-        .AsValueTask()))
-    .UnsubscribeWith(disposables);
-
-await flow.ConnectTelegramAsync("YOUR_TOKEN")
-    .DisposeAsyncWith(disposables);
-
-throw await unobservedExceptionTask;
+file sealed class TelegramSubscriber : IIntegrationsSubscriber
+{
+    public async Task SubscribeAsync
+    (
+        ISignalFlow flow,
+        IRegisterOnlyDisposableScope disposables,
+        CancellationToken cancellationToken
+    )
+    {
+        await flow.ConnectTelegramAsync("MY_TOKEN", cancellationToken)
+            .DisposeAsyncWith(disposables);
+    }
+}
 ```
 
 ## <img src="Icon64.png" width="18" hspace="5" /> License
