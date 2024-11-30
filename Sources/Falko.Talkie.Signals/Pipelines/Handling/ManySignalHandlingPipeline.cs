@@ -7,8 +7,11 @@ using Talkie.Signals;
 
 namespace Talkie.Pipelines.Handling;
 
-public sealed class ManySignalHandlingPipeline(IEnumerable<ISignalHandler> handlers,
-    ISignalInterceptingPipeline? interceptingPipeline = null) : ISignalHandlingPipeline
+public sealed class ManySignalHandlingPipeline
+(
+    IEnumerable<ISignalHandler> handlers,
+    ISignalInterceptingPipeline? interceptingPipeline = null
+) : ISignalHandlingPipeline
 {
     private readonly FrozenSequence<ISignalHandler> _handlers = handlers.ToFrozenSequence();
 

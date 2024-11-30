@@ -5,8 +5,11 @@ using Talkie.Signals;
 
 namespace Talkie.Pipelines.Handling;
 
-public sealed class SingleSignalHandlingPipeline(ISignalHandler handler,
-    ISignalInterceptingPipeline? interceptingPipeline = null) : ISignalHandlingPipeline
+public sealed class SingleSignalHandlingPipeline
+(
+    ISignalHandler handler,
+    ISignalInterceptingPipeline? interceptingPipeline = null
+) : ISignalHandlingPipeline
 {
     public ValueTask TransferAsync(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default)
     {
