@@ -52,8 +52,8 @@ public static partial class HostingExtensions
     )
     {
         return configuration.ShutdownOnUnobservedExceptions
-            ? services.AddBehaviors<UnobservedExceptionsShutdownSubscriber>()
-            : services.AddBehaviors<UnobservedExceptionsLoggingSubscriber>();
+            ? services.AddBehaviorsSubscriber<UnobservedExceptionsShutdownSubscriber>()
+            : services.AddBehaviorsSubscriber<UnobservedExceptionsLoggingSubscriber>();
     }
 
     private static IServiceCollection TryAddSignalsLogging
@@ -63,7 +63,7 @@ public static partial class HostingExtensions
     )
     {
         return configuration.LogSignals
-            ? services.AddBehaviors<SignalsLoggingSubscriber>()
+            ? services.AddBehaviorsSubscriber<SignalsLoggingSubscriber>()
             : services;
     }
 }
