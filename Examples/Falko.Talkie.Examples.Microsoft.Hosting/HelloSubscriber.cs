@@ -17,8 +17,10 @@ public sealed class HelloSubscriber : IBehaviorsSubscriber
     {
         flow.Subscribe<MessagePublishedSignal>(static signals => signals
             .SkipSelfPublished()
-            .SkipOlderThan(TimeSpan
-                .FromMinutes(1))
+            .SkipOlderThan(TimeSpan.FromMinutes(1))
+            .InterceptOn(Schedulers.Intercepting.Random())
+            .Do(_ => Thread.Sleep(1000))
+            .InterceptOn(Schedulers.Intercepting.Current())
             .Where(signal => signal
                 .Message
                 .GetText()

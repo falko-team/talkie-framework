@@ -1,21 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Serilog;
-using Talkie.Examples;
-using Talkie.Hosting;
+﻿// IWith и в чем отличие от обычных интерфейсов
+// Sequence/FrozenSequence и отличие от List
+// IDisposable и IAsyncDisposable, и IDisposableScope и IRegisterOnlyDisposableScope
+// foreach
+// Parallelize().ForEach
+// async/await
 
-// Please set 'Telegram:Token' environment variable before running 💚💚💚
+using Talkie.Bridges.Telegram.Clients;
+using Talkie.Bridges.Telegram.Configurations;
 
-await new HostBuilder()
-    .ConfigureAppConfiguration(configuration => configuration
-        .AddEnvironmentVariables())
-    .UseSerilog((_, configuration) => configuration
-        .MinimumLevel.Verbose()
-        .WriteTo.Console())
-    .UseTalkie(configuration => configuration
-        .SetSignalsLogging())
-    .ConfigureServices(services => services
-        .AddIntegrations<TelegramSubscriber>()
-        .AddBehaviors<HelloSubscriber>()
-        .AddBehaviors<StartSubscriber>())
-    .RunConsoleAsync();
+var configuration = new TelegramConfiguration("TOKEN");
+
+var client = new TelegramClient(configuration);
+
+var self = await client.GetMeAsync();
