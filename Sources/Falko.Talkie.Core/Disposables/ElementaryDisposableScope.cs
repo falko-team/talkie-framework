@@ -8,7 +8,7 @@ public abstract class ElementaryDisposableScope : IDisposableScope
 
     private const int IsNotDisposed = 0;
 
-    private object _locker = new();
+    private Lock _locker = new();
 
     // ReSharper disable InconsistentlySynchronizedField
     private Sequence<IAsyncDisposable> _asyncDisposables = new();

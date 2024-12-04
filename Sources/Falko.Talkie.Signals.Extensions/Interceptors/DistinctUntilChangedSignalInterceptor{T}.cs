@@ -5,7 +5,7 @@ namespace Talkie.Interceptors;
 internal sealed class DistinctUntilChangedSignalInterceptor<TSignal, TValue>(Func<TSignal, CancellationToken, TValue> select)
     : SignalInterceptor<TSignal> where TSignal : Signal
 {
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
 
     private bool _firstTime = true;
 

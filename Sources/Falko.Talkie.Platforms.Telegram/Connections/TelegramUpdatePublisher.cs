@@ -7,7 +7,7 @@ using Talkie.Sequences;
 
 namespace Talkie.Connections;
 
-public sealed class TelegramUpdatePublisher(ISignalFlow flow, TelegramPlatform platform, ISignalConnection connection)
+public sealed class TelegramUpdatePublisher(ISignalFlow flow, TelegramPlatform platform)
 {
     private Sequence<TelegramMessage> _messagesGroup = [];
 

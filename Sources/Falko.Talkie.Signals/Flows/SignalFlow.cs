@@ -8,7 +8,7 @@ namespace Talkie.Flows;
 
 public sealed class SignalFlow : ISignalFlow
 {
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
 
     private readonly CancellationTokenSource _flowCancellationTokenSource = new();
 
