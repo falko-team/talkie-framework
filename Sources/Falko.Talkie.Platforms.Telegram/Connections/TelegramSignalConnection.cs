@@ -52,7 +52,7 @@ public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlat
 
     private async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        var publisher = new TelegramUpdatePublisher(_flow, _platform, this);
+        var publisher = new TelegramUpdatePublisher(_flow, _platform);
         var offset = 0;
 
         while (cancellationToken.IsCancellationRequested is false)

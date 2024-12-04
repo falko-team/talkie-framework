@@ -5,7 +5,7 @@ namespace Talkie.Interceptors;
 internal sealed class TakeWhileSignalInterceptor<T>(Func<T, CancellationToken, bool> @while)
     : SignalInterceptor<T> where T : Signal
 {
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
 
     private bool _completed;
 

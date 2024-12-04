@@ -4,7 +4,7 @@ namespace Talkie.Pipelines.Intercepting;
 
 public sealed class SingletonSignalInterceptorFactory : ISignalInterceptorFactory
 {
-    private readonly object _lock = new();
+    private readonly Lock _locker = new();
 
     private Func<ISignalInterceptor>? _interceptorFactory;
 
@@ -21,7 +21,7 @@ public sealed class SingletonSignalInterceptorFactory : ISignalInterceptorFactor
     {
         if (_interceptor is not null) return _interceptor;
 
-        lock (_lock)
+        lock (_locker)
         {
             if (_interceptor is not null) return _interceptor;
 

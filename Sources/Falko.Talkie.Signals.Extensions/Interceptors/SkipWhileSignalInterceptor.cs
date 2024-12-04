@@ -5,7 +5,7 @@ namespace Talkie.Interceptors;
 internal sealed class SkipWhileSignalInterceptor(Func<Signal, CancellationToken, bool> @while)
     : ISignalInterceptor
 {
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
 
     private bool _completed;
 
