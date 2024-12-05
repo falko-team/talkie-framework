@@ -66,4 +66,18 @@ public partial class FrozenSequence<T>
 
         return false;
     }
+
+    public ReadOnlySpan<T> AsSpan() => _items.AsSpan();
+
+    public ReadOnlyMemory<T> AsMemory() => _items.AsMemory();
+
+    public Enumerable AsEnumerable() => new(_items, _itemsCount);
+
+    public T[] ToArray() => _items.ToArray();
+
+    public void CopyTo(T[] array, int arrayIndex) => _items.CopyTo(array, arrayIndex);
+
+    public void CopyTo(Span<T> span) => _items.CopyTo(span);
+
+    public void CopyTo(Memory<T> memory) => _items.CopyTo(memory);
 }

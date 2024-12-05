@@ -54,9 +54,6 @@ public static partial class SequenceExtensions
 
         if (sequence.Count is 0) return;
 
-        foreach (var value in sequence)
-        {
-            action(value);
-        }
+        foreach (var value in sequence) action(value);
     }
 }

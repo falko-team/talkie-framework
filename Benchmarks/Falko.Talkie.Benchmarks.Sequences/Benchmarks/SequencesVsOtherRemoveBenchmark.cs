@@ -7,7 +7,7 @@ namespace Talkie.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [SimpleJob(RunStrategy.Throughput)]
-public class RemoveBenchmark
+public class SequencesVsOtherRemoveBenchmark
 {
     private IEnumerable<RemovableSequence<Reference>.Remover>? _removableSequenceRemovers;
 

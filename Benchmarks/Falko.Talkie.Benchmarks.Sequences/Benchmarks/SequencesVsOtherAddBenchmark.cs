@@ -7,7 +7,7 @@ namespace Talkie.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [SimpleJob(RunStrategy.Throughput)]
-public class AddBenchmark
+public class SequencesVsOtherAddBenchmark
 {
     [Params(0, 1, 10, 100, 1000, 10000)]
     public int Capacity { get; set; }
