@@ -19,11 +19,11 @@ public partial class FrozenSequence<T> : IReadOnlySequence<T>
 
     public int Count => _itemsCount;
 
-    public StackEnumerator GetEnumerator() => new(_items, _itemsCount);
+    public StructEnumerator GetEnumerator() => new(_items, _itemsCount);
 
-    IEnumerator<T> IEnumerable<T>.GetEnumerator() => new HeapEnumerator(_items, _itemsCount);
+    IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator(_items, _itemsCount);
 
-    IEnumerator IEnumerable.GetEnumerator() => new HeapEnumerator(_items, _itemsCount);
+    IEnumerator IEnumerable.GetEnumerator() => new Enumerator(_items, _itemsCount);
 
     public IParallelEnumerator<T> GetParallelEnumerator() => new ParallelEnumerator(_items, _itemsCount);
 

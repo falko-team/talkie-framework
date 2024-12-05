@@ -6,9 +6,9 @@ namespace Talkie.Sequences;
 
 public partial class FrozenSequence<T>
 {
-    public ref struct StackEnumerator : IEnumerator<T>
+    public struct Enumerator : IEnumerator<T>
     {
-        private readonly ref T _valuesReference;
+        private readonly T[] _values;
 
         private readonly int _valuesCount;
 
@@ -17,9 +17,9 @@ public partial class FrozenSequence<T>
         private T _currentValue = default!;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal StackEnumerator(T[] values, int valuesCount)
+        internal Enumerator(T[] values, int valuesCount)
         {
-            _valuesReference = ref MemoryMarshal.GetArrayDataReference(values);
+            _values = values;
             _valuesCount = valuesCount;
         }
 
@@ -40,7 +40,7 @@ public partial class FrozenSequence<T>
         {
             if (_currentIndex == _valuesCount) return false;
 
-            _currentValue = Unsafe.Add(ref _valuesReference, _currentIndex);
+            _currentValue = Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(_values), _currentIndex);
 
             ++_currentIndex;
 

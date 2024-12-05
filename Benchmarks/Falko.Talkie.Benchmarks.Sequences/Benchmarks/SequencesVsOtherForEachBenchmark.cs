@@ -7,7 +7,7 @@ namespace Talkie.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [SimpleJob(RunStrategy.Throughput)]
-public class ForeachBenchmark
+public class SequencesVsOtherForEachBenchmark
 {
     private FrozenSequence<Reference>? _frozenSequence;
 

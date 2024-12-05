@@ -7,7 +7,7 @@ namespace Talkie.Benchmarks.Benchmarks;
 
 [MemoryDiagnoser]
 [SimpleJob(RunStrategy.Throughput)]
-public class FirstAndLastBenchmark
+public class SequencesVsOtherFirstAndLastBenchmark
 {
     private const int Capacity = 10;
 
