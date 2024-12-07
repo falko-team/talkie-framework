@@ -6,7 +6,7 @@ public sealed class TelegramReplyParameters
     long? chatId = null
 )
 {
-    public readonly long MessageId = messageId;
+    public long MessageId => messageId;
 
-    public readonly long? ChatId = chatId;
+    public long? ChatId => chatId;
 }

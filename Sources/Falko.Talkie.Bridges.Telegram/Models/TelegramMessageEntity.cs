@@ -7,9 +7,9 @@ public sealed class TelegramMessageEntity
     int length
 )
 {
-    public readonly string Type = type;
+    public string Type => type;
 
-    public readonly int Offset = offset;
+    public int Offset => offset;
 
-    public readonly int Length = length;
+    public int Length => length;
 }

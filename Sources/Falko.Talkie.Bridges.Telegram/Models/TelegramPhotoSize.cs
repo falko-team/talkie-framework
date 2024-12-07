@@ -9,13 +9,13 @@ public class TelegramPhotoSize
     long? fileSize = null
 )
 {
-    public readonly string FileId = fileId;
+    public string FileId => fileId;
 
-    public readonly string FileUniqueId = fileUniqueId;
+    public string FileUniqueId => fileUniqueId;
 
-    public readonly int Width = width;
+    public int Width => width;
 
-    public readonly int Height = height;
+    public int Height => height;
 
-    public readonly long? FileSize = fileSize;
+    public long? FileSize => fileSize;
 }

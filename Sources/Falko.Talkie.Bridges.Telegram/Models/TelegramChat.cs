@@ -11,17 +11,17 @@ public sealed class TelegramChat
     bool? isForum = null
 )
 {
-    public readonly long Id = id;
+    public long Id => id;
 
-    public readonly TelegramChatType Type = type;
+    public TelegramChatType Type => type;
 
-    public readonly string? Title = title;
+    public string? Title => title;
 
-    public readonly string? FirstName = firstName;
+    public string? FirstName => firstName;
 
-    public readonly string? LastName = lastName;
+    public string? LastName => lastName;
 
-    public readonly string? Username = username;
+    public string? Username => username;
 
-    public readonly bool? IsForum = isForum;
+    public bool? IsForum => isForum;
 }

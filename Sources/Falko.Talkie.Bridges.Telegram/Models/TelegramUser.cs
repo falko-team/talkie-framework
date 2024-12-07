@@ -16,27 +16,27 @@ public sealed class TelegramUser
     bool? canConnectToBusiness = null
 )
 {
-    public readonly long Id = id;
+    public long Id => id;
 
-    public readonly bool IsBot = isBot;
+    public bool IsBot => isBot;
 
-    public readonly string FirstName = firstName;
+    public string FirstName => firstName;
 
-    public readonly string? LastName = lastName;
+    public string? LastName => lastName;
 
-    public readonly string? Username = username;
+    public string? Username => username;
 
-    public readonly string? LanguageCode = languageCode;
+    public string? LanguageCode => languageCode;
 
-    public readonly bool? IsPremium = isPremium;
+    public bool? IsPremium => isPremium;
 
-    public readonly bool? AddedToAttachmentMenu = addedToAttachmentMenu;
+    public bool? AddedToAttachmentMenu => addedToAttachmentMenu;
 
-    public readonly bool? CanJoinGroups = canJoinGroups;
+    public bool? CanJoinGroups => canJoinGroups;
 
-    public readonly bool? CanReadAllGroupMessages = canReadAllGroupMessages;
+    public bool? CanReadAllGroupMessages => canReadAllGroupMessages;
 
-    public readonly bool? SupportsInlineQueries = supportsInlineQueries;
+    public bool? SupportsInlineQueries => supportsInlineQueries;
 
-    public readonly bool? CanConnectToBusiness = canConnectToBusiness;
+    public bool? CanConnectToBusiness => canConnectToBusiness;
 }

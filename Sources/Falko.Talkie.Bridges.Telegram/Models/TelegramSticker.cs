@@ -17,19 +17,19 @@ public sealed class TelegramSticker
     long? fileSize = null
 ) : TelegramPhotoSize(fileId, fileUniqueId, width, height, fileSize)
 {
-    public readonly TelegramStickerType Type = type;
+    public TelegramStickerType Type => type;
 
-    public readonly bool IsAnimated = isAnimated;
+    public bool IsAnimated => isAnimated;
 
-    public readonly bool IsVideo = isVideo;
+    public bool IsVideo => isVideo;
 
-    public readonly TelegramPhotoSize? Thumbnail = thumbnail;
+    public TelegramPhotoSize? Thumbnail => thumbnail;
 
-    public readonly string? Emoji = emoji;
+    public string? Emoji => emoji;
 
-    public readonly string? SetName = setName;
+    public string? SetName => setName;
 
-    public readonly string? CustomEmojiId = customEmojiId;
+    public string? CustomEmojiId => customEmojiId;
 
-    public readonly bool? NeedsRepainting = needsRepainting;
+    public bool? NeedsRepainting => needsRepainting;
 }

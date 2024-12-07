@@ -6,7 +6,7 @@ public sealed class TelegramDeleteMessageRequest
     long chatId
 )
 {
-    public readonly long MessageId = messageId;
+    public long MessageId => messageId;
 
-    public readonly long ChatId = chatId;
+    public long ChatId => chatId;
 }

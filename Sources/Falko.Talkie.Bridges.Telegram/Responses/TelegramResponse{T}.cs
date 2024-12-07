@@ -11,13 +11,13 @@ public sealed class TelegramResponse<T>
     IReadOnlyDictionary<string, TextOrNumberValue>? parameters = null
 )
 {
-    public readonly bool Ok = ok;
+    public bool Ok => ok;
 
-    public readonly T? Result = result;
+    public T? Result => result;
 
-    public readonly int? ErrorCode = errorCode;
+    public int? ErrorCode => errorCode;
 
-    public readonly string? Description = description;
+    public string? Description => description;
 
-    public readonly IReadOnlyDictionary<string, TextOrNumberValue>? Parameters = parameters;
+    public IReadOnlyDictionary<string, TextOrNumberValue>? Parameters => parameters;
 }

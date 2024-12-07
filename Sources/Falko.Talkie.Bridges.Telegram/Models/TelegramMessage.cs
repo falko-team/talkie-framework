@@ -23,41 +23,41 @@ public sealed class TelegramMessage
     TelegramSticker? sticker = null
 )
 {
-    public readonly long MessageId = messageId;
+    public long MessageId => messageId;
 
-    public readonly long? MessageThreadId = messageThreadId;
+    public long? MessageThreadId => messageThreadId;
 
-    public readonly TelegramUser? From = from;
+    public TelegramUser? From => from;
 
-    public readonly TelegramChat? SenderChat = senderChat;
+    public TelegramChat? SenderChat => senderChat;
 
-    public readonly int? SenderBoostCount = senderBoostCount;
+    public int? SenderBoostCount => senderBoostCount;
 
-    public readonly TelegramUser? SenderBusinessBot = senderBusinessBot;
+    public TelegramUser? SenderBusinessBot => senderBusinessBot;
 
-    public readonly DateTime? Date = date;
+    public DateTime? Date => date;
 
-    public readonly string? BusinessConnectionId = businessConnectionId;
+    public string? BusinessConnectionId => businessConnectionId;
 
-    public readonly TelegramChat? Chat = chat;
+    public TelegramChat? Chat => chat;
 
-    public readonly bool? IsTopicMessage = isTopicMessage;
+    public bool? IsTopicMessage => isTopicMessage;
 
-    public readonly bool? IsAutomaticForward = isAutomaticForward;
+    public bool? IsAutomaticForward => isAutomaticForward;
 
-    public readonly TelegramMessage? ReplyToMessage = replyToMessage;
+    public TelegramMessage? ReplyToMessage => replyToMessage;
 
-    public readonly string? Text = text;
+    public string? Text => text;
 
-    public readonly IReadOnlyCollection<TelegramMessageEntity>? Entities = entities;
+    public IReadOnlyCollection<TelegramMessageEntity>? Entities => entities;
 
-    public readonly string? Caption = caption;
+    public string? Caption => caption;
 
-    public readonly IReadOnlyCollection<TelegramMessageEntity>? CaptionEntities = captionEntities;
+    public IReadOnlyCollection<TelegramMessageEntity>? CaptionEntities => captionEntities;
 
-    public readonly string? MediaGroupId = mediaGroupId;
+    public string? MediaGroupId => mediaGroupId;
 
-    public readonly IReadOnlyCollection<TelegramPhotoSize>? Photo = photo;
+    public IReadOnlyCollection<TelegramPhotoSize>? Photo => photo;
 
-    public readonly TelegramSticker? Sticker = sticker;
+    public TelegramSticker? Sticker => sticker;
 }
