@@ -11,17 +11,17 @@ public sealed class TelegramUpdate
     TelegramMessage? editedBusinessMessage = null
 )
 {
-    public readonly int UpdateId = updateId;
+    public int UpdateId => updateId;
 
-    public readonly TelegramMessage? Message = message;
+    public TelegramMessage? Message => message;
 
-    public readonly TelegramMessage? EditedMessage = editedMessage;
+    public TelegramMessage? EditedMessage => editedMessage;
 
-    public readonly TelegramMessage? ChannelPost = channelPost;
+    public TelegramMessage? ChannelPost => channelPost;
 
-    public readonly TelegramMessage? EditedChannelPost = editedChannelPost;
+    public TelegramMessage? EditedChannelPost => editedChannelPost;
 
-    public readonly TelegramMessage? BusinessMessage = businessMessage;
+    public TelegramMessage? BusinessMessage => businessMessage;
 
-    public readonly TelegramMessage? EditedBusinessMessage = editedBusinessMessage;
+    public TelegramMessage? EditedBusinessMessage => editedBusinessMessage;
 }

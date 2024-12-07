@@ -8,11 +8,11 @@ public sealed class TelegramFile
     string? filePath = null
 )
 {
-    public readonly string FileId = fileId;
+    public string FileId => fileId;
 
-    public readonly string FileUniqueId = fileUniqueId;
+    public string FileUniqueId => fileUniqueId;
 
-    public readonly long? FileSize = fileSize;
+    public long? FileSize => fileSize;
 
-    public readonly string? FilePath = filePath;
+    public string? FilePath => filePath;
 }

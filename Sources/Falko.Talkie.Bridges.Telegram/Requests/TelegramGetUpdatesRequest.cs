@@ -8,11 +8,11 @@ public sealed class TelegramGetUpdatesRequest
     IReadOnlyList<string>? allowedUpdates = null
 )
 {
-    public readonly long? Offset = offset;
+    public long? Offset => offset;
 
-    public readonly long? Limit = limit;
+    public long? Limit => limit;
 
-    public readonly long? Timeout = timeout;
+    public long? Timeout => timeout;
 
-    public readonly IReadOnlyList<string>? AllowedUpdates = allowedUpdates;
+    public IReadOnlyList<string>? AllowedUpdates => allowedUpdates;
 }

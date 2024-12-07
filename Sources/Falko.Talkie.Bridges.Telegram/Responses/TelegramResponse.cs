@@ -9,9 +9,9 @@ public sealed class TelegramResponse
     IReadOnlyDictionary<string, TextOrNumberValue>? parameters = null
 )
 {
-    public readonly int? ErrorCode = errorCode;
+    public int? ErrorCode => errorCode;
 
-    public readonly string? Description = description;
+    public string? Description => description;
 
-    public readonly IReadOnlyDictionary<string, TextOrNumberValue>? Parameters = parameters;
+    public IReadOnlyDictionary<string, TextOrNumberValue>? Parameters => parameters;
 }

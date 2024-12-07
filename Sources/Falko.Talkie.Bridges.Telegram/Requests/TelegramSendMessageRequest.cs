@@ -12,14 +12,13 @@ public sealed class TelegramSendMessageRequest
 )
 {
 
-    public readonly long ChatId = chatId;
+    public long ChatId => chatId;
 
+    public string Text => text;
 
-    public readonly string Text = text;
+    public IReadOnlyCollection<TelegramMessageEntity>? Entities => entities;
 
-    public readonly IReadOnlyCollection<TelegramMessageEntity>? Entities = entities;
+    public bool? DisableNotification => disableNotification;
 
-    public readonly bool? DisableNotification = disableNotification;
-
-    public readonly TelegramReplyParameters? ReplyParameters = replyParameters;
+    public TelegramReplyParameters? ReplyParameters => replyParameters;
 }

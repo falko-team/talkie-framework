@@ -11,13 +11,13 @@ public sealed class TelegramEditMessageTextRequest
     IReadOnlyCollection<TelegramMessageEntity>? entities = null
 )
 {
-    public readonly string Text = text;
+    public string Text => text;
 
-    public readonly long? ChatId = chatId;
+    public long? ChatId => chatId;
 
-    public readonly long? MessageId = messageId;
+    public long? MessageId => messageId;
 
-    public readonly string? BusinessConnectionId = businessConnectionId;
+    public string? BusinessConnectionId => businessConnectionId;
 
-    public readonly IReadOnlyCollection<TelegramMessageEntity>? Entities = entities;
+    public IReadOnlyCollection<TelegramMessageEntity>? Entities => entities;
 }

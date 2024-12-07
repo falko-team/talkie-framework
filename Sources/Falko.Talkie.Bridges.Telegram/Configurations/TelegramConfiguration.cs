@@ -2,9 +2,9 @@ namespace Talkie.Bridges.Telegram.Configurations;
 
 public readonly struct TelegramConfiguration
 {
-    public readonly TelegramServerConfiguration ServerConfiguration;
+    public TelegramServerConfiguration ServerConfiguration { get; }
 
-    public readonly TelegramClientConfiguration ClientConfiguration;
+    public TelegramClientConfiguration ClientConfiguration { get; }
 
     public TelegramConfiguration
     (
