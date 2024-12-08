@@ -18,14 +18,16 @@ public class FrozenSequenceTester
     [Test]
     public void TestFrozenSequenceFrom1()
     {
-        var frozenSequence = new FrozenSequence<int>([0]);
+        var number = 1;
+
+        var frozenSequence = new FrozenSequence<int>(number);
 
         using var enumerator = frozenSequence.AsEnumerable().GetEnumerator();
 
         Assert.Multiple(() =>
         {
             Assert.That(enumerator.MoveNext(), Is.True);
-            Assert.That(enumerator.Current, Is.EqualTo(0));
+            Assert.That(enumerator.Current, Is.EqualTo(number));
         });
 
         Assert.That(enumerator.MoveNext(), Is.False);
@@ -43,7 +45,7 @@ public class FrozenSequenceTester
             sequence.Add(index);
         }
 
-        var frozenSequence = new FrozenSequence<int>(sequence);
+        var frozenSequence = FrozenSequence<int>.From(sequence);
 
         using var enumerator = frozenSequence.AsEnumerable().GetEnumerator();
 
