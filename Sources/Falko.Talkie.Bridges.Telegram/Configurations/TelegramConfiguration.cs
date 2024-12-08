@@ -1,22 +1,18 @@
+using Talkie.Validation;
+
 namespace Talkie.Bridges.Telegram.Configurations;
 
 public readonly struct TelegramConfiguration
+(
+    TelegramServerConfiguration serverConfiguration,
+    TelegramClientConfiguration? clientConfiguration = null
+)
 {
-    public TelegramServerConfiguration ServerConfiguration { get; }
+    public TelegramServerConfiguration ServerConfiguration => Assert
+        .ArgumentNullException.ThrowIfNull(serverConfiguration, nameof(serverConfiguration));
 
-    public TelegramClientConfiguration ClientConfiguration { get; }
-
-    public TelegramConfiguration
-    (
-        TelegramServerConfiguration serverConfiguration,
-        TelegramClientConfiguration? clientConfiguration = null
-    )
-    {
-        ArgumentNullException.ThrowIfNull(serverConfiguration);
-
-        ServerConfiguration = serverConfiguration;
-        ClientConfiguration = clientConfiguration ?? new TelegramClientConfiguration();
-    }
+    public TelegramClientConfiguration ClientConfiguration =>
+        clientConfiguration ?? new TelegramClientConfiguration();
 
     public void ThrowIfInvalid()
     {

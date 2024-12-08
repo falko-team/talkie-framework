@@ -2,36 +2,31 @@ using System.Collections.Frozen;
 using System.Net;
 using System.Text;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Validation;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
-public sealed partial class TelegramException : Exception
+public sealed partial class TelegramException
+(
+    ITelegramClient client,
+    string methodName,
+    HttpStatusCode? statusCode = null,
+    string? description = null,
+    IReadOnlyDictionary<string, TextOrNumberValue>? parameters = null,
+    Exception? innerException = null
+) : Exception(null, innerException)
 {
-    public TelegramException(ITelegramClient client, string methodName,
-        HttpStatusCode? statusCode = null,
-        string? description = null,
-        IReadOnlyDictionary<string, TextOrNumberValue>? parameters = null,
-        Exception? innerException = null) : base(null, innerException)
-    {
-        ArgumentNullException.ThrowIfNull(client);
-        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
+    public ITelegramClient Client => Assert
+        .ArgumentNullException.ThrowIfNull(client, nameof(client));
 
-        Client = client;
-        MethodName = methodName;
-        StatusCode = statusCode;
-        Parameters = parameters ?? FrozenDictionary<string, TextOrNumberValue>.Empty;
-        Description = description;
-    }
+    public HttpStatusCode? StatusCode => statusCode;
 
-    public ITelegramClient Client { get; }
+    public string MethodName => Assert
+        .ArgumentNullException.ThrowIfNullOrWhiteSpace(methodName, nameof(methodName));
 
-    public HttpStatusCode? StatusCode { get; }
+    public string? Description => description;
 
-    public string MethodName { get; }
-
-    public string? Description { get; }
-
-    public IReadOnlyDictionary<string, TextOrNumberValue> Parameters { get; }
+    public IReadOnlyDictionary<string, TextOrNumberValue> Parameters { get; } = parameters ?? FrozenDictionary<string, TextOrNumberValue>.Empty;
 
     public override string HelpLink => $"https://core.telegram.org/bots/api#{MethodName}";
 
