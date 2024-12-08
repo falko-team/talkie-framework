@@ -1,17 +1,13 @@
 using Talkie.Interceptors;
+using Talkie.Validation;
 
 namespace Talkie.Pipelines.Intercepting;
 
-public sealed class TransientSignalInterceptorFactory : ISignalInterceptorFactory
+public sealed class TransientSignalInterceptorFactory(Func<ISignalInterceptor> interceptorFactory)
+    : ISignalInterceptorFactory
 {
-    private readonly Func<ISignalInterceptor> _interceptorFactory;
-
-    public TransientSignalInterceptorFactory(Func<ISignalInterceptor> interceptorFactory)
-    {
-        ArgumentNullException.ThrowIfNull(interceptorFactory);
-
-        _interceptorFactory = interceptorFactory;
-    }
+    private readonly Func<ISignalInterceptor> _interceptorFactory = Assert
+        .ArgumentNullException.ThrowIfNull(interceptorFactory, nameof(interceptorFactory));
 
     public ISignalInterceptor Create()
     {
