@@ -10,7 +10,9 @@ public class FrozenSequenceForEachBenchmark
 {
     private const int IterationsCount = 10;
 
-    private readonly FrozenSequence<Reference> _frozenSequence = new(Enumerable.Repeat(Reference.Shared, IterationsCount));
+    private readonly FrozenSequence<Reference> _frozenSequence = Enumerable
+        .Repeat(Reference.Shared, IterationsCount)
+        .ToFrozenSequence();
 
     [Benchmark]
     public void FrozenSequenceStructForEach()
