@@ -2,9 +2,7 @@ name: Building and Testing
 
 on:
   push:
-    branches-ignore: [ "stable", "development" ]
-  pull_request:
-    branches-ignore: [ "stable" ]
+    branches-ignore: [ "main" ]
 
 jobs:
   build-test:
