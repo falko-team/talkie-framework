@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using NUnit.Framework;
 using Talkie.Sequences;
 
@@ -8,7 +9,7 @@ public class FrozenSequenceTester
     [Test]
     public void TestFrozenSequenceFrom0()
     {
-        var sequence = FrozenSequence<int>.Empty;
+        var sequence = FrozenSequence<int>.From([]);
 
         using var enumerator = sequence.GetEnumerator();
 
@@ -38,23 +39,18 @@ public class FrozenSequenceTester
     {
         const int capacity = 10;
 
-        var sequence = new Sequence<int>();
+        var numbers = Enumerable.Range(0, capacity).ToImmutableArray();
 
-        for (var index = 0; index < capacity; index++)
-        {
-            sequence.Add(index);
-        }
-
-        var frozenSequence = FrozenSequence<int>.From(sequence);
+        var frozenSequence = FrozenSequence<int>.From(numbers);
 
         using var enumerator = frozenSequence.AsEnumerable().GetEnumerator();
 
-        for (var index = 0; index < capacity; index++)
+        foreach (var number in numbers)
         {
             Assert.Multiple(() =>
             {
                 Assert.That(enumerator.MoveNext(), Is.True);
-                Assert.That(enumerator.Current, Is.EqualTo(index));
+                Assert.That(enumerator.Current, Is.EqualTo(number));
             });
         }
 
