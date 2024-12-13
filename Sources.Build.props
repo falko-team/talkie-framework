@@ -16,7 +16,7 @@
         <RepositoryUrl>https://github.com/falko-team/talkie-framework.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>framework;bot;telegram;unibot;falko</PackageTags>
-        <PackageReadmeFile>Assets/ReadMe.md</PackageReadmeFile>
+        <PackageReadmeFile>Assets/ReadMe.package.md</PackageReadmeFile>
         <PackageLicenseFile>Assets/License.md</PackageLicenseFile>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
@@ -32,7 +32,7 @@
             <Visible>false</Visible>
             <PackagePath>Assets</PackagePath>
         </None>
-        <None Include="../../ReadMe.md">
+        <None Include="../../ReadMe.package.md">
             <Pack>true</Pack>
             <Visible>false</Visible>
             <PackagePath>Assets</PackagePath>
