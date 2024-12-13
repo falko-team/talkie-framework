@@ -10,9 +10,9 @@
     <PropertyGroup Label="Description">
         <PackageOutputPath>$(SolutionDir)Packages</PackageOutputPath>
         <PackageIcon>Assets/Icon512.png</PackageIcon>
-        <PackageIconUrl>https://raw.githubusercontent.com/falko-team/talkie/development/Icon512.png</PackageIconUrl>
-        <PackageProjectUrl>https://github.com/falko-team/talkie</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/falko-team/talkie.git</RepositoryUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/falko-team/talkie-framework/main/Icon512.png</PackageIconUrl>
+        <PackageProjectUrl>https://github.com/falko-team/talkie-framework</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/falko-team/talkie-framework.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>framework;bot;telegram;unibot;falko</PackageTags>
         <PackageReadmeFile>Assets/ReadMe.md</PackageReadmeFile>
