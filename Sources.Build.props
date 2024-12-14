@@ -15,7 +15,7 @@
         <PackageProjectUrl>https://github.com/falko-team/talkie-framework</PackageProjectUrl>
         <RepositoryUrl>https://github.com/falko-team/talkie-framework.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>framework;bot;telegram;unibot;falko</PackageTags>
+        <PackageTags>framework;bot;telegram;talkie;falko</PackageTags>
         <PackageReadmeFile>Assets/ReadMe.package.md</PackageReadmeFile>
         <PackageLicenseFile>Assets/License.md</PackageLicenseFile>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
