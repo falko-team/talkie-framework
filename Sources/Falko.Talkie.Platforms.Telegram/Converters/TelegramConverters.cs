@@ -47,10 +47,12 @@ internal static class TelegramConverters
 
         var context = new TelegramMessageBuildContext
         (
-            identifier: firstMessage.MessageId,
+            messageIdentifier: firstMessage.MessageId,
+            connectionIdentifier: firstMessage.BusinessConnectionId,
             platform: platform,
             environmentProfile: environmentProfile,
             publisherProfile: publisherProfile,
+            receiverProfile: firstMessage.ChoseReceiverProfile(platform, environmentProfile),
             publishedDate: firstMessage.Date,
             reply: firstMessage.ReplyToMessage
         );
@@ -98,10 +100,12 @@ internal static class TelegramConverters
 
         var context = new TelegramMessageBuildContext
         (
-            identifier: message.MessageId,
+            messageIdentifier: message.MessageId,
+            connectionIdentifier: message.BusinessConnectionId,
             platform: platform,
             environmentProfile: environmentProfile,
             publisherProfile: publisherProfile,
+            receiverProfile: message.ChoseReceiverProfile(platform, environmentProfile),
             publishedDate: message.Date,
             reply: message.ReplyToMessage
         );
@@ -115,7 +119,7 @@ internal static class TelegramConverters
 
         if (message.TryGetImageAttachment(platform.BotApiClient, out var imageAttachment))
         {
-            var attachments = new FrozenSequence<IMessageAttachment>([imageAttachment]);
+            var attachments = new FrozenSequence<IMessageAttachment>(imageAttachment);
 
             incomingMessage = context.ToIncomingMessage(attachments: attachments);
 
@@ -124,7 +128,7 @@ internal static class TelegramConverters
 
         if (message.TryGetStickerAttachment(platform.BotApiClient, out var stickerAttachment))
         {
-            var attachments = new FrozenSequence<IMessageAttachment>([stickerAttachment]);
+            var attachments = new FrozenSequence<IMessageAttachment>(stickerAttachment);
 
             incomingMessage = context.ToIncomingMessage(attachments: attachments);
 
@@ -144,21 +148,19 @@ internal static class TelegramConverters
     {
         var environmentProfile = context.EnvironmentProfile;
         var publisherProfile = context.PublisherProfile;
-        var botProfile = context.Platform.BotProfile;
+        var receiverProfile = context.ReceiverProfile;
 
         return new TelegramIncomingMessage
         {
-            Identifier = context.Identifier,
+            Identifier = new TelegramMessageIdentifier(context.MessageIdentifier, context.ConnectionIdentifier),
             Platform = context.Platform,
             Reply = context.Reply is { } replyMessage
                 && replyMessage.TryGetIncomingMessage(context.Platform, out var reply)
                     ? reply
                     : null,
-            EnvironmentProfile = environmentProfile.Identifier == botProfile.Identifier
-                ? publisherProfile
-                : environmentProfile,
+            EnvironmentProfile = environmentProfile,
             PublisherProfile = publisherProfile,
-            ReceiverProfile = botProfile,
+            ReceiverProfile = receiverProfile,
             PublishedDate = context.PublishedDate,
             ReceivedDate = context.ReceivedDate,
             Content = content ?? MessageContent.Empty,
@@ -186,7 +188,9 @@ internal static class TelegramConverters
             variants.Add(size.ToImageVariant(client));
         }
 
-        var identifier = Identifier.FromValue(message.MediaGroupId ?? photo.First().FileUniqueId);
+        var identifier = message.MediaGroupId is not null
+            ? new TelegramMessageFileAttachmentGroupIdentifier(message.MediaGroupId)
+            : TelegramMessageFileAttachmentGroupIdentifier.Empty;
 
         if (message.TryGetMessageCaptionContent(out var caption))
         {
@@ -234,7 +238,7 @@ internal static class TelegramConverters
 
         attachment = new MessageStickerAttachment
         {
-            Identifier = Identifier.FromValue(sticker.FileUniqueId),
+            Identifier = new TelegramMessageFileAttachmentIdentifier(sticker.FileUniqueId, sticker.FileId),
             Variants = variants.ToFrozenSequence()
         };
 
@@ -313,8 +317,8 @@ internal static class TelegramConverters
             }
 
             profile = sender.IsBot
-                ? sender.ToUserProfile(language)
-                : sender.ToBotProfile(language);
+                ? sender.ToBotProfile(language)
+                : sender.ToUserProfile(language);
 
             return true;
         }
@@ -351,6 +355,18 @@ internal static class TelegramConverters
         return true;
     }
 
+    public static IProfile ChoseReceiverProfile
+    (
+        this TelegramMessage message,
+        TelegramPlatform platform,
+        IProfile environmentProfile
+    )
+    {
+        return message.BusinessConnectionId is not null
+            ? environmentProfile
+            : platform.BotProfile;
+    }
+
     public static bool TryGetMessageTextStyle
     (
         this TelegramMessageEntity entity,
@@ -383,7 +399,7 @@ internal static class TelegramConverters
             return await client.DownloadAsync(file.FilePath, cancellation);
         })
         {
-            Identifier = Identifier.FromValue(photo.FileUniqueId),
+            Identifier = new TelegramMessageFileAttachmentIdentifier(photo.FileUniqueId, photo.FileId),
             Size = photo.FileSize ?? 0,
             Area = new Area(photo.Width, photo.Height)
         };
@@ -393,7 +409,7 @@ internal static class TelegramConverters
     {
         return new BotProfile
         {
-            Identifier = user.Id,
+            Identifier = new TelegramProfileIdentifier(user.Id),
             FirstName = user.FirstName,
             LastName = user.LastName,
             NickName = user.Username,
@@ -405,7 +421,7 @@ internal static class TelegramConverters
     {
         return new ChatProfile
         {
-            Identifier = user.Id,
+            Identifier = new TelegramProfileIdentifier(user.Id),
             Title = user.Title,
             NickName = user.Username
         };
@@ -415,7 +431,7 @@ internal static class TelegramConverters
     {
         return new UserProfile
         {
-            Identifier = user.Id,
+            Identifier = new TelegramProfileIdentifier(user.Id),
             FirstName = user.FirstName,
             LastName = user.LastName,
             NickName = user.Username,
@@ -427,7 +443,7 @@ internal static class TelegramConverters
     {
         return new UserProfile
         {
-            Identifier = user.Id,
+            Identifier = new TelegramProfileIdentifier(user.Id),
             FirstName = user.FirstName,
             LastName = user.LastName,
             NickName = user.Username,

@@ -4,7 +4,7 @@ using Talkie.Models.Messages.Outgoing;
 
 namespace Talkie.Controllers.MessageControllers;
 
-public interface IMessageController : IController<Identifier>
+public interface IMessageController : IController<GlobalMessageIdentifier>
 {
     Task<IIncomingMessage> PublishMessageAsync
     (

@@ -30,9 +30,17 @@ public sealed class TelegramUpdatePublisher(ISignalFlow flow, TelegramPlatform p
             {
                 OnMessageUpdate(publishedMessage, true, cancellationToken);
             }
+            if (update.BusinessMessage is { } publishedBusinessMessageMessage)
+            {
+                OnMessageUpdate(publishedBusinessMessageMessage, true, cancellationToken);
+            }
             else if (update.EditedMessage is { } exchangedMessage)
             {
                 OnMessageUpdate(exchangedMessage, false, cancellationToken);
+            }
+            else if (update.EditedBusinessMessage is { } exchangedBusinessMessage)
+            {
+                OnMessageUpdate(exchangedBusinessMessage, false, cancellationToken);
             }
         }
     }

@@ -26,7 +26,7 @@ public sealed record TelegramPlatform : IPlatform, IDisposable
             .Build();
     }
 
-    public Identifier Identifier => BotProfile.Identifier;
+    public IIdentifier Identifier => BotProfile.Identifier;
 
     public ITelegramClient BotApiClient { get; }
 

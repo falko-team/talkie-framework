@@ -9,7 +9,7 @@ public sealed record MessageImageAttachment : IMessageImageAttachment
 {
     private IReadOnlySequence<IMessageFileVariant>? _fileVariants;
 
-    public required Identifier Identifier { get; init; }
+    public required IMessageAttachmentIdentifier Identifier { get; init; }
 
     public MessageContent Content { get; init; } =
         MessageContent.Empty;

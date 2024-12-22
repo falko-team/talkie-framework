@@ -4,7 +4,7 @@ namespace Talkie.Models.Messages.Attachments.Variants;
 
 public interface IMessageFileVariant
 {
-    Identifier Identifier { get; }
+    IMessageAttachmentIdentifier Identifier { get; }
 
     string? Name { get; }
 

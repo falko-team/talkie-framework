@@ -5,7 +5,7 @@ namespace Talkie.Models.Profiles;
 
 public sealed class UserProfile : IUserProfile
 {
-    public required Identifier Identifier { get; init; }
+    public required IProfileIdentifier Identifier { get; init; }
 
     public Language Language { get; init; }
 

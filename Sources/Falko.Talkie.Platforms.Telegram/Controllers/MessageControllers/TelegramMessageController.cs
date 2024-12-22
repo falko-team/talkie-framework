@@ -14,7 +14,7 @@ namespace Talkie.Controllers.MessageControllers;
 
 public sealed class TelegramMessageController(ISignalFlow flow,
     TelegramPlatform platform,
-    Identifier environmentProfileIdentifier) : IMessageController
+    GlobalMessageIdentifier identifier) : IMessageController
 {
     public async Task<IIncomingMessage> PublishMessageAsync(IOutgoingMessage message,
         MessagePublishingFeatures features = default,
@@ -25,14 +25,20 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message content is required.");
         }
 
-        if (environmentProfileIdentifier.TryGetValue(out long receiverId) is false)
+        if (identifier.EnvironmentIdentifier is not TelegramProfileIdentifier telegramEnvironmentProfileIdentifier)
         {
             throw new ArgumentException("Environment id is required.");
         }
 
+        if (identifier.MessageIdentifier is not TelegramMessageIdentifier telegramMessageIdentifier)
+        {
+            throw new ArgumentException("Message id is required.");
+        }
+
         var sendMessage = new TelegramSendMessageRequest(
-            receiverId,
+            telegramEnvironmentProfileIdentifier.ProfileIdentifier,
             message.Content,
+            telegramMessageIdentifier.ConnectionIdentifier,
             GetEnitites(message.Content.Styles),
             features.PublishSilently,
             GetReplyParameters(message));
@@ -58,12 +64,12 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message content is required.");
         }
 
-        if (messageIdentifier.EnvironmentIdentifier.TryGetValue(out long environmentTelegramId) is false)
+        if (messageIdentifier.EnvironmentIdentifier is not TelegramProfileIdentifier telegramEnvironmentProfileIdentifier)
         {
             throw new ArgumentException("Environment id is required.");
         }
 
-        if (messageIdentifier.MessageIdentifier.TryGetValue(out long messageTelegramId) is false)
+        if (messageIdentifier.MessageIdentifier is not TelegramMessageIdentifier telegramMessageIdentifier)
         {
             throw new ArgumentException("Message id is required.");
         }
@@ -71,8 +77,9 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         var editMessageText = new TelegramEditMessageTextRequest(
             message.Content.Text,
             entities: GetEnitites(message.Content.Styles),
-            messageId: messageTelegramId,
-            chatId: environmentTelegramId);
+            messageId: telegramMessageIdentifier.MessageIdentifier,
+            businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
+            chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier);
 
         var sentMessage = await platform.BotApiClient.EditMessageTextAsync(editMessageText,
             cancellationToken: cancellationToken);
@@ -89,17 +96,26 @@ public sealed class TelegramMessageController(ISignalFlow flow,
 
     public async Task UnpublishMessageAsync(GlobalMessageIdentifier messageIdentifier, CancellationToken cancellationToken = default)
     {
-        if (messageIdentifier.EnvironmentIdentifier.TryGetValue(out long environmentTelegramId) is false)
+        if (messageIdentifier.EnvironmentIdentifier is not TelegramProfileIdentifier telegramEnvironmentProfileIdentifier)
         {
             throw new ArgumentException("Environment id is required.");
         }
 
-        if (messageIdentifier.MessageIdentifier.TryGetValue(out long messageTelegramId) is false)
+        if (messageIdentifier.MessageIdentifier is not TelegramMessageIdentifier telegramMessageIdentifier)
         {
             throw new ArgumentException("Message id is required.");
         }
 
-        var deleteMessage = new TelegramDeleteMessageRequest(messageTelegramId, environmentTelegramId);
+        if (telegramMessageIdentifier.ConnectionIdentifier is not null)
+        {
+            throw new NotSupportedException("Business connection id is not supported.");
+        }
+
+        var deleteMessage = new TelegramDeleteMessageRequest
+        (
+            telegramMessageIdentifier.MessageIdentifier,
+            telegramEnvironmentProfileIdentifier.ProfileIdentifier
+        );
 
         if (await platform.BotApiClient.DeleteMessageAsync(deleteMessage, cancellationToken) is false)
         {
@@ -131,21 +147,16 @@ public sealed class TelegramMessageController(ISignalFlow flow,
     {
         if (outgoingMessage.Reply is null) return null;
 
-        if (outgoingMessage.Reply.MessageIdentifier.TryGetValue(out long replyMessageTelegramId) is false)
+        if (outgoingMessage.Reply.Value.MessageIdentifier is not TelegramMessageIdentifier replyMessageIdentifier)
         {
-            throw new ArgumentException("Reply message telegram id is required.");
+            throw new ArgumentException("Reply message identifier is required.");
         }
 
-        if (environmentProfileIdentifier == outgoingMessage.Reply.EnvironmentIdentifier)
+        if (outgoingMessage.Reply.Value.EnvironmentIdentifier is not TelegramProfileIdentifier replyEnvironmentIdentifier)
         {
-            return new TelegramReplyParameters(replyMessageTelegramId);
+            throw new ArgumentException("Reply message environment identifier is required.");
         }
 
-        if (outgoingMessage.Reply.EnvironmentIdentifier.TryGetValue(out long replyMessageEnvironmentTelegramId) is false)
-        {
-            throw new ArgumentException("Reply message environment telegram id is required.");
-        }
-
-        return new TelegramReplyParameters(replyMessageTelegramId, replyMessageEnvironmentTelegramId);
+        return new TelegramReplyParameters(replyMessageIdentifier.MessageIdentifier, replyEnvironmentIdentifier.ProfileIdentifier);
     }
 }

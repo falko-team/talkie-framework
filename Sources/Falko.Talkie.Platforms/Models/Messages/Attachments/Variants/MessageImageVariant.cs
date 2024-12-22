@@ -4,7 +4,7 @@ namespace Talkie.Models.Messages.Attachments.Variants;
 
 public sealed record MessageImageVariant(Func<CancellationToken, Task<Stream>> streamFactory) : IMessageImageVariant
 {
-    public required Identifier Identifier { get; init; }
+    public required IMessageAttachmentIdentifier Identifier { get; init; }
 
     public string? Name { get; init; }
 

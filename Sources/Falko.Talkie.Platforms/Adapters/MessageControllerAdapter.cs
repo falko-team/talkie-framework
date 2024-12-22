@@ -1,6 +1,7 @@
 using Talkie.Controllers;
 using Talkie.Controllers.MessageControllers;
 using Talkie.Handlers;
+using Talkie.Models.Messages.Incoming;
 using Talkie.Signals;
 
 namespace Talkie.Adapters;
@@ -12,8 +13,8 @@ public sealed class MessageControllerAdapter : SignalContextAdapter<MessagePubli
         var message = context.Signal.Message;
 
         var controllerCreator = message.Platform.ControllerCreator;
-        var environmentProfileIdentifier = context.Signal.Message.EnvironmentProfile.Identifier;
+        var identifier = context.Signal.Message.ToGlobalMessageIdentifier();
 
-        return controllerCreator.CreateMessageController(environmentProfileIdentifier);
+        return controllerCreator.CreateMessageController(identifier);
     }
 }

@@ -5,7 +5,7 @@ namespace Talkie.Models.Profiles;
 
 public interface IProfile
 {
-    Identifier Identifier { get; }
+    IProfileIdentifier Identifier { get; }
 
     Language Language { get; }
 }

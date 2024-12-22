@@ -5,7 +5,7 @@ namespace Talkie.Platforms;
 
 public interface IPlatform
 {
-    Identifier Identifier { get; }
+    IIdentifier Identifier { get; }
 
     IControllerCreator ControllerCreator { get; }
 }
