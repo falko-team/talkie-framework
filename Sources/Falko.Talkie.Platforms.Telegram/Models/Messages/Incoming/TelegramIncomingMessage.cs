@@ -9,7 +9,7 @@ namespace Talkie.Models.Messages.Incoming;
 
 public sealed record TelegramIncomingMessage : IIncomingMessage
 {
-    public required Identifier Identifier { get; init; }
+    public required IMessageIdentifier Identifier { get; init; }
 
     public required IPlatform Platform { get; init; }
 

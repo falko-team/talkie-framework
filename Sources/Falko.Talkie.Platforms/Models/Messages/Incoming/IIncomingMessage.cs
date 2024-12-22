@@ -8,7 +8,7 @@ namespace Talkie.Models.Messages.Incoming;
 
 public interface IIncomingMessage : IMessage
 {
-    Identifier Identifier { get; }
+    IMessageIdentifier Identifier { get; }
 
     IPlatform Platform { get; }
 

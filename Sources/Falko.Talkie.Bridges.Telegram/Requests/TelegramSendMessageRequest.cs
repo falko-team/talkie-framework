@@ -6,6 +6,7 @@ public sealed class TelegramSendMessageRequest
 (
     long chatId,
     string text,
+    string? businessConnectionId = null,
     IReadOnlyCollection<TelegramMessageEntity>? entities = null,
     bool? disableNotification = null,
     TelegramReplyParameters? replyParameters = null
@@ -13,6 +14,8 @@ public sealed class TelegramSendMessageRequest
 {
 
     public long ChatId => chatId;
+
+    public string? BusinessConnectionId => businessConnectionId;
 
     public string Text => text;
 

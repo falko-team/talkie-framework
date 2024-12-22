@@ -1,3 +1,3 @@
 namespace Talkie.Models.Identifiers;
 
-public sealed record GlobalMessageIdentifier(Identifier EnvironmentIdentifier, Identifier MessageIdentifier);
+public readonly record struct GlobalMessageIdentifier(IProfileIdentifier EnvironmentIdentifier, IMessageIdentifier MessageIdentifier);

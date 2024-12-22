@@ -6,7 +6,9 @@ namespace Talkie.Connections;
 
 internal readonly ref struct TelegramMessageBuildContext
 {
-    public readonly long Identifier;
+    public readonly long MessageIdentifier;
+
+    public readonly string? ConnectionIdentifier;
 
     public readonly TelegramPlatform Platform;
 
@@ -16,25 +18,32 @@ internal readonly ref struct TelegramMessageBuildContext
 
     public readonly IProfile PublisherProfile;
 
+    public readonly IProfile ReceiverProfile;
+
     public readonly DateTime PublishedDate;
 
     public readonly DateTime ReceivedDate;
 
     public TelegramMessageBuildContext
     (
-        long identifier,
+        long messageIdentifier,
         TelegramPlatform platform,
         IProfile environmentProfile,
         IProfile publisherProfile,
+        IProfile receiverProfile,
         DateTime? publishedDate,
-        TelegramMessage? reply = null)
+        string? connectionIdentifier = null,
+        TelegramMessage? reply = null
+    )
     {
         var receivedDate = DateTime.UtcNow;
 
-        Identifier = identifier;
+        MessageIdentifier = messageIdentifier;
         Platform = platform;
         EnvironmentProfile = environmentProfile;
         PublisherProfile = publisherProfile;
+        ReceiverProfile = receiverProfile;
+        ConnectionIdentifier = connectionIdentifier;
         Reply = reply;
         PublishedDate = publishedDate ?? receivedDate;
         ReceivedDate = receivedDate;

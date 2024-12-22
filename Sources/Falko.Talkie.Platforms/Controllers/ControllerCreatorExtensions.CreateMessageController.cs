@@ -8,9 +8,9 @@ public static partial class ControllerCreatorExtensions
     public static IMessageController CreateMessageController
     (
         this IControllerCreator creator,
-        Identifier environmentProfileIdentifier
+        GlobalMessageIdentifier identifier
     )
     {
-        return creator.Create<IMessageController, Identifier>(environmentProfileIdentifier);
+        return creator.Create<IMessageController, GlobalMessageIdentifier>(identifier);
     }
 }
