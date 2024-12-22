@@ -289,7 +289,7 @@ public sealed class TelegramClient : ITelegramClient
 
         var requestBytes = Encoding.UTF8.GetBytes(requestJson);
 
-        await gzipStream.WriteAsync(requestBytes, 0, requestBytes.Length, cancellationToken);
+        await gzipStream.WriteAsync(requestBytes, cancellationToken);
 
         gzipStream.Close();
         memoryStream.Close();
