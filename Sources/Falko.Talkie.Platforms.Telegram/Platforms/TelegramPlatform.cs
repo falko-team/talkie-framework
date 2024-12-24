@@ -1,3 +1,5 @@
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Controllers;
 using Talkie.Controllers.MessageControllers;
@@ -28,10 +30,12 @@ public sealed record TelegramPlatform : IPlatform, IDisposable
 
     public IIdentifier Identifier => BotProfile.Identifier;
 
+    [IgnoreDataMember]
     public ITelegramClient BotApiClient { get; }
 
     public IBotProfile BotProfile { get; }
 
+    [IgnoreDataMember]
     public IControllerCreator ControllerCreator { get; }
 
     public void Dispose()
