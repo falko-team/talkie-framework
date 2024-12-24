@@ -1,9 +1,18 @@
+using System.Runtime.Serialization;
 using Talkie.Models.Identifiers;
 
 namespace Talkie.Models.Messages.Attachments.Variants;
 
-public sealed record MessageImageVariant(Func<CancellationToken, Task<Stream>> streamFactory) : IMessageImageVariant
+public sealed record MessageImageVariant : IMessageImageVariant
 {
+    [IgnoreDataMember]
+    private readonly Func<CancellationToken, Task<Stream>> _streamFactory;
+
+    public MessageImageVariant(Func<CancellationToken, Task<Stream>> streamFactory)
+    {
+        _streamFactory = streamFactory;
+    }
+
     public required IMessageAttachmentIdentifier Identifier { get; init; }
 
     public string? Name { get; init; }
@@ -14,5 +23,8 @@ public sealed record MessageImageVariant(Func<CancellationToken, Task<Stream>> s
 
     public long Size { get; init; }
 
-    public Task<Stream> ToStreamAsync(CancellationToken cancellationToken = default) => streamFactory(cancellationToken);
+    public Task<Stream> ToStreamAsync(CancellationToken cancellationToken = default)
+    {
+        return _streamFactory(cancellationToken);
+    }
 }
