@@ -3,7 +3,7 @@ using Talkie.Models.Identifiers;
 
 namespace Talkie.Models.Profiles;
 
-public sealed class BotProfile : IBotProfile
+public sealed record BotProfile : IBotProfile
 {
     public required IProfileIdentifier Identifier { get; init; }
 

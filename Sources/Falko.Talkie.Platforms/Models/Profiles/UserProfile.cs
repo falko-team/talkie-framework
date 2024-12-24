@@ -3,7 +3,7 @@ using Talkie.Models.Identifiers;
 
 namespace Talkie.Models.Profiles;
 
-public sealed class UserProfile : IUserProfile
+public sealed record UserProfile : IUserProfile
 {
     public required IProfileIdentifier Identifier { get; init; }
 
