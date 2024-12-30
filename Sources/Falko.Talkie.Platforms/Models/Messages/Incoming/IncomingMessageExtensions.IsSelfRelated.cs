@@ -9,6 +9,6 @@ public static partial class IncomingMessageExtensions
     /// <returns><c>true</c> if the message was published by the same profile that received it; otherwise, <c>false</c>.</returns>
     public static bool IsSelfRelated(this IIncomingMessage message)
     {
-        return message.ReceiverProfile.Identifier == message.PublisherProfile.Identifier;
+        return Equals(message.ReceiverProfile.Identifier, message.PublisherProfile.Identifier);
     }
 }
