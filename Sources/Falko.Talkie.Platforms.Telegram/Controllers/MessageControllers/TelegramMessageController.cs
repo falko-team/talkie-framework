@@ -106,11 +106,6 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message id is required.");
         }
 
-        if (telegramMessageIdentifier.ConnectionIdentifier is not null)
-        {
-            throw new NotSupportedException("Business connection id is not supported.");
-        }
-
         var deleteMessage = new TelegramDeleteMessageRequest
         (
             telegramMessageIdentifier.MessageIdentifier,
