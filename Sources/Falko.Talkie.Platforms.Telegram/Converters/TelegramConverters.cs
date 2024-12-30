@@ -417,7 +417,7 @@ internal static class TelegramConverters
         };
     }
 
-    public static IChatProfile ToChatProfile(this TelegramChat user, Language language = Language.Unknown)
+    public static IChatProfile ToChatProfile(this TelegramChat user)
     {
         return new ChatProfile
         {
