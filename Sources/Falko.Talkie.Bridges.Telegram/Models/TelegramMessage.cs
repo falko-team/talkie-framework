@@ -14,6 +14,7 @@ public sealed class TelegramMessage
     bool? isTopicMessage = null,
     bool? isAutomaticForward = null,
     TelegramMessage? replyToMessage = null,
+    TelegramUser? viaBot = null,
     string? text = null,
     IReadOnlyCollection<TelegramMessageEntity>? entities = null,
     string? caption = null,
@@ -46,6 +47,8 @@ public sealed class TelegramMessage
     public bool? IsAutomaticForward => isAutomaticForward;
 
     public TelegramMessage? ReplyToMessage => replyToMessage;
+
+    public TelegramUser? ViaBot => viaBot;
 
     public string? Text => text;
 
