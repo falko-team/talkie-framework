@@ -30,7 +30,6 @@ internal readonly ref struct TelegramMessageBuildContext
         TelegramPlatform platform,
         IProfile environmentProfile,
         IProfile publisherProfile,
-        IProfile receiverProfile,
         DateTime? publishedDate,
         string? connectionIdentifier = null,
         TelegramMessage? reply = null
@@ -41,11 +40,20 @@ internal readonly ref struct TelegramMessageBuildContext
         MessageIdentifier = messageIdentifier;
         Platform = platform;
         EnvironmentProfile = environmentProfile;
-        PublisherProfile = publisherProfile;
-        ReceiverProfile = receiverProfile;
+        PublisherProfile = IsBusinessSelfSent(environmentProfile, publisherProfile, connectionIdentifier)
+            ? platform.BotProfile
+            : publisherProfile;
+        ReceiverProfile = platform.BotProfile;
         ConnectionIdentifier = connectionIdentifier;
         Reply = reply;
         PublishedDate = publishedDate ?? receivedDate;
         ReceivedDate = receivedDate;
+    }
+
+    private static bool IsBusinessSelfSent(IProfile environmentProfile, IProfile publisherProfile, string? connectionIdentifier)
+    {
+        if (connectionIdentifier is null) return false;
+
+        return Equals(environmentProfile.Identifier, publisherProfile.Identifier) is false;
     }
 }
