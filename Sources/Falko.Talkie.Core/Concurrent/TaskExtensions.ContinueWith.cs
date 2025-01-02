@@ -30,7 +30,7 @@ public static partial class TaskExtensions
         return task.ContinueWith(_ => @do(), TaskFaultOptions);
     }
 
-    public static Task HandleOnSuccess<TIn>(this Task<TIn> task, Action<TIn> @do)
+    public static Task HandleOnSuccess<T>(this Task<T> task, Action<T> @do)
     {
         return task.ContinueWith(context => @do(context.Result), TaskSuccessOptions);
     }
