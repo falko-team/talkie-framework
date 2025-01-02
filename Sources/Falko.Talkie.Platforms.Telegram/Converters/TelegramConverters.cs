@@ -52,7 +52,6 @@ internal static class TelegramConverters
             platform: platform,
             environmentProfile: environmentProfile,
             publisherProfile: publisherProfile,
-            receiverProfile: firstMessage.ChoseReceiverProfile(platform, environmentProfile),
             publishedDate: firstMessage.Date,
             reply: firstMessage.ReplyToMessage
         );
@@ -105,7 +104,6 @@ internal static class TelegramConverters
             platform: platform,
             environmentProfile: environmentProfile,
             publisherProfile: publisherProfile,
-            receiverProfile: message.ChoseReceiverProfile(platform, environmentProfile),
             publishedDate: message.Date,
             reply: message.ReplyToMessage
         );
@@ -353,18 +351,6 @@ internal static class TelegramConverters
 
         profile = chat.ToChatProfile();
         return true;
-    }
-
-    public static IProfile ChoseReceiverProfile
-    (
-        this TelegramMessage message,
-        TelegramPlatform platform,
-        IProfile environmentProfile
-    )
-    {
-        return message.BusinessConnectionId is not null
-            ? environmentProfile
-            : platform.BotProfile;
     }
 
     public static bool TryGetMessageTextStyle
