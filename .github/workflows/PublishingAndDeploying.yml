@@ -38,9 +38,6 @@ jobs:
             cd -
           fi
         done
-    - name: GitHub Deploying
-      run: |
-        dotnet nuget push --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json ./Sources/*/Packages/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
-    - name: Nuget Deploying
+    - name: Deploying
       run: |
         dotnet nuget push --source https://api.nuget.org/v3/index.json ./Sources/*/Packages/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }}
