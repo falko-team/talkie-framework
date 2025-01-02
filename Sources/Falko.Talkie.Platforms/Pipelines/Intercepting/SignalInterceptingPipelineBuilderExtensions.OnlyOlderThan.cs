@@ -5,21 +5,21 @@ namespace Talkie.Pipelines.Intercepting;
 
 public static partial class SignalInterceptingPipelineBuilderExtensions
 {
-    public static ISignalInterceptingPipelineBuilder<MessagePublishedSignal> SkipOlderThan
+    public static ISignalInterceptingPipelineBuilder<MessagePublishedSignal> OnlyOlderThan
     (
         this ISignalInterceptingPipelineBuilder<MessagePublishedSignal> builder,
         TimeSpan threshold
     )
     {
-        return builder.Where(signal => signal.Message.IsOlderThan(threshold) is false);
+        return builder.Where(signal => signal.Message.IsOlderThan(threshold));
     }
 
-    public static ISignalInterceptingPipelineBuilder<MessageExchangedSignal> SkipOlderThan
+    public static ISignalInterceptingPipelineBuilder<MessageExchangedSignal> OnlyOlderThan
     (
         this ISignalInterceptingPipelineBuilder<MessageExchangedSignal> builder,
         TimeSpan threshold
     )
     {
-        return builder.Where(signal => signal.Message.IsOlderThan(threshold) is false);
+        return builder.Where(signal => signal.Message.IsOlderThan(threshold));
     }
 }

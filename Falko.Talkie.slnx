@@ -5,6 +5,7 @@
     <File Path=".gitignore" />
     <File Path=".gitattributes" />
     <File Path="ReadMe.md" />
+    <File Path="ReadMe.package.md" />
     <File Path="Benchmarks.Build.props" />
     <File Path="Examples.Build.props" />
     <File Path="Logo512.png" />
