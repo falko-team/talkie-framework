@@ -12,7 +12,6 @@ public sealed class TelegramSendMessageRequest
     TelegramReplyParameters? replyParameters = null
 ) : ITelegramRequest<TelegramMessage>
 {
-
     public long ChatId => chatId;
 
     public string? BusinessConnectionId => businessConnectionId;
