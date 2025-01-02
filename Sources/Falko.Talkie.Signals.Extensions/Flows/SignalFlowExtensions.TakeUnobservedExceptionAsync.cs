@@ -13,7 +13,8 @@ public static partial class SignalFlowExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return flow.TakeAsync(signals => signals
+        return flow
+            .TakeAsync(signals => signals
             .Where(signal => signal is IWithUnobservedExceptionSignal), cancellationToken)
             .InterceptOnSuccess(signal => Unsafe.As<IWithUnobservedExceptionSignal>(signal).Exception);
     }
