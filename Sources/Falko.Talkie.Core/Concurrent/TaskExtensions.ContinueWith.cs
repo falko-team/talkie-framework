@@ -20,6 +20,11 @@ public static partial class TaskExtensions
         return task.ContinueWith(_ => @do(), TaskSuccessOptions);
     }
 
+    public static Task<TOut> InterceptOnSuccess<TOut>(this Task task, Func<TOut> @do)
+    {
+        return task.ContinueWith(_ => @do(), TaskSuccessOptions);
+    }
+
     public static Task<TOut> InterceptOnFault<TOut>(this Task task, Func<AggregateException?, TOut> @do)
     {
         return task.ContinueWith(context => @do(context.Exception), TaskFaultOptions);
