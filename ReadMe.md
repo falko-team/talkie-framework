@@ -17,23 +17,18 @@ Talkie is a framework for creating bots across messaging platforms. Write code o
 
 ## <img src="Icon64.png" width="18" hspace="5" /> Usage
 
-### <img src="Icon64.png" width="14" hspace="5" /> Add the Falko Team NuGet Repository:
+### <img src="Icon64.png" width="14" hspace="5" /> Install the Talkie Platforms Package:
 
-Open your terminal and execute the following command, replacing placeholders with your GitHub credentials:
+Install Microsoft Hosting infrastructure:
 
 ```bash
-dotnet nuget add source "https://nuget.pkg.github.com/falko-team/index.json"
-    --name falko-team
-    --store-password-in-clear-text
-    --username $YOUR_GITHUB_USERNAME
-    --password $YOUR_GITHUB_ACCESS_TOKEN
+dotnet add package Falko.Talkie.Microsoft.Hosting
 ```
-
-### <img src="Icon64.png" width="14" hspace="5" /> Install the Talkie Platforms Package:
 
 If you're using Telegram, install the Talkie Telegram Platform package:
 
 ```bash
+dotnet add package Falko.Talkie.Microsoft.Hosting
 dotnet add package Falko.Talkie.Platforms.Telegram
 ```
 
