@@ -16,7 +16,7 @@ public sealed class HelloSubscriber : IBehaviorsSubscriber
     public void Subscribe(ISignalFlow flow, IRegisterOnlyDisposableScope disposables, CancellationToken cancellationToken)
     {
         flow.Subscribe<MessagePublishedSignal>(static signals => signals
-            .SkipSelfPublished()
+            .SkipSelfRelated()
             .SkipOlderThan(TimeSpan
                 .FromMinutes(1))
             .Where(signal => signal

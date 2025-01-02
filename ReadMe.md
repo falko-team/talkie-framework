@@ -58,7 +58,7 @@ file sealed class HelloWorldSubscriber : IBehaviorsSubscriber
     )
     {
         flow.Subscribe<MessagePublishedSignal>(signals => signals
-            .SkipSelfPublished()
+            .SkipSelfRelated()
             .SkipOlderThan(TimeSpan.FromMinutes(1))
             .Where(signal => signal
                 .Message
