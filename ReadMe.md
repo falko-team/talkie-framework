@@ -25,10 +25,9 @@ Install Microsoft Hosting infrastructure:
 dotnet add package Falko.Talkie.Microsoft.Hosting
 ```
 
-If you're using Telegram, install the Talkie Telegram Platform package:
+Install the Talkie Telegram Platform package, If you're using Telegram:
 
 ```bash
-dotnet add package Falko.Talkie.Microsoft.Hosting
 dotnet add package Falko.Talkie.Platforms.Telegram
 ```
 
