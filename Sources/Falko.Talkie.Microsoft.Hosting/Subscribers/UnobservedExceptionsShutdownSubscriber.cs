@@ -18,11 +18,12 @@ internal sealed class UnobservedExceptionsShutdownSubscriber
         flow.Subscribe(signals => signals
             .Where(signal => signal.IsUnobservedExceptionSignal())
             .Take(1)
-            .Handle(context => logger
-                .LogCritical(context.Signal.GetUnobservedExceptionSignalException(),
-                    "Unobserved exception occurred in the signal flow that will shutdown the application"))
-            .Handle(lifetime
-                .StopApplication))
+            .Handle(context => logger.LogCritical
+            (
+                context.Signal.GetUnobservedExceptionSignalException(),
+                "Unobserved exception occurred in the signal flow that will shutdown the application"
+            ))
+            .Handle(lifetime.StopApplication))
             .UnsubscribeWith(disposables);
     }
 }
