@@ -19,6 +19,8 @@ public static partial class SignalInterceptingPipelineBuilderExtensions
 
     private static bool IsOlderThan(this IIncomingMessage message, TimeSpan threshold)
     {
-        return message.ReceivedDate - message.PublishedDate > threshold;
+        var delta = message.ReceivedDate - message.PublishedDate;
+
+        return delta.Ticks > 0 && delta > threshold;
     }
 }
