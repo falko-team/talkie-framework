@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using Talkie.Concurrent;
 using Talkie.Pipelines.Intercepting;
 using Talkie.Signals;
 
@@ -14,7 +13,9 @@ public static partial class SignalFlowExtensions
     )
     {
         return flow.TakeAsync(signals => signals
-            .Where(signal => signal is IWithUnobservedExceptionSignal), cancellationToken)
-            .InterceptOnSuccess(signal => Unsafe.As<IWithUnobservedExceptionSignal>(signal).Exception);
+            .Where(signal => signal is IWithUnobservedExceptionSignal),
+                cancellationToken)
+            .ContinueWith(signal => Unsafe.As<IWithUnobservedExceptionSignal>(signal.Result).Exception,
+                TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnRanToCompletion);
     }
 }

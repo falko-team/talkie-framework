@@ -1,4 +1,3 @@
-using Talkie.Concurrent;
 using Talkie.Signals;
 
 namespace Talkie.Flows;
@@ -12,9 +11,9 @@ public static partial class SignalFlowExtensions
         CancellationToken cancellationToken = default
     )
     {
-        _ = flow
-            .PublishAsync(signal, cancellationToken)
-            .HandleOnFault(exception => HandlePublishingException(flow, exception, cancellationToken));
+        _ = flow.PublishAsync(signal, cancellationToken)
+            .ContinueWith(task => HandlePublishingException(flow, task, cancellationToken),
+                TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnFaulted);
     }
 
     public static void Publish<T>
@@ -29,14 +28,16 @@ public static partial class SignalFlowExtensions
     private static void HandlePublishingException
     (
         ISignalFlow flow,
-        Exception? exception,
+        Task task,
         CancellationToken cancellationToken
     )
     {
-        _ = flow.PublishUnobservedPublishingExceptionAsync
-        (
-            exception ?? new InvalidOperationException("Failed to publish message."),
-            cancellationToken
-        );
+        if (task.IsFaulted is false || cancellationToken.IsCancellationRequested) return;
+
+        Exception exception = task.Exception is { } taskException
+            ? taskException
+            : new InvalidOperationException("Failed to publish message.");
+
+        _ = flow.PublishUnobservedPublishingExceptionAsync(exception, cancellationToken);
     }
 }
