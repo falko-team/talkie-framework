@@ -10,7 +10,7 @@ public sealed class TelegramSendMessageRequest
     IReadOnlyCollection<TelegramMessageEntity>? entities = null,
     bool? disableNotification = null,
     TelegramReplyParameters? replyParameters = null
-)
+) : ITelegramRequest<TelegramMessage>
 {
 
     public long ChatId => chatId;

@@ -1,3 +1,5 @@
+using Talkie.Bridges.Telegram.Models;
+
 namespace Talkie.Bridges.Telegram.Requests;
 
 public sealed class TelegramGetUpdatesRequest
@@ -6,7 +8,7 @@ public sealed class TelegramGetUpdatesRequest
     int? limit = null,
     long? timeout = null,
     IReadOnlyList<string>? allowedUpdates = null
-)
+) : ITelegramRequest<IReadOnlyList<TelegramUpdate>>
 {
     public long? Offset => offset;
 

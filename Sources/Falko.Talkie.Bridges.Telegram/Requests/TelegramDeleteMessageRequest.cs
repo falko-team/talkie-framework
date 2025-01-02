@@ -4,7 +4,7 @@ public sealed class TelegramDeleteMessageRequest
 (
     long messageId,
     long chatId
-)
+) : ITelegramRequest<bool>
 {
     public long MessageId => messageId;
 

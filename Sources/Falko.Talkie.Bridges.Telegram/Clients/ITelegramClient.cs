@@ -1,3 +1,5 @@
+using Talkie.Bridges.Telegram.Requests;
+
 namespace Talkie.Bridges.Telegram.Clients;
 
 public interface ITelegramClient : IDisposable
@@ -7,9 +9,10 @@ public interface ITelegramClient : IDisposable
         string methodName,
         TRequest request,
         CancellationToken cancellationToken = default
-    );
+    ) where TRequest : ITelegramRequest<TResult> where TResult : notnull;
 
-    internal Task<TResult> SendAsync<TResult>(string methodName, CancellationToken cancellationToken = default);
+    internal Task<TResult> SendAsync<TResult>(string methodName, CancellationToken cancellationToken = default)
+        where TResult : notnull;
 
     internal Task SendAsync<TRequest>
     (

@@ -9,7 +9,7 @@ public sealed class TelegramEditMessageTextRequest
     long? messageId = null,
     string? businessConnectionId = null,
     IReadOnlyCollection<TelegramMessageEntity>? entities = null
-)
+) : ITelegramRequest<TelegramMessage>
 {
     public string Text => text;
 
