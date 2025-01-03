@@ -2,17 +2,17 @@ namespace Talkie.Models.Profiles;
 
 public static partial class ProfilesExtensions
 {
-    public static IUserProfile? AsUser(this IProfile profile)
+    public static IUserProfile? AsUserProfile(this IProfile profile)
     {
         return profile as IUserProfile;
     }
 
-    public static IChatProfile? AsChat(this IProfile profile)
+    public static IChatProfile? AsChatProfile(this IProfile profile)
     {
         return profile as IChatProfile;
     }
 
-    public static IBotProfile? AsBot(this IProfile profile)
+    public static IBotProfile? AsBotProfile(this IProfile profile)
     {
         return profile as IBotProfile;
     }
