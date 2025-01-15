@@ -15,8 +15,6 @@ public sealed class ManySignalHandlingPipeline
 {
     private readonly FrozenSequence<ISignalHandler> _handlers = handlers.ToFrozenSequence();
 
-    private readonly ParallelismMeter _handlersParallelismMeter = new();
-
     public ValueTask TransferAsync(ISignalFlow flow, Signal signal, CancellationToken cancellationToken = default)
     {
         if (interceptingPipeline?.TryTransfer(signal, out signal, cancellationToken) is false)
@@ -26,9 +24,10 @@ public sealed class ManySignalHandlingPipeline
 
         var context = new SignalContext(flow, signal);
 
-        return _handlers.Parallelize(_handlersParallelismMeter)
-            .ForEachAsync((handler, scopedCancellationToken) => handler.HandleAsync(context, scopedCancellationToken),
-                cancellationToken: cancellationToken)
+        return _handlers
+            .Parallelize()
+            .ForEachAsync((handler, scopedCancellationToken) => handler
+                .HandleAsync(context, scopedCancellationToken), cancellationToken: cancellationToken)
             .AsValueTask();
     }
 }

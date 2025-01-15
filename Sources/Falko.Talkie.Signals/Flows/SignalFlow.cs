@@ -14,14 +14,9 @@ public sealed class SignalFlow : ISignalFlow
 
     private readonly RemovableSequence<ISignalHandlingPipeline> _pipelines = new();
 
-    private readonly ParallelismMeter _pipelinesParallelismMeter = new();
-
     private bool _disposed;
 
-    public SignalFlow()
-    {
-        TaskScheduler.UnobservedTaskException += OnUnobservedSignalPublishingException;
-    }
+    public SignalFlow() => TaskScheduler.UnobservedTaskException += OnUnobservedSignalPublishingException;
 
     public Subscription Subscribe(ISignalHandlingPipeline handlingPipeline)
     {
@@ -50,9 +45,10 @@ public sealed class SignalFlow : ISignalFlow
         try
         {
             // ReSharper disable once InconsistentlySynchronizedField
-            await _pipelines.Parallelize(_pipelinesParallelismMeter)
-                .ForEachAsync((pipeline, scopedCancellationToken) => pipeline.TransferAsync(this, signal, scopedCancellationToken),
-                    cancellationToken: publishCancellationToken);
+            await _pipelines
+                .Parallelize()
+                .ForEachAsync((pipeline, scopedCancellationToken) => pipeline
+                    .TransferAsync(this, signal, scopedCancellationToken), publishCancellationToken);
         }
         catch (SignalPublishingException exception)
         {
