@@ -1,0 +1,18 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1.5" y="1.5" width="21" height="21" rx="2.5" fill="#BCC2C6" stroke="#9399A4" stroke-width="3"/>
+<rect x="1" y="1" width="22" height="22" rx="3" stroke="white" stroke-width="2"/>
+<path d="M6 2H18V2C18 3.10457 17.1046 4 16 4H8C6.89543 4 6 3.10457 6 2V2Z" fill="white"/>
+<rect x="5" y="6" width="5" height="6" fill="white"/>
+<rect x="14" y="6" width="5" height="6" fill="white"/>
+<path d="M4 5H9L9.5 5.5L10 6V7H4V5Z" fill="white"/>
+<rect x="4" y="4" width="1" height="2" fill="white"/>
+<rect x="3" y="7" width="2" height="4" fill="#9399A4"/>
+<rect x="19" y="4" width="1" height="2" fill="white"/>
+<path d="M7 15H17V18C17 19.1046 16.1046 20 15 20H9C7.89543 20 7 19.1046 7 18V15Z" fill="#581418"/>
+<rect x="19" y="7" width="2" height="4" fill="#9399A4"/>
+<path d="M5 7H6C8.20914 7 10 8.79086 10 11V14H8C6.34315 14 5 12.6569 5 11V7Z" fill="#20315A"/>
+<path d="M14.5 5.5L15 5H20V7H14V6L14.5 5.5Z" fill="white"/>
+<path d="M14 11C14 8.79086 15.7909 7 18 7H19V11C19 12.6569 17.6569 14 16 14H14V11Z" fill="#20315A"/>
+<path d="M9 17H10L10.5 17.6667L11 18.3333V21H9V17Z" fill="white"/>
+<path d="M13.5 17.6667L14 17H15V21H13V18.3333L13.5 17.6667Z" fill="white"/>
+</svg>
