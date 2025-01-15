@@ -1,5 +1,7 @@
 # IDE
 .idea/
+!/.idea/.idea.Falko.Talkie/.idea/discord.xml
+!/.idea/.idea.Falko.Talkie/.idea/icon.svg
 .vs/
 .vscode/
 
