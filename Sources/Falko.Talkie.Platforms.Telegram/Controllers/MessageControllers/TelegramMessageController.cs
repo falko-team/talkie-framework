@@ -5,6 +5,7 @@ using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models.Identifiers;
 using Talkie.Models.Messages.Contents.Styles;
+using Talkie.Models.Messages.Features;
 using Talkie.Models.Messages.Incoming;
 using Talkie.Models.Messages.Outgoing;
 using Talkie.Platforms;
@@ -16,9 +17,11 @@ public sealed class TelegramMessageController(ISignalFlow flow,
     TelegramPlatform platform,
     GlobalMessageIdentifier identifier) : IMessageController
 {
-    public async Task<IIncomingMessage> PublishMessageAsync(IOutgoingMessage message,
-        MessagePublishingFeatures features = default,
-        CancellationToken cancellationToken = default)
+    public async Task<IIncomingMessage> PublishMessageAsync
+    (
+        IOutgoingMessage message,
+        CancellationToken cancellationToken = default
+    )
     {
         if (message.Content.IsEmpty)
         {
@@ -40,7 +43,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             message.Content,
             telegramMessageIdentifier.ConnectionIdentifier,
             GetEnitites(message.Content.Styles),
-            features.PublishSilently,
+            message.Features.Any(t => t is SilenceMessageFeature),
             GetReplyParameters(message));
 
         var sentMessage = await platform.BotApiClient.SendMessageAsync(sendMessage,
@@ -56,8 +59,12 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         return incomingMessage;
     }
 
-    public async Task<IIncomingMessage> ExchangeMessageAsync(GlobalMessageIdentifier messageIdentifier, IOutgoingMessage message,
-        CancellationToken cancellationToken = default)
+    public async Task<IIncomingMessage> ExchangeMessageAsync
+    (
+        GlobalMessageIdentifier messageIdentifier,
+        IOutgoingMessage message,
+        CancellationToken cancellationToken = default
+    )
     {
         if (message.Content.IsEmpty)
         {
@@ -94,7 +101,11 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         return incomingMessage;
     }
 
-    public async Task UnpublishMessageAsync(GlobalMessageIdentifier messageIdentifier, CancellationToken cancellationToken = default)
+    public async Task UnpublishMessageAsync
+    (
+        GlobalMessageIdentifier messageIdentifier,
+        CancellationToken cancellationToken = default
+    )
     {
         if (messageIdentifier.EnvironmentIdentifier is not TelegramProfileIdentifier telegramEnvironmentProfileIdentifier)
         {
@@ -123,7 +134,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         }
     }
 
-    private IReadOnlyCollection<TelegramMessageEntity>? GetEnitites(IReadOnlyCollection<IMessageTextStyle> styles)
+    private static IReadOnlyCollection<TelegramMessageEntity>? GetEnitites(IReadOnlyCollection<IMessageTextStyle> styles)
     {
         if (styles.Count is 0) return null;
 
@@ -143,16 +154,16 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             .ToFrozenSequence();
     }
 
-    private TelegramReplyParameters? GetReplyParameters(IOutgoingMessage outgoingMessage)
+    private static TelegramReplyParameters? GetReplyParameters(IOutgoingMessage outgoingMessage)
     {
         if (outgoingMessage.Reply is null) return null;
 
-        if (outgoingMessage.Reply.Value.MessageIdentifier is not TelegramMessageIdentifier replyMessageIdentifier)
+        if (outgoingMessage.Reply.MessageIdentifier is not TelegramMessageIdentifier replyMessageIdentifier)
         {
             throw new ArgumentException("Reply message identifier is required.");
         }
 
-        if (outgoingMessage.Reply.Value.EnvironmentIdentifier is not TelegramProfileIdentifier replyEnvironmentIdentifier)
+        if (outgoingMessage.Reply.EnvironmentIdentifier is not TelegramProfileIdentifier replyEnvironmentIdentifier)
         {
             throw new ArgumentException("Reply message environment identifier is required.");
         }

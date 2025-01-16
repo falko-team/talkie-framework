@@ -24,7 +24,7 @@ public interface IIncomingMessage : IMessage
 
     IIncomingMessage? Reply { get; }
 
-    IReadOnlySequence<IMessageAttachment> Attachments { get; }
+    IEnumerable<IMessageAttachment> Attachments { get; }
 
     IIncomingMessageMutator ToMutator();
 }
