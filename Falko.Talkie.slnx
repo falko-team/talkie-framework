@@ -8,6 +8,7 @@
     <File Path="ReadMe.package.md" />
     <File Path="Benchmarks.Build.props" />
     <File Path="Examples.Build.props" />
+    <File Path="Icon512.png" />
     <File Path="Logo512.png" />
     <File Path="Sources.Build.props" />
     <File Path="Tests.Build.props" />
