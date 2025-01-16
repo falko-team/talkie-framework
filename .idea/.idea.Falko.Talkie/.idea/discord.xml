@@ -3,7 +3,7 @@
   <component name="DiscordProjectSettings">
     <option name="show" value="PROJECT_FILES" />
     <option name="nameOverrideText" value="Falko.Talkie" />
-    <option name="description" value="is a bots framework" />
+    <option name="description" value="is a bot framework" />
     <option name="applicationTheme" value="default" />
     <option name="iconsTheme" value="default" />
     <option name="button1Title" value="" />
