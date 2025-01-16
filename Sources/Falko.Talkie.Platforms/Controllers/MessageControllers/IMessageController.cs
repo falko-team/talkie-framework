@@ -9,7 +9,6 @@ public interface IMessageController : IController<GlobalMessageIdentifier>
     Task<IIncomingMessage> PublishMessageAsync
     (
         IOutgoingMessage message,
-        MessagePublishingFeatures features = default,
         CancellationToken cancellationToken = default
     );
 

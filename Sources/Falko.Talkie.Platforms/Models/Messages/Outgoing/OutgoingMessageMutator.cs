@@ -1,5 +1,6 @@
 using Talkie.Models.Identifiers;
 using Talkie.Models.Messages.Contents;
+using Talkie.Models.Messages.Features;
 
 namespace Talkie.Models.Messages.Outgoing;
 
@@ -11,16 +12,29 @@ public sealed class OutgoingMessageMutator : IOutgoingMessageMutator
 
     private GlobalMessageIdentifier? _reply;
 
+    private IEnumerable<IMessageFeature> _features;
+
     internal OutgoingMessageMutator(OutgoingMessage message)
     {
         _message = message;
         _content = message.Content;
         _reply = message.Reply;
+        _features = message.Features;
     }
 
     public IOutgoingMessageMutator MutateReply(Func<GlobalMessageIdentifier?, GlobalMessageIdentifier?> replyMutationFactory)
     {
         _reply = replyMutationFactory(_reply);
+
+        return this;
+    }
+
+    public IOutgoingMessageMutator MutateFeatures<TFeature>
+    (
+        Func<IEnumerable<IMessageFeature>, IEnumerable<IMessageFeature>> featuresMutationFactory
+    ) where TFeature : IMessageFeature
+    {
+        _features = featuresMutationFactory(_features);
 
         return this;
     }
@@ -37,7 +51,8 @@ public sealed class OutgoingMessageMutator : IOutgoingMessageMutator
         return new OutgoingMessage
         {
             Content = _content,
-            Reply = _reply
+            Reply = _reply,
+            Features = _features
         };
     }
 }

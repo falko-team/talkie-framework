@@ -1,6 +1,7 @@
 using Talkie.Models.Identifiers;
 using Talkie.Models.Messages.Attachments;
 using Talkie.Models.Messages.Contents;
+using Talkie.Models.Messages.Features;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
 using Talkie.Sequences;
@@ -23,11 +24,15 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
 
     public required DateTime ReceivedDate { get; init; }
 
-    public MessageContent Content { get; init; } = MessageContent.Empty;
+    public IEnumerable<IMessageFeature> Features { get; init; }
+        = FrozenSequence<IMessageFeature>.Empty;
+
+    public MessageContent Content { get; init; }
+        = MessageContent.Empty;
 
     public TelegramIncomingMessage? Reply { get; init; }
 
-    public IReadOnlySequence<IMessageAttachment> Attachments { get; init; }
+    public IEnumerable<IMessageAttachment> Attachments { get; init; }
         = FrozenSequence<IMessageAttachment>.Empty;
 
     IIncomingMessage? IIncomingMessage.Reply => Reply;
