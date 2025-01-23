@@ -1,6 +1,6 @@
 # BSD 2-Clause License
 
-__Copyright (C) 2024, Falko Team__
+__Copyright (C) 2024-2025, Falko Team__
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
