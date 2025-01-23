@@ -93,4 +93,4 @@ This project is licensed under the [BSD 2-Clause License](License.md).
 
 _Contributions are welcome!_
 
-**© 2024, Falko Team**
+**© 2024-2025, Falko Team**
