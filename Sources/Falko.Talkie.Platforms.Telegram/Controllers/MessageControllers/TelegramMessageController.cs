@@ -143,6 +143,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             {
                 BoldTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Bold, style.Offset, style.Length),
                 ItalicTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Italic, style.Offset, style.Length),
+                LinkTextStyle linkTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Link, style.Offset, style.Length, linkTextStyle.Link),
                 UnderlineTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Underline, style.Offset, style.Length),
                 StrikethroughTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Strikethrough, style.Offset, style.Length),
                 MonospaceTextStyle => new TelegramMessageEntity(TelegramMessageEntities.Code, style.Offset, style.Length),
