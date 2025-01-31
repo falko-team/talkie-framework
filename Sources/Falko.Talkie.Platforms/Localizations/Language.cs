@@ -2,7 +2,7 @@ namespace Talkie.Localizations;
 
 public enum Language
 {
-    Unknown = default,
+    Unknown = 0,
 
     [LanguageCode("af")]
     Afrikaans,
