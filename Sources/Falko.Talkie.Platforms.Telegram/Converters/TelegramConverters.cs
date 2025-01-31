@@ -363,6 +363,9 @@ internal static class TelegramConverters
         {
             TelegramMessageEntities.Bold => new BoldTextStyle(entity.Offset, entity.Length),
             TelegramMessageEntities.Italic => new ItalicTextStyle(entity.Offset, entity.Length),
+            TelegramMessageEntities.Link => entity.Url is { } url
+                ? new LinkTextStyle(entity.Offset, entity.Length, url)
+                : null,
             TelegramMessageEntities.Underline => new UnderlineTextStyle(entity.Offset, entity.Length),
             TelegramMessageEntities.Strikethrough => new StrikethroughTextStyle(entity.Offset, entity.Length),
             TelegramMessageEntities.BlockQuote => new QuotationTextStyle(entity.Offset, entity.Length),

@@ -4,7 +4,8 @@ public sealed class TelegramMessageEntity
 (
     string type,
     int offset,
-    int length
+    int length,
+    string? url = null
 )
 {
     public string Type => type;
@@ -12,4 +13,6 @@ public sealed class TelegramMessageEntity
     public int Offset => offset;
 
     public int Length => length;
+
+    public string? Url => url;
 }
