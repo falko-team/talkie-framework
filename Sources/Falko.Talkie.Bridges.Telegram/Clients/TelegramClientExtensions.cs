@@ -33,8 +33,12 @@ public static partial class TelegramClientExtensions
         );
     }
 
-    public static Task<TelegramMessage> SendMessageAsync(this ITelegramClient client, TelegramSendMessageRequest request,
-        CancellationToken cancellationToken = default)
+    public static Task<TelegramMessage> SendMessageAsync
+    (
+        this ITelegramClient client,
+        TelegramSendMessageRequest request,
+        CancellationToken cancellationToken = default
+    )
     {
         return client.SendAsync<TelegramMessage, TelegramSendMessageRequest>
         (
@@ -44,8 +48,12 @@ public static partial class TelegramClientExtensions
         );
     }
 
-    public static Task<bool> DeleteMessageAsync(this ITelegramClient client, TelegramDeleteMessageRequest request,
-        CancellationToken cancellationToken = default)
+    public static Task<bool> DeleteMessageAsync
+    (
+        this ITelegramClient client,
+        TelegramDeleteMessageRequest request,
+        CancellationToken cancellationToken = default
+    )
     {
         return client.SendAsync<bool, TelegramDeleteMessageRequest>
         (
@@ -55,8 +63,12 @@ public static partial class TelegramClientExtensions
         );
     }
 
-    public static Task<TelegramMessage> EditMessageTextAsync(this ITelegramClient client, TelegramEditMessageTextRequest request,
-        CancellationToken cancellationToken = default)
+    public static Task<TelegramMessage> EditMessageTextAsync
+    (
+        this ITelegramClient client,
+        TelegramEditMessageTextRequest request,
+        CancellationToken cancellationToken = default
+    )
     {
         return client.SendAsync<TelegramMessage, TelegramEditMessageTextRequest>
         (
@@ -66,8 +78,27 @@ public static partial class TelegramClientExtensions
         );
     }
 
-    public static Task<TelegramFile> GetFileAsync(this ITelegramClient client, TelegramGetFileRequest request,
-        CancellationToken cancellationToken = default)
+    public static Task<TelegramMessage> SendPhotoAsync
+    (
+        this ITelegramClient client,
+        TelegramSendPhotoRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return client.SendAsync<TelegramMessage, TelegramSendPhotoRequest>
+        (
+            "sendPhoto",
+            request,
+            cancellationToken
+        );
+    }
+
+    public static Task<TelegramFile> GetFileAsync
+    (
+        this ITelegramClient client,
+        TelegramGetFileRequest request,
+        CancellationToken cancellationToken = default
+    )
     {
         return client.SendAsync<TelegramFile, TelegramGetFileRequest>
         (

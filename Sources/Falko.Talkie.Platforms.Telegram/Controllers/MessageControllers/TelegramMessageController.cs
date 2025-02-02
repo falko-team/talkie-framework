@@ -4,6 +4,7 @@ using Talkie.Bridges.Telegram.Requests;
 using Talkie.Converters;
 using Talkie.Flows;
 using Talkie.Models.Identifiers;
+using Talkie.Models.Messages.Attachments.Factories;
 using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Features;
 using Talkie.Models.Messages.Incoming;
@@ -38,16 +39,50 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message id is required.");
         }
 
-        var sendMessage = new TelegramSendMessageRequest(
-            telegramEnvironmentProfileIdentifier.ProfileIdentifier,
-            message.Content,
-            telegramMessageIdentifier.ConnectionIdentifier,
-            GetEnitites(message.Content.Styles),
-            message.Features.Any(t => t is SilenceMessageFeature),
-            GetReplyParameters(message));
+        TelegramMessage sentMessage;
 
-        var sentMessage = await platform.BotApiClient.SendMessageAsync(sendMessage,
-            cancellationToken: cancellationToken);
+        var photoFactory = message
+            .Attachments
+            .OfType<TelegramMessageUrlImageAttachmentFactory>()
+            .FirstOrDefault();
+
+        if (photoFactory is not null)
+        {
+            var sendPhoto = new TelegramSendPhotoRequest
+            (
+                chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier,
+                photo: photoFactory.Url,
+                businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
+                caption: message.Content,
+                captionEntities: GetEnitites(message.Content.Styles),
+                disableNotification: message.Features.Any(t => t is SilenceMessageFeature),
+                replyParameters: GetReplyParameters(message)
+            );
+
+            sentMessage = await platform.BotApiClient.SendPhotoAsync
+            (
+                sendPhoto,
+                cancellationToken
+            );
+        }
+        else
+        {
+            var sendMessage = new TelegramSendMessageRequest
+            (
+                telegramEnvironmentProfileIdentifier.ProfileIdentifier,
+                message.Content,
+                telegramMessageIdentifier.ConnectionIdentifier,
+                GetEnitites(message.Content.Styles),
+                message.Features.Any(t => t is SilenceMessageFeature),
+                GetReplyParameters(message)
+            );
+
+            sentMessage = await platform.BotApiClient.SendMessageAsync
+            (
+                sendMessage,
+                cancellationToken
+            );
+        }
 
         if (sentMessage.TryGetIncomingMessage(platform, out var incomingMessage) is false)
         {

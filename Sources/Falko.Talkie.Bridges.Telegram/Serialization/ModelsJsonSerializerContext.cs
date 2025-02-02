@@ -27,4 +27,5 @@ namespace Talkie.Bridges.Telegram.Serialization;
 [JsonSerializable(typeof(TelegramSendMessageRequest))]
 [JsonSerializable(typeof(TelegramDeleteMessageRequest))]
 [JsonSerializable(typeof(TelegramEditMessageTextRequest))]
+[JsonSerializable(typeof(TelegramSendPhotoRequest))]
 internal sealed partial class ModelsJsonSerializerContext : JsonSerializerContext;

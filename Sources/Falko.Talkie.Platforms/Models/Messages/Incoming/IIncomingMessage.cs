@@ -2,7 +2,6 @@ using Talkie.Models.Identifiers;
 using Talkie.Models.Messages.Attachments;
 using Talkie.Models.Profiles;
 using Talkie.Platforms;
-using Talkie.Sequences;
 
 namespace Talkie.Models.Messages.Incoming;
 
