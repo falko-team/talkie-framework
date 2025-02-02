@@ -39,19 +39,19 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message id is required.");
         }
 
-        TelegramMessage sentMessage;
+        TelegramIncomingMessage? sentMessage;
 
         var photoFactory = message
             .Attachments
             .OfType<TelegramMessageUrlImageAttachmentFactory>()
-            .FirstOrDefault();
+            .ToFrozenSequence();
 
-        if (photoFactory is not null)
+        if (photoFactory.Count is 1)
         {
             var sendPhoto = new TelegramSendPhotoRequest
             (
                 chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier,
-                photo: photoFactory.Url,
+                photo: photoFactory.First().Url,
                 businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
                 caption: message.Content,
                 captionEntities: GetEnitites(message.Content.Styles),
@@ -59,11 +59,53 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 replyParameters: GetReplyParameters(message)
             );
 
-            sentMessage = await platform.BotApiClient.SendPhotoAsync
+            var sentRawMessage = await platform.BotApiClient.SendPhotoAsync
             (
                 sendPhoto,
                 cancellationToken
             );
+
+            if (sentRawMessage.TryGetIncomingMessage(platform, out sentMessage) is false)
+            {
+                throw new InvalidOperationException("Failed to convert sent message.");
+            }
+        }
+        else if (photoFactory.Count > 1)
+        {
+            var firstPhotoAttachment = photoFactory.First();
+
+            var firstPhoto = new TelegramInputMediaPhoto
+            (
+                firstPhotoAttachment.Url,
+                caption: message.Content,
+                captionEntities: GetEnitites(message.Content.Styles)
+            );
+
+            var photos = photoFactory
+                .Skip(1)
+                .Select(photo => new TelegramInputMediaPhoto(photo.Url))
+                .Append(firstPhoto)
+                .ToFrozenSequence();
+
+            var sendMessage = new TelegramSendMediaGroupRequest
+            (
+                chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier,
+                media: photos,
+                businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
+                disableNotification: message.Features.Any(t => t is SilenceMessageFeature),
+                replyParameters: GetReplyParameters(message)
+            );
+
+            var sentRawMessage = await platform.BotApiClient.SendMediaGroupAsync
+            (
+                sendMessage,
+                cancellationToken
+            );
+
+            if (sentRawMessage.TryGetIncomingMessage(platform, out sentMessage) is false)
+            {
+                throw new InvalidOperationException("Failed to convert sent message.");
+            }
         }
         else
         {
@@ -77,21 +119,21 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 GetReplyParameters(message)
             );
 
-            sentMessage = await platform.BotApiClient.SendMessageAsync
+            var sentRawMessage = await platform.BotApiClient.SendMessageAsync
             (
                 sendMessage,
                 cancellationToken
             );
+
+            if (sentRawMessage.TryGetIncomingMessage(platform, out sentMessage) is false)
+            {
+                throw new InvalidOperationException("Failed to convert sent message.");
+            }
         }
 
-        if (sentMessage.TryGetIncomingMessage(platform, out var incomingMessage) is false)
-        {
-            throw new InvalidOperationException("Failed to convert sent message.");
-        }
+        flow.Publish(sentMessage.ToMessagePublishedSignal(), cancellationToken);
 
-        flow.Publish(incomingMessage.ToMessagePublishedSignal(), cancellationToken);
-
-        return incomingMessage;
+        return sentMessage;
     }
 
     public async Task<IIncomingMessage> ExchangeMessageAsync

@@ -93,6 +93,21 @@ public static partial class TelegramClientExtensions
         );
     }
 
+    public static Task<IReadOnlyList<TelegramMessage>> SendMediaGroupAsync
+    (
+        this ITelegramClient client,
+        TelegramSendMediaGroupRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return client.SendAsync<IReadOnlyList<TelegramMessage>, TelegramSendMediaGroupRequest>
+        (
+            "sendMediaGroup",
+            request,
+            cancellationToken
+        );
+    }
+
     public static Task<TelegramFile> GetFileAsync
     (
         this ITelegramClient client,

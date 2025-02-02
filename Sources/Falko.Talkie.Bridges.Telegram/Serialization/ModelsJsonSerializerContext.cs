@@ -20,6 +20,7 @@ namespace Talkie.Bridges.Telegram.Serialization;
 [JsonSerializable(typeof(TelegramResponse<IReadOnlyList<TelegramUpdate>>))]
 [JsonSerializable(typeof(TelegramResponse<TelegramUser>))]
 [JsonSerializable(typeof(TelegramResponse<TelegramMessage>))]
+[JsonSerializable(typeof(TelegramResponse<IReadOnlyList<TelegramMessage>>))]
 [JsonSerializable(typeof(TelegramResponse<bool>))]
 [JsonSerializable(typeof(TelegramResponse<TelegramFile>))]
 [JsonSerializable(typeof(TelegramGetFileRequest))]
@@ -28,4 +29,5 @@ namespace Talkie.Bridges.Telegram.Serialization;
 [JsonSerializable(typeof(TelegramDeleteMessageRequest))]
 [JsonSerializable(typeof(TelegramEditMessageTextRequest))]
 [JsonSerializable(typeof(TelegramSendPhotoRequest))]
+[JsonSerializable(typeof(TelegramSendMediaGroupRequest))]
 internal sealed partial class ModelsJsonSerializerContext : JsonSerializerContext;
