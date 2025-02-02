@@ -20,7 +20,7 @@ internal static class TelegramConverters
 {
     public static bool TryGetIncomingMessage
     (
-        this IReadOnlySequence<TelegramMessage> messages,
+        this IReadOnlyCollection<TelegramMessage> messages,
         TelegramPlatform platform,
         [NotNullWhen(true)] out TelegramIncomingMessage? incomingMessage
     )
