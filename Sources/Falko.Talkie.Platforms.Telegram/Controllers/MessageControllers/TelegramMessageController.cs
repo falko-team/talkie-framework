@@ -164,6 +164,11 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Reply message identifier is required.");
         }
 
+        if (replyMessageIdentifier.ConnectionIdentifier is not null)
+        {
+            return new TelegramReplyParameters(replyMessageIdentifier.MessageIdentifier);
+        }
+
         if (outgoingMessage.Reply.EnvironmentIdentifier is not TelegramProfileIdentifier replyEnvironmentIdentifier)
         {
             throw new ArgumentException("Reply message environment identifier is required.");
