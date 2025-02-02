@@ -1,3 +1,4 @@
+using Talkie.Models.Messages.Attachments.Factories;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Features;
 

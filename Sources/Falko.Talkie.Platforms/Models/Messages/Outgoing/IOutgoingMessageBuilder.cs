@@ -1,4 +1,5 @@
 using Talkie.Models.Identifiers;
+using Talkie.Models.Messages.Attachments.Factories;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Features;
 
@@ -11,6 +12,10 @@ public interface IOutgoingMessageBuilder
     GlobalMessageIdentifier? Reply { get; }
 
     IEnumerable<IMessageFeature> Features { get; }
+
+    IEnumerable<IMessageAttachmentFactory> Attachments { get; }
+
+    IOutgoingMessageBuilder AddAttachment(IMessageAttachmentFactory attachment);
 
     IOutgoingMessageBuilder AddFeature(IMessageFeature feature);
 
