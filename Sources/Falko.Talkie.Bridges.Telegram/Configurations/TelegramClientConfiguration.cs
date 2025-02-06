@@ -9,9 +9,9 @@ public sealed record TelegramClientConfiguration
 
     public bool UseGzipDecompression { get; init; } = true;
 
-    public CompressionLevel GzipCompressionLevel { get; init; } = CompressionLevel.Optimal;
-
     public bool UseGzipCompression { get; init; } = true;
+
+    public CompressionLevel GzipCompressionLevel { get; init; } = CompressionLevel.Optimal;
 
     public int ConnectionsPoolMaxSize { get; init; } = 100;
 
