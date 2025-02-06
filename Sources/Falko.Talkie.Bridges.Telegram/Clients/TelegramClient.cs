@@ -277,7 +277,7 @@ public sealed class TelegramClient : ITelegramClient
         httpRequest.Content = new StringContent(requestJson, Encoding.UTF8, ApplicationJson);
     }
 
-    private static async Task AddGzipJsonContentAsync
+    private async Task AddGzipJsonContentAsync
     (
         HttpRequestMessage httpRequest,
         string requestJson,
@@ -285,7 +285,12 @@ public sealed class TelegramClient : ITelegramClient
     )
     {
         await using var memoryStream = new MemoryStream();
-        await using var gzipStream = new GZipStream(memoryStream, CompressionMode.Compress);
+
+        await using var gzipStream = new GZipStream
+        (
+            memoryStream,
+            _configuration.ClientConfiguration.GzipCompressionLevel
+        );
 
         var requestBytes = Encoding.UTF8.GetBytes(requestJson);
 

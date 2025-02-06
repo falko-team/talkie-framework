@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using Talkie.Bridges.Telegram.Models;
 
 namespace Talkie.Bridges.Telegram.Configurations;
@@ -7,6 +8,8 @@ public sealed record TelegramClientConfiguration
     public HttpProtocol ProtocolVersion { get; init; } = HttpProtocol.Version20;
 
     public bool UseGzipDecompression { get; init; } = true;
+
+    public CompressionLevel GzipCompressionLevel { get; init; } = CompressionLevel.Optimal;
 
     public bool UseGzipCompression { get; init; } = true;
 
