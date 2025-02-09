@@ -59,7 +59,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 replyParameters: GetReplyParameters(message)
             );
 
-            var sentRawMessage = await platform.BotApiClient.SendPhotoAsync
+            var sentRawMessage = await platform.Client.SendPhotoAsync
             (
                 sendPhoto,
                 cancellationToken
@@ -96,7 +96,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 replyParameters: GetReplyParameters(message)
             );
 
-            var sentRawMessage = await platform.BotApiClient.SendMediaGroupAsync
+            var sentRawMessage = await platform.Client.SendMediaGroupAsync
             (
                 sendMessage,
                 cancellationToken
@@ -119,7 +119,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 GetReplyParameters(message)
             );
 
-            var sentRawMessage = await platform.BotApiClient.SendMessageAsync
+            var sentRawMessage = await platform.Client.SendMessageAsync
             (
                 sendMessage,
                 cancellationToken
@@ -165,7 +165,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
             chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier);
 
-        var sentMessage = await platform.BotApiClient.EditMessageTextAsync(editMessageText,
+        var sentMessage = await platform.Client.EditMessageTextAsync(editMessageText,
             cancellationToken: cancellationToken);
 
         if (sentMessage.TryGetIncomingMessage(platform, out var incomingMessage) is false)
@@ -205,7 +205,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             telegramEnvironmentProfileIdentifier.ProfileIdentifier
         );
 
-        if (await platform.BotApiClient.DeleteMessageAsync(deleteMessage, cancellationToken) is false)
+        if (await platform.Client.DeleteMessageAsync(deleteMessage, cancellationToken) is false)
         {
             throw new InvalidOperationException("Message was not found.");
         }
