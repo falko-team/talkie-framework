@@ -1,7 +1,7 @@
-using Talkie.Controllers;
 using Talkie.Controllers.MessageControllers;
 using Talkie.Models.Identifiers;
 using Talkie.Models.Messages.Incoming;
+using Talkie.Platforms;
 using Talkie.Signals;
 
 namespace Talkie.Handlers;
@@ -32,9 +32,6 @@ public static partial class SignalContextExtensions
         GlobalMessageIdentifier identifier
     )
     {
-        return message
-            .Platform
-            .ControllerCreator
-            .CreateMessageController(identifier);
+        return message.Platform.GetMessageControllerFactory().Create(identifier);
     }
 }

@@ -60,7 +60,7 @@ public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlat
             try
             {
                 var updates = await _platform
-                    .BotApiClient
+                    .Client
                     .GetUpdatesAsync(new TelegramGetUpdatesRequest(offset), cancellationToken);
 
                 publisher.Handle(updates, cancellationToken);

@@ -60,7 +60,7 @@ internal static class TelegramConverters
 
         foreach (var telegramMessage in messages)
         {
-            if (telegramMessage.TryGetImageAttachment(platform.BotApiClient, out var messageImageAttachment) is false)
+            if (telegramMessage.TryGetImageAttachment(platform.Client, out var messageImageAttachment) is false)
             {
                 continue;
             }
@@ -115,7 +115,7 @@ internal static class TelegramConverters
             return true;
         }
 
-        if (message.TryGetImageAttachment(platform.BotApiClient, out var imageAttachment))
+        if (message.TryGetImageAttachment(platform.Client, out var imageAttachment))
         {
             var attachments = new FrozenSequence<IMessageAttachment>(imageAttachment);
 
@@ -124,7 +124,7 @@ internal static class TelegramConverters
             return true;
         }
 
-        if (message.TryGetStickerAttachment(platform.BotApiClient, out var stickerAttachment))
+        if (message.TryGetStickerAttachment(platform.Client, out var stickerAttachment))
         {
             var attachments = new FrozenSequence<IMessageAttachment>(stickerAttachment);
 

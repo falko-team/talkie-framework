@@ -41,9 +41,9 @@ internal readonly ref struct TelegramMessageBuildContext
         Platform = platform;
         EnvironmentProfile = environmentProfile;
         PublisherProfile = IsBusinessSelfSent(environmentProfile, publisherProfile, connectionIdentifier)
-            ? platform.BotProfile
+            ? platform.Profile
             : publisherProfile;
-        ReceiverProfile = platform.BotProfile;
+        ReceiverProfile = platform.Profile;
         ConnectionIdentifier = connectionIdentifier;
         Reply = reply;
         PublishedDate = publishedDate ?? receivedDate;
