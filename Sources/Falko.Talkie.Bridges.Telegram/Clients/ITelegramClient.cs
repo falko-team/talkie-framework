@@ -33,7 +33,15 @@ public interface ITelegramClient : IDisposable
         CancellationToken cancellationToken = default
     ) where TRequest : ITelegramRequest;
 
-    Task SendAsync(string methodName, CancellationToken cancellationToken = default);
+    Task SendAsync
+    (
+        string methodName,
+        CancellationToken cancellationToken = default
+    );
 
-    Task<Stream> DownloadAsync(string file, CancellationToken cancellationToken = default);
+    Task<Stream> DownloadAsync
+    (
+        string file,
+        CancellationToken cancellationToken = default
+    );
 }
