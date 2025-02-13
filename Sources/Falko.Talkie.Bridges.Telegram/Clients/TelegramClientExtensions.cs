@@ -14,9 +14,9 @@ public static partial class TelegramClientExtensions
     {
         return client.SendAsync<IReadOnlyList<TelegramUpdate>, TelegramGetUpdatesRequest>
         (
-            "getUpdates",
-            getUpdates,
-            cancellationToken
+            methodName: "getUpdates",
+            request: getUpdates,
+            cancellationToken: cancellationToken
         );
     }
 
@@ -28,8 +28,8 @@ public static partial class TelegramClientExtensions
     {
         return client.SendAsync<TelegramUser>
         (
-            "getMe",
-            cancellationToken
+            methodName: "getMe",
+            cancellationToken: cancellationToken
         );
     }
 
@@ -42,9 +42,9 @@ public static partial class TelegramClientExtensions
     {
         return client.SendAsync<TelegramMessage, TelegramSendMessageRequest>
         (
-            "sendMessage",
-            request,
-            cancellationToken
+            methodName: "sendMessage",
+            request: request,
+            cancellationToken: cancellationToken
         );
     }
 
@@ -57,9 +57,9 @@ public static partial class TelegramClientExtensions
     {
         return client.SendAsync<bool, TelegramDeleteMessageRequest>
         (
-            "deleteMessage",
-            request,
-            cancellationToken
+            methodName: "deleteMessage",
+            request: request,
+            cancellationToken: cancellationToken
         );
     }
 
@@ -72,9 +72,9 @@ public static partial class TelegramClientExtensions
     {
         return client.SendAsync<TelegramMessage, TelegramEditMessageTextRequest>
         (
-            "editMessageText",
-            request,
-            cancellationToken
+            methodName: "editMessageText",
+            request: request,
+            cancellationToken: cancellationToken
         );
     }
 
@@ -87,9 +87,9 @@ public static partial class TelegramClientExtensions
     {
         return client.SendAsync<TelegramMessage, TelegramSendPhotoRequest>
         (
-            "sendPhoto",
-            request,
-            cancellationToken
+            methodName: "sendPhoto",
+            request: request,
+            cancellationToken: cancellationToken
         );
     }
 
@@ -102,9 +102,9 @@ public static partial class TelegramClientExtensions
     {
         return client.SendAsync<IReadOnlyList<TelegramMessage>, TelegramSendMediaGroupRequest>
         (
-            "sendMediaGroup",
-            request,
-            cancellationToken
+            methodName: "sendMediaGroup",
+            request: request,
+            cancellationToken: cancellationToken
         );
     }
 
@@ -117,9 +117,9 @@ public static partial class TelegramClientExtensions
     {
         return client.SendAsync<TelegramFile, TelegramGetFileRequest>
         (
-            "getFile",
-            request,
-            cancellationToken
+            methodName: "getFile",
+            request: request,
+            cancellationToken: cancellationToken
         );
     }
 }
