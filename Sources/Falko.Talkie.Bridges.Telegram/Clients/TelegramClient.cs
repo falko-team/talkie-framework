@@ -152,8 +152,14 @@ public sealed class TelegramClient : ITelegramClient
 
             var jsonResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
 
-            if (JsonSerializer.Deserialize(jsonResponse, typeof(TelegramResponse), ModelsJsonSerializerContext.Default)
-                is not TelegramResponse response)
+            var responseObject = JsonSerializer.Deserialize
+            (
+                jsonResponse,
+                typeof(TelegramResponse),
+                ModelsJsonSerializerContext.Default
+            );
+
+            if (responseObject is not TelegramResponse response)
             {
                 throw new TelegramException
                 (
