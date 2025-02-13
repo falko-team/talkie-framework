@@ -13,7 +13,7 @@ public static class SignalFlowExtensions
             .GetMessage()
             .Platform
             .GetAttachmentControllerFactory()
-            .Create(Nothing.Instance);
+            .Create(Unit.Default);
     }
 
     public static IAttachmentController GetAttachmentController(this ISignalContext<MessageExchangedSignal> context)
@@ -22,6 +22,6 @@ public static class SignalFlowExtensions
             .GetMessage()
             .Platform
             .GetAttachmentControllerFactory()
-            .Create(Nothing.Instance);
+            .Create(Unit.Default);
     }
 }

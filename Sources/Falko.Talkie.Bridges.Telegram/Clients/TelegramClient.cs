@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
 using System.Net;
 using System.Net.Http.Headers;
@@ -5,8 +6,11 @@ using System.Text;
 using System.Text.Json;
 using Talkie.Bridges.Telegram.Configurations;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Requests;
 using Talkie.Bridges.Telegram.Responses;
 using Talkie.Bridges.Telegram.Serialization;
+using Talkie.Common;
+using Talkie.Sequences;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
@@ -32,57 +36,115 @@ public sealed class TelegramClient : ITelegramClient
         _client = BuildHttpClient(configuration);
     }
 
-    async Task<TResult> ITelegramClient.SendAsync<TResult, TRequest>
+    public async Task<TResponse> SendAsync<TResponse, TRequest>
     (
         string methodName,
         TRequest request,
         CancellationToken cancellationToken
+    ) where TRequest : ITelegramRequest<TResponse> where TResponse : notnull
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
+
+        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
+
+        var response = await SendRepeatableRequestAsync<TResponse, TRequest>
+        (
+            methodName: methodName,
+            request: request,
+            cancellationToken: cancellationTokenSource.Token
+        );
+
+        ThrowResponseIfNull(response, methodName);
+
+        return response;
+    }
+
+    public async Task<TResponse> SendAsync<TResponse>
+    (
+        string methodName,
+        CancellationToken cancellationToken
+    ) where TResponse : notnull
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
+
+        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
+
+        var response = await SendRepeatableRequestAsync<TResponse, Unit>
+        (
+            methodName: methodName,
+            request: Unit.Default,
+            cancellationToken: cancellationTokenSource.Token
+        );
+
+        ThrowResponseIfNull(response, methodName);
+
+        return response;
+    }
+
+    public Task<TResponse> SendAsync<TResponse>
+    (
+        string methodName,
+        FrozenSequence<TelegramStream> streams,
+        CancellationToken cancellationToken = default
+    ) where TResponse : notnull
+    {
+        ArgumentNullException.ThrowIfNull(streams);
+        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
+
+        return streams.Count is 0
+            ? SendAsync<TResponse>(methodName, cancellationToken)
+            : SendAsyncWithStreams();
+
+        async Task<TResponse> SendAsyncWithStreams()
+        {
+            using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
+
+            throw new NotImplementedException();
+        }
+    }
+
+    public Task SendAsync<TRequest>
+    (
+        string methodName,
+        TRequest request,
+        CancellationToken cancellationToken
+    ) where TRequest : ITelegramRequest
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
+
+        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
+
+        return SendRepeatableRequestAsync<Unit, TRequest>
+        (
+            methodName: methodName,
+            request: request,
+            cancellationToken: cancellationTokenSource.Token
+        );
+    }
+
+    public Task SendAsync
+    (
+        string methodName,
+        CancellationToken cancellationToken
     )
     {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
+        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
 
-        using var scopedCancellationTokenSource = CancellationTokenSource
-            .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
-
-        return await SendRepeatableRequestAsync<TResult, TRequest>(methodName, request, scopedCancellationTokenSource.Token)
-            ?? throw new TelegramException(client: this, methodName: methodName, description: "Result is null");
+        return SendRepeatableRequestAsync<Unit, Unit>
+        (
+            methodName: methodName,
+            request: Unit.Default,
+            cancellationToken: cancellationTokenSource.Token
+        );
     }
 
-    async Task<TResult> ITelegramClient.SendAsync<TResult>(string methodName, CancellationToken cancellationToken)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
-
-        using var scopedCancellationTokenSource = CancellationTokenSource
-            .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
-
-        var result = await SendRepeatableRequestAsync<TResult, object>(methodName, null, scopedCancellationTokenSource.Token);
-
-        ArgumentNullException.ThrowIfNull(result);
-
-        return result;
-    }
-
-    Task ITelegramClient.SendAsync<TRequest>(string methodName, TRequest request, CancellationToken cancellationToken)
-    {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
-
-        using var scopedCancellationTokenSource = CancellationTokenSource
-            .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
-
-        return SendRepeatableRequestAsync<object, TRequest>(methodName, request, scopedCancellationTokenSource.Token);
-    }
-
-    Task ITelegramClient.SendAsync(string methodName, CancellationToken cancellationToken)
-    {
-        using var scopedCancellationTokenSource = CancellationTokenSource
-            .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
-
-        return SendRepeatableRequestAsync<object, object>(methodName, null, scopedCancellationTokenSource.Token);
-    }
-
-    public async Task<Stream> DownloadAsync(string file, CancellationToken cancellationToken)
+    public async Task<Stream> DownloadAsync
+    (
+        string file,
+        CancellationToken cancellationToken
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(file);
 
@@ -166,9 +228,9 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    private async Task<TResult?> SendRepeatableRequestAsync<TResult, TRequest>
+    private async Task<TResponse?> SendRepeatableRequestAsync<TResponse, TRequest>
     (
-        string method,
+        string methodName,
         TRequest? request,
         CancellationToken cancellationToken
     )
@@ -177,7 +239,7 @@ public sealed class TelegramClient : ITelegramClient
         {
             try
             {
-                return await SendRequestAsync<TResult, TRequest>(method, request, cancellationToken);
+                return await SendRequestAsync<TResponse, TRequest>(methodName, request, cancellationToken);
             }
             catch (TelegramException exception)
             {
@@ -191,7 +253,7 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    private async Task<TResult?> SendRequestAsync<TResult, TRequest>
+    private async Task<TResponse?> SendRequestAsync<TResponse, TRequest>
     (
         string method,
         TRequest? request,
@@ -206,7 +268,13 @@ public sealed class TelegramClient : ITelegramClient
 
             using var httpResponse = await _client.SendAsync(httpRequest, cancellationToken);
 
-            return await ParseHttpResponseAsync<TResult>(method, httpResponse, cancellationToken);
+            if (typeof(TResponse) != typeof(Unit))
+            {
+                return await ParseHttpResponseAsync<TResponse>(method, httpResponse, cancellationToken);
+            }
+
+            await ThrowIfInvalidHttpResponseAsync(method, httpResponse, cancellationToken);
+            return default;
         }
         catch (TelegramException)
         {
@@ -228,22 +296,17 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    private async Task<TResult?> ParseHttpResponseAsync<TResult>
+    private async Task<TResponse?> ParseHttpResponseAsync<TResponse>
     (
         string method,
         HttpResponseMessage httpResponse,
         CancellationToken cancellationToken
     )
     {
-        if (typeof(TResult) == typeof(object))
-        {
-            return default;
-        }
-
         var responseJson = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
 
-        if (JsonSerializer.Deserialize(responseJson, typeof(TelegramResponse<TResult>), ModelsJsonSerializerContext.Default)
-            is not TelegramResponse<TResult> response)
+        if (JsonSerializer.Deserialize(responseJson, typeof(TelegramResponse<TResponse>), ModelsJsonSerializerContext.Default)
+            is not TelegramResponse<TResponse> response)
         {
             throw new TelegramException
             (
@@ -268,6 +331,39 @@ public sealed class TelegramClient : ITelegramClient
         return response.Result;
     }
 
+    private async Task ThrowIfInvalidHttpResponseAsync
+    (
+        string method,
+        HttpResponseMessage httpResponse,
+        CancellationToken cancellationToken
+    )
+    {
+        var responseJson = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+
+        if (JsonSerializer.Deserialize(responseJson, typeof(TelegramResponse), ModelsJsonSerializerContext.Default)
+            is not TelegramResponse response)
+        {
+            throw new TelegramException
+            (
+                client: this,
+                methodName: method,
+                description: "Failed to deserialize response"
+            );
+        }
+
+        if (response.Ok is false || httpResponse.IsSuccessStatusCode is false)
+        {
+            throw new TelegramException
+            (
+                client: this,
+                methodName: method,
+                statusCode: (HttpStatusCode?)response.ErrorCode,
+                description: response.Description,
+                parameters: response.Parameters
+            );
+        }
+    }
+
     private async Task<HttpRequestMessage> BuildHttpRequestAsync<TRequest>
     (
         string method,
@@ -277,7 +373,7 @@ public sealed class TelegramClient : ITelegramClient
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Post, method);
 
-        if (request is null) return httpRequest;
+        if (request is Unit) return httpRequest;
 
         var requestJson = JsonSerializer.Serialize(request, typeof(TRequest), ModelsJsonSerializerContext.Default);
 
@@ -337,6 +433,28 @@ public sealed class TelegramClient : ITelegramClient
         else
         {
             await Task.Delay(_configuration.ServerConfiguration.DefaultRetryDelay, cancellationToken);
+        }
+    }
+
+    private CancellationTokenSource CreateGlobalLinkedTokenSource(CancellationToken cancellationToken)
+    {
+        return CancellationTokenSource.CreateLinkedTokenSource
+        (
+            _globalCancellationTokenSource.Token,
+            cancellationToken
+        );
+    }
+
+    private void ThrowResponseIfNull<TResponse>([NotNull] TResponse? response, string methodName)
+    {
+        if (response is null)
+        {
+            throw new TelegramException
+            (
+                client: this,
+                methodName: methodName,
+                description: "Result is null"
+            );
         }
     }
 
