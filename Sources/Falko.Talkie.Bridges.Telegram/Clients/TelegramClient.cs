@@ -118,8 +118,6 @@ public sealed class TelegramClient : ITelegramClient
                 RequestUri = new Uri($"https://{serverConfiguration.Domain}/file/bot{serverConfiguration.Token}/{file}")
             };
 
-            Console.WriteLine(httpRequest.RequestUri);
-
             var httpResponse = await _client.SendAsync(httpRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
             if (httpResponse.IsSuccessStatusCode)
