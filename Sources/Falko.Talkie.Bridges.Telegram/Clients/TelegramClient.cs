@@ -46,8 +46,7 @@ public sealed class TelegramClient : ITelegramClient
             .CreateLinkedTokenSource(_globalCancellationTokenSource.Token, cancellationToken);
 
         return await SendRepeatableRequestAsync<TResult, TRequest>(methodName, request, scopedCancellationTokenSource.Token)
-            ?? throw new TelegramException(this, methodName,
-                description: "Result is null");
+            ?? throw new TelegramException(client: this, methodName: methodName, description: "Result is null");
     }
 
     async Task<TResult> ITelegramClient.SendAsync<TResult>(string methodName, CancellationToken cancellationToken)
@@ -130,14 +129,22 @@ public sealed class TelegramClient : ITelegramClient
             if (JsonSerializer.Deserialize(jsonResponse, typeof(TelegramResponse), ModelsJsonSerializerContext.Default)
                 is not TelegramResponse response)
             {
-                throw new TelegramException(this, "download",
-                    description: "Failed to deserialize response");
+                throw new TelegramException
+                (
+                    client: this,
+                    methodName: "download",
+                    description: "Failed to deserialize response"
+                );
             }
 
-            throw new TelegramException(this, "download",
+            throw new TelegramException
+            (
+                client: this,
+                methodName: "download",
                 statusCode: (HttpStatusCode?)response.ErrorCode,
                 description: response.Description,
-                parameters: response.Parameters);
+                parameters: response.Parameters
+            );
         }
         catch (TelegramException)
         {
@@ -149,9 +156,13 @@ public sealed class TelegramClient : ITelegramClient
         }
         catch (Exception exception)
         {
-            throw new TelegramException(this, "download",
+            throw new TelegramException
+            (
+                client: this,
+                methodName: "download",
                 description: "Unknown error occurred while sending request",
-                innerException: exception);
+                innerException: exception
+            );
         }
     }
 
@@ -207,9 +218,13 @@ public sealed class TelegramClient : ITelegramClient
         }
         catch (Exception exception)
         {
-            throw new TelegramException(this, method,
+            throw new TelegramException
+            (
+                client: this,
+                methodName: method,
                 description: "Unknown error occurred while sending request",
-                innerException: exception);
+                innerException: exception
+            );
         }
     }
 
@@ -230,16 +245,24 @@ public sealed class TelegramClient : ITelegramClient
         if (JsonSerializer.Deserialize(responseJson, typeof(TelegramResponse<TResult>), ModelsJsonSerializerContext.Default)
             is not TelegramResponse<TResult> response)
         {
-            throw new TelegramException(this, method,
-                description: "Failed to deserialize response");
+            throw new TelegramException
+            (
+                client: this,
+                methodName: method,
+                description: "Failed to deserialize response"
+            );
         }
 
         if (response.Ok is false || httpResponse.IsSuccessStatusCode is false)
         {
-            throw new TelegramException(this, method,
+            throw new TelegramException
+            (
+                client: this,
+                methodName: method,
                 statusCode: (HttpStatusCode?)response.ErrorCode,
                 description: response.Description,
-                parameters: response.Parameters);
+                parameters: response.Parameters
+            );
         }
 
         return response.Result;
