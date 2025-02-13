@@ -44,6 +44,6 @@ public sealed record TelegramPlatform : IPlatform, IWithMessageControllerFactory
         => _messageControllerFactory;
 
     [IgnoreDataMember]
-    IControllerFactory<IAttachmentController, Nothing> IWithControllerFactory<IAttachmentController, Nothing>.Factory
+    IControllerFactory<IAttachmentController, Unit> IWithControllerFactory<IAttachmentController, Unit>.Factory
         => TelegramAttachmentControllerFactory.Instance;
 }
