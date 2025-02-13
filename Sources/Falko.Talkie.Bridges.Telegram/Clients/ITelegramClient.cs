@@ -26,19 +26,6 @@ public interface ITelegramClient : IDisposable
         CancellationToken cancellationToken = default
     ) where TResult : notnull;
 
-    Task SendAsync<TRequest>
-    (
-        string methodName,
-        TRequest request,
-        CancellationToken cancellationToken = default
-    ) where TRequest : ITelegramRequest;
-
-    Task SendAsync
-    (
-        string methodName,
-        CancellationToken cancellationToken = default
-    );
-
     Task<Stream> DownloadAsync
     (
         string file,

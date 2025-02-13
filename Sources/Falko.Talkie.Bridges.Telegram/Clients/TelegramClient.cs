@@ -104,42 +104,6 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    public Task SendAsync<TRequest>
-    (
-        string methodName,
-        TRequest request,
-        CancellationToken cancellationToken
-    ) where TRequest : ITelegramRequest
-    {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
-
-        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
-
-        return SendRepeatableRequestAsync<Unit, TRequest>
-        (
-            methodName: methodName,
-            request: request,
-            cancellationToken: cancellationTokenSource.Token
-        );
-    }
-
-    public Task SendAsync
-    (
-        string methodName,
-        CancellationToken cancellationToken
-    )
-    {
-        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
-
-        return SendRepeatableRequestAsync<Unit, Unit>
-        (
-            methodName: methodName,
-            request: Unit.Default,
-            cancellationToken: cancellationTokenSource.Token
-        );
-    }
-
     public async Task<Stream> DownloadAsync
     (
         string file,
@@ -268,13 +232,7 @@ public sealed class TelegramClient : ITelegramClient
 
             using var httpResponse = await _client.SendAsync(httpRequest, cancellationToken);
 
-            if (typeof(TResponse) != typeof(Unit))
-            {
-                return await ParseHttpResponseAsync<TResponse>(method, httpResponse, cancellationToken);
-            }
-
-            await ThrowIfInvalidHttpResponseAsync(method, httpResponse, cancellationToken);
-            return default;
+            return await ParseHttpResponseAsync<TResponse>(method, httpResponse, cancellationToken);
         }
         catch (TelegramException)
         {
@@ -305,8 +263,14 @@ public sealed class TelegramClient : ITelegramClient
     {
         var responseJson = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
 
-        if (JsonSerializer.Deserialize(responseJson, typeof(TelegramResponse<TResponse>), ModelsJsonSerializerContext.Default)
-            is not TelegramResponse<TResponse> response)
+        var responseObject = JsonSerializer.Deserialize
+        (
+            responseJson,
+            typeof(TelegramResponse<TResponse>),
+            ModelsJsonSerializerContext.Default
+        );
+
+        if (responseObject is not TelegramResponse<TResponse> response)
         {
             throw new TelegramException
             (
@@ -331,39 +295,6 @@ public sealed class TelegramClient : ITelegramClient
         return response.Result;
     }
 
-    private async Task ThrowIfInvalidHttpResponseAsync
-    (
-        string method,
-        HttpResponseMessage httpResponse,
-        CancellationToken cancellationToken
-    )
-    {
-        var responseJson = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
-
-        if (JsonSerializer.Deserialize(responseJson, typeof(TelegramResponse), ModelsJsonSerializerContext.Default)
-            is not TelegramResponse response)
-        {
-            throw new TelegramException
-            (
-                client: this,
-                methodName: method,
-                description: "Failed to deserialize response"
-            );
-        }
-
-        if (response.Ok is false || httpResponse.IsSuccessStatusCode is false)
-        {
-            throw new TelegramException
-            (
-                client: this,
-                methodName: method,
-                statusCode: (HttpStatusCode?)response.ErrorCode,
-                description: response.Description,
-                parameters: response.Parameters
-            );
-        }
-    }
-
     private async Task<HttpRequestMessage> BuildHttpRequestAsync<TRequest>
     (
         string method,
@@ -375,7 +306,12 @@ public sealed class TelegramClient : ITelegramClient
 
         if (request is Unit) return httpRequest;
 
-        var requestJson = JsonSerializer.Serialize(request, typeof(TRequest), ModelsJsonSerializerContext.Default);
+        var requestJson = JsonSerializer.Serialize
+        (
+            request,
+            typeof(TRequest),
+            ModelsJsonSerializerContext.Default
+        );
 
         if (_configuration.ClientConfiguration.UseGzipCompression)
         {
