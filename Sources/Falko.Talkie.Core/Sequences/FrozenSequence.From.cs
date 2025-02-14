@@ -4,6 +4,8 @@ public partial class FrozenSequence<T>
 {
     private FrozenSequence(T[] items, int itemsCount) => (_items, _itemsCount) = (items, itemsCount);
 
+    public FrozenSequence(T item) : this([item], 1) { }
+
     public FrozenSequence(params T[] items) : this(items, items.Length) { }
 
     public static FrozenSequence<T> From(IEnumerable<T> enumerable)
@@ -35,4 +37,8 @@ public partial class FrozenSequence<T>
             ? new FrozenSequence<T>(items, itemsLength)
             : Empty;
     }
+
+    public static implicit operator FrozenSequence<T>(T item) => new(item);
+
+    public static implicit operator FrozenSequence<T>(T[] items) => new(items);
 }
