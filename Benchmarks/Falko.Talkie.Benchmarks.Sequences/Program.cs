@@ -6,6 +6,7 @@ BenchmarkRunner.Run<FieldVsPropertyInstanceGettingBenchmark>();
 BenchmarkRunner.Run<FieldVsPropertyStaticGettingBenchmark>();
 BenchmarkRunner.Run<FrozenSequenceForEachAsyncBenchmark>();
 BenchmarkRunner.Run<FrozenSequenceForEachBenchmark>();
+BenchmarkRunner.Run<FrozenSequenceVsListGettingByIndexBenchmark>();
 BenchmarkRunner.Run<SequencesVsOtherFirstAndLastBenchmark>();
 BenchmarkRunner.Run<SequencesVsOtherAddBenchmark>();
 BenchmarkRunner.Run<SequencesVsOtherRemoveBenchmark>();
