@@ -13,6 +13,10 @@ public partial class FrozenSequence<T> : IReadOnlySequence<T>
 
     public int Count => _itemsCount;
 
+    public T this[int index] => (uint)index < _itemsCount
+        ? _items[index]
+        : throw new IndexOutOfRangeException();
+
     public StructEnumerator GetEnumerator() => new(_items, _itemsCount);
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator(_items, _itemsCount);
