@@ -7,6 +7,8 @@ namespace Talkie.Sequences;
 [DebuggerDisplay("Count = {Count}")]
 public partial class FrozenSequence<T> : IReadOnlySequence<T>
 {
+    internal FrozenSequence(T[] items, int itemsCount) => (_items, _itemsCount) = (items, itemsCount);
+
     private readonly T[] _items;
 
     private readonly int _itemsCount;
@@ -26,4 +28,8 @@ public partial class FrozenSequence<T> : IReadOnlySequence<T>
     public IParallelEnumerator<T> GetParallelEnumerator() => new ParallelEnumerator(_items, _itemsCount);
 
     public override string ToString() => $"[{string.Join(", ", _items)}]";
+
+    public static implicit operator FrozenSequence<T>(T item) => new([item], 1);
+
+    public static implicit operator FrozenSequence<T>(T[] items) => new(items, items.Length);
 }

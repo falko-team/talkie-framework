@@ -25,7 +25,7 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
     public required DateTime ReceivedDate { get; init; }
 
     public IEnumerable<IMessageFeature> Features { get; init; }
-        = FrozenSequence<IMessageFeature>.Empty;
+        = FrozenSequence.Empty<IMessageFeature>();
 
     public MessageContent Content { get; init; }
         = MessageContent.Empty;
@@ -33,7 +33,7 @@ public sealed record TelegramIncomingMessage : IIncomingMessage
     public TelegramIncomingMessage? Reply { get; init; }
 
     public IEnumerable<IMessageAttachment> Attachments { get; init; }
-        = FrozenSequence<IMessageAttachment>.Empty;
+        = FrozenSequence.Empty<IMessageAttachment>();
 
     IIncomingMessage? IIncomingMessage.Reply => Reply;
 
