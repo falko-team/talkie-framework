@@ -15,7 +15,7 @@ public sealed record MessageImageAttachment : IMessageImageAttachment
         MessageContent.Empty;
 
     public IReadOnlySequence<IMessageImageVariant> Variants { get; init; } =
-        FrozenSequence<IMessageImageVariant>.Empty;
+        FrozenSequence.Empty<IMessageImageVariant>();
 
     IReadOnlySequence<IMessageFileVariant> IMessageFileAttachment.Variants =>
         _fileVariants ??= GetFileVariants();

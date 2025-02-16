@@ -10,14 +10,15 @@ public sealed record OutgoingMessage : IOutgoingMessage
 {
     public static readonly OutgoingMessage Empty = new();
 
-    public IEnumerable<IMessageFeature> Features { get; init; } = FrozenSequence<IMessageFeature>.Empty;
+    public IEnumerable<IMessageFeature> Features { get; init; }
+        = FrozenSequence.Empty<IMessageFeature>();
 
     public MessageContent Content { get; init; }
 
     public GlobalMessageIdentifier? Reply { get; init; }
 
     public IEnumerable<IMessageAttachmentFactory> Attachments { get; init; }
-        = FrozenSequence<IMessageAttachmentFactory>.Empty;
+        = FrozenSequence.Empty<IMessageAttachmentFactory>();
 
     public IOutgoingMessageMutator ToMutator() => new OutgoingMessageMutator(this);
 }

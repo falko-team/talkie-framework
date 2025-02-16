@@ -1,14 +1,8 @@
 namespace Talkie.Sequences;
 
-public partial class FrozenSequence<T>
+public static partial class FrozenSequence
 {
-    private FrozenSequence(T[] items, int itemsCount) => (_items, _itemsCount) = (items, itemsCount);
-
-    public FrozenSequence(T item) : this([item], 1) { }
-
-    public FrozenSequence(params T[] items) : this(items, items.Length) { }
-
-    public static FrozenSequence<T> From(IEnumerable<T> enumerable)
+    public static FrozenSequence<T> Copy<T>(IEnumerable<T> enumerable)
     {
         ArgumentNullException.ThrowIfNull(enumerable);
 
@@ -19,14 +13,14 @@ public partial class FrozenSequence<T>
 
         return itemsLength is not 0
             ? new FrozenSequence<T>(items, itemsLength)
-            : Empty;
+            : EmptyCache<T>.Instance;
     }
 
-    public static FrozenSequence<T> From(IReadOnlyCollection<T> collection)
+    public static FrozenSequence<T> Copy<T>(IReadOnlyCollection<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
 
-        if (collection.Count is 0) return Empty;
+        if (collection.Count is 0) return EmptyCache<T>.Instance;
 
         if (collection is FrozenSequence<T> frozenSequence) return frozenSequence;
 
@@ -35,10 +29,6 @@ public partial class FrozenSequence<T>
 
         return itemsLength is not 0
             ? new FrozenSequence<T>(items, itemsLength)
-            : Empty;
+            : EmptyCache<T>.Instance;
     }
-
-    public static implicit operator FrozenSequence<T>(T item) => new(item);
-
-    public static implicit operator FrozenSequence<T>(T[] items) => new(items);
 }

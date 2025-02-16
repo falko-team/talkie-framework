@@ -11,7 +11,7 @@ public sealed record MessageStickerAttachment : IMessageStickerAttachment
     public required IMessageAttachmentIdentifier Identifier { get; init; }
 
     public IReadOnlySequence<IMessageImageVariant> Variants { get; init; } =
-        FrozenSequence<IMessageImageVariant>.Empty;
+        FrozenSequence.Empty<IMessageImageVariant>();
 
     IReadOnlySequence<IMessageFileVariant> IMessageFileAttachment.Variants =>
         _fileVariants ??= GetFileVariants();

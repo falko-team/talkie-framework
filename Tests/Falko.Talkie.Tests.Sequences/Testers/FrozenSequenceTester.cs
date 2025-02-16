@@ -9,7 +9,7 @@ public class FrozenSequenceTester
     [Test]
     public void TestFrozenSequenceFrom0()
     {
-        var sequence = FrozenSequence<int>.From([]);
+        var sequence = FrozenSequence.Empty<int>();
 
         using var enumerator = sequence.GetEnumerator();
 
@@ -21,7 +21,7 @@ public class FrozenSequenceTester
     {
         var number = 1;
 
-        var frozenSequence = new FrozenSequence<int>(number);
+        var frozenSequence = FrozenSequence.Wrap(number);
 
         using var enumerator = frozenSequence.AsEnumerable().GetEnumerator();
 
@@ -41,7 +41,7 @@ public class FrozenSequenceTester
 
         var numbers = Enumerable.Range(0, capacity).ToImmutableArray();
 
-        var frozenSequence = FrozenSequence<int>.From(numbers);
+        var frozenSequence = FrozenSequence.Copy(numbers);
 
         using var enumerator = frozenSequence.AsEnumerable().GetEnumerator();
 

@@ -117,7 +117,7 @@ internal static class TelegramConverters
 
         if (message.TryGetImageAttachment(platform.Client, out var imageAttachment))
         {
-            var attachments = new FrozenSequence<IMessageAttachment>(imageAttachment);
+            var attachments = FrozenSequence.Wrap<IMessageAttachment>(imageAttachment);
 
             incomingMessage = context.ToIncomingMessage(attachments: attachments);
 
@@ -126,7 +126,7 @@ internal static class TelegramConverters
 
         if (message.TryGetStickerAttachment(platform.Client, out var stickerAttachment))
         {
-            var attachments = new FrozenSequence<IMessageAttachment>(stickerAttachment);
+            var attachments = FrozenSequence.Wrap<IMessageAttachment>(stickerAttachment);
 
             incomingMessage = context.ToIncomingMessage(attachments: attachments);
 
@@ -162,7 +162,7 @@ internal static class TelegramConverters
             PublishedDate = context.PublishedDate,
             ReceivedDate = context.ReceivedDate,
             Content = content ?? MessageContent.Empty,
-            Attachments = attachments ?? FrozenSequence<IMessageAttachment>.Empty
+            Attachments = attachments ?? FrozenSequence.Empty<IMessageAttachment>()
         };
     }
 
@@ -282,7 +282,7 @@ internal static class TelegramConverters
     {
         if (entities is null || entities.Count is 0)
         {
-            return FrozenSequence<IMessageTextStyle>.Empty;
+            return FrozenSequence.Empty<IMessageTextStyle>();
         }
 
         var styles = new Sequence<IMessageTextStyle>();

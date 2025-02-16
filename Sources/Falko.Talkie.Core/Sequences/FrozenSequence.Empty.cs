@@ -1,13 +1,14 @@
 namespace Talkie.Sequences;
 
-public partial class FrozenSequence<T>
+public partial class FrozenSequence
 {
-    private FrozenSequence() => _items = [];
-
-    public static FrozenSequence<T> Empty => EmptyCache.Instance;
-
-    private static class EmptyCache
+    public static FrozenSequence<T> Empty<T>()
     {
-        public static readonly FrozenSequence<T> Instance = new();
+        return EmptyCache<T>.Instance;
+    }
+
+    private static class EmptyCache<T>
+    {
+        public static readonly FrozenSequence<T> Instance = new([], 0);
     }
 }
