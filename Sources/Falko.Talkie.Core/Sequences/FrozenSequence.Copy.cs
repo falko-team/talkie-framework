@@ -2,6 +2,12 @@ namespace Talkie.Sequences;
 
 public static partial class FrozenSequence
 {
+    /// <summary>
+    /// Copy the given <paramref name="enumerable"/> to a new <see cref="FrozenSequence{T}"/>.
+    /// </summary>
+    /// <param name="enumerable">The enumerable to copy.</param>
+    /// <typeparam name="T">The type of the elements in the enumerable.</typeparam>
+    /// <returns>A new <see cref="FrozenSequence{T}"/> containing the elements of the given <paramref name="enumerable"/>.</returns>
     public static FrozenSequence<T> Copy<T>(IEnumerable<T> enumerable)
     {
         ArgumentNullException.ThrowIfNull(enumerable);
@@ -16,6 +22,12 @@ public static partial class FrozenSequence
             : EmptyCache<T>.Instance;
     }
 
+    /// <summary>
+    /// Copy the given <paramref name="collection"/> to a new <see cref="FrozenSequence{T}"/>.
+    /// </summary>
+    /// <param name="collection">The collection to copy.</param>
+    /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+    /// <returns>A new <see cref="FrozenSequence{T}"/> containing the elements of the given <paramref name="collection"/>.</returns>
     public static FrozenSequence<T> Copy<T>(IReadOnlyCollection<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);

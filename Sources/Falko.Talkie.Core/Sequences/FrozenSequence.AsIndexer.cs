@@ -20,6 +20,11 @@ public partial class FrozenSequence<T>
             _valuesCount = valuesCount;
         }
 
+        /// <summary>
+        /// Gets the element of the sequence at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the element to get.</param>
+        /// <exception cref="IndexOutOfRangeException">The index is out of range.</exception>
         public ref readonly T this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
