@@ -1,5 +1,6 @@
 using Talkie.Bridges.Telegram.Models;
 using Talkie.Bridges.Telegram.Requests;
+using Talkie.Sequences;
 
 namespace Talkie.Bridges.Telegram.Clients;
 
@@ -82,6 +83,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramSendPhotoRequest request,
+        FrozenSequence<TelegramStream> streams,
         CancellationToken cancellationToken = default
     )
     {
@@ -89,6 +91,7 @@ public static partial class TelegramClientExtensions
         (
             methodName: "sendPhoto",
             request: request,
+            streams: streams,
             cancellationToken: cancellationToken
         );
     }
@@ -97,6 +100,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramSendMediaGroupRequest request,
+        FrozenSequence<TelegramStream> streams,
         CancellationToken cancellationToken = default
     )
     {
@@ -104,6 +108,7 @@ public static partial class TelegramClientExtensions
         (
             methodName: "sendMediaGroup",
             request: request,
+            streams: streams,
             cancellationToken: cancellationToken
         );
     }

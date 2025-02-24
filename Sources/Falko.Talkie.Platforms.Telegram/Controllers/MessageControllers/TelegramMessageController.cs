@@ -54,7 +54,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 photo: photoFactory.First().Url,
                 businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
                 caption: message.Content,
-                captionEntities: GetEnitites(message.Content.Styles),
+                captionEntities: GetEntities(message.Content.Styles),
                 disableNotification: message.Features.Any(t => t is SilenceMessageFeature),
                 replyParameters: GetReplyParameters(message)
             );
@@ -62,6 +62,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             var sentRawMessage = await platform.Client.SendPhotoAsync
             (
                 sendPhoto,
+                FrozenSequence.Empty<TelegramStream>(),
                 cancellationToken
             );
 
@@ -78,7 +79,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             (
                 firstPhotoAttachment.Url,
                 caption: message.Content,
-                captionEntities: GetEnitites(message.Content.Styles)
+                captionEntities: GetEntities(message.Content.Styles)
             );
 
             var photos = photoFactory
@@ -99,6 +100,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             var sentRawMessage = await platform.Client.SendMediaGroupAsync
             (
                 sendMessage,
+                FrozenSequence.Empty<TelegramStream>(),
                 cancellationToken
             );
 
@@ -114,7 +116,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 telegramEnvironmentProfileIdentifier.ProfileIdentifier,
                 message.Content,
                 telegramMessageIdentifier.ConnectionIdentifier,
-                GetEnitites(message.Content.Styles),
+                GetEntities(message.Content.Styles),
                 message.Features.Any(t => t is SilenceMessageFeature),
                 GetReplyParameters(message)
             );
@@ -160,7 +162,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
 
         var editMessageText = new TelegramEditMessageTextRequest(
             message.Content.Text,
-            entities: GetEnitites(message.Content.Styles),
+            entities: GetEntities(message.Content.Styles),
             messageId: telegramMessageIdentifier.MessageIdentifier,
             businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
             chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier);
@@ -211,7 +213,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         }
     }
 
-    private static IReadOnlyCollection<TelegramMessageEntity>? GetEnitites(IReadOnlyCollection<IMessageTextStyle> styles)
+    private static IReadOnlyCollection<TelegramMessageEntity>? GetEntities(IReadOnlyCollection<IMessageTextStyle> styles)
     {
         if (styles.Count is 0) return null;
 
