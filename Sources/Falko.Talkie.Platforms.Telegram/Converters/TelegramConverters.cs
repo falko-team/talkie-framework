@@ -385,7 +385,7 @@ internal static class TelegramConverters
 
             if (file.FilePath is null) throw new InvalidOperationException();
 
-            return await client.DownloadAsync(file.FilePath, cancellation);
+            return await client.DownloadRequestAsync(file.FilePath, cancellation);
         })
         {
             Identifier = new TelegramMessageFileAttachmentIdentifier(photo.FileUniqueId, photo.FileId),
