@@ -421,11 +421,11 @@ public sealed class TelegramClient : ITelegramClient
 
                 if (stream.Name is { } streamName)
                 {
-                    content.Add(new StreamContent(stream.Stream), stream.ToAttach(), streamName);
+                    content.Add(new StreamContent(stream.Stream), stream.Identifier.ToString(), streamName);
                 }
                 else
                 {
-                    content.Add(new StreamContent(stream.Stream), stream.ToAttach());
+                    content.Add(new StreamContent(stream.Stream), stream.Identifier.ToString());
                 }
             }
 
