@@ -13,16 +13,17 @@ public interface ITelegramClient : IDisposable
         CancellationToken cancellationToken = default
     ) where TRequest : ITelegramRequest<TResult> where TResult : notnull;
 
-    Task<TResult> SendAsync<TResult>
+    Task<TResult> SendAsync<TResult, TRequest>
     (
         string methodName,
+        TRequest request,
+        FrozenSequence<TelegramStream> streams,
         CancellationToken cancellationToken = default
-    ) where TResult : notnull;
+    ) where TRequest : ITelegramRequest<TResult> where TResult : notnull;
 
     Task<TResult> SendAsync<TResult>
     (
         string methodName,
-        FrozenSequence<TelegramStream> stream,
         CancellationToken cancellationToken = default
     ) where TResult : notnull;
 
