@@ -24,9 +24,9 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         CancellationToken cancellationToken = default
     )
     {
-        if (message.Content.IsEmpty)
+        if (message.Content.IsEmpty && message.Attachments.Any() is false)
         {
-            throw new ArgumentException("Message content is required.");
+            throw new ArgumentException("Message content or attachments are required.");
         }
 
         if (identifier.EnvironmentIdentifier is not TelegramProfileIdentifier telegramEnvironmentProfileIdentifier)
