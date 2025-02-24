@@ -12,7 +12,7 @@ public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 
     private readonly Sequence<IMessageAttachmentFactory> _attachments = [];
 
-    public MessageContent Content { get; private set; }
+    public MessageContent Content { get; private set; } = MessageContent.Empty;
 
     public GlobalMessageIdentifier? Reply { get; private set; }
 
@@ -57,7 +57,10 @@ public sealed class OutgoingMessageBuilder : IOutgoingMessageBuilder
 
     public IOutgoingMessage Build()
     {
-        if (Content.IsEmpty) return OutgoingMessage.Empty;
+        if (Content.IsEmpty && _attachments.Any() is false)
+        {
+            return OutgoingMessage.Empty;
+        }
 
         return new OutgoingMessage
         {
