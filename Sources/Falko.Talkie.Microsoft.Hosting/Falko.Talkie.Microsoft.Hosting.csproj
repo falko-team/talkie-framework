@@ -5,12 +5,4 @@
         <ProjectReference Include="..\Falko.Talkie.Platforms\Falko.Talkie.Platforms.csproj" />
         <PackageReference Include="Microsoft.Extensions.Hosting" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Providers\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Providers\IPlatformEnumerable.cs" />
-    </ItemGroup>
 </Project>
