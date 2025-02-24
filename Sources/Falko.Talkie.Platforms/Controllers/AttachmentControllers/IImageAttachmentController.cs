@@ -1,9 +1,14 @@
 using Talkie.Common;
+using Talkie.Models.Identifiers;
 using Talkie.Models.Messages.Attachments.Factories;
 
 namespace Talkie.Controllers.AttachmentControllers;
 
 public interface IImageAttachmentController : IController<Unit>
 {
-    IMessageImageAttachmentFactory Build(string url);
+    IMessageImageAttachmentFactory Build(IMessageAttachmentIdentifier identifier);
+
+    IMessageImageAttachmentFactory Build(Uri uri);
+
+    IMessageImageAttachmentFactory Build(Stream stream);
 }

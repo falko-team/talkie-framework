@@ -43,15 +43,17 @@ public sealed class TelegramMessageController(ISignalFlow flow,
 
         var photoFactory = message
             .Attachments
-            .OfType<TelegramMessageUrlImageAttachmentFactory>()
+            .OfType<TelegramMessageImageAttachmentFactory>()
             .ToFrozenSequence();
 
         if (photoFactory.Count is 1)
         {
+            var photoAttachmentPair = GetImageAttachment(photoFactory.First(), 0);
+
             var sendPhoto = new TelegramSendPhotoRequest
             (
                 chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier,
-                photo: photoFactory.First().Url,
+                photo: photoAttachmentPair.Alias,
                 businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
                 caption: message.Content,
                 captionEntities: GetEntities(message.Content.Styles),
@@ -59,12 +61,26 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 replyParameters: GetReplyParameters(message)
             );
 
-            var sentRawMessage = await platform.Client.SendPhotoAsync
-            (
-                sendPhoto,
-                FrozenSequence.Empty<TelegramStream>(),
-                cancellationToken
-            );
+            TelegramMessage sentRawMessage;
+
+            if (photoAttachmentPair.Streamable)
+            {
+                sentRawMessage = await platform.Client.SendPhotoAsync
+                (
+                    sendPhoto,
+                    photoAttachmentPair.Stream,
+                    cancellationToken
+                );
+            }
+            else
+            {
+                sentRawMessage = await platform.Client.SendPhotoAsync
+                (
+                    sendPhoto,
+                    FrozenSequence.Empty<TelegramStream>(),
+                    cancellationToken
+                );
+            }
 
             if (sentRawMessage.TryGetIncomingMessage(platform, out sentMessage) is false)
             {
@@ -73,20 +89,35 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         }
         else if (photoFactory.Count > 1)
         {
-            var firstPhotoAttachment = photoFactory.First();
+            var streams = new Sequence<TelegramStream>();
+
+            var firstPhotoAttachmentPair = GetImageAttachment(photoFactory.First(), 0);
+
+            if (firstPhotoAttachmentPair.Streamable)
+            {
+                streams.Add(firstPhotoAttachmentPair.Stream);
+            }
 
             var firstPhoto = new TelegramInputMediaPhoto
             (
-                firstPhotoAttachment.Url,
+                firstPhotoAttachmentPair.Alias,
                 caption: message.Content,
                 captionEntities: GetEntities(message.Content.Styles)
             );
 
-            var photos = photoFactory
-                .Skip(1)
-                .Select(photo => new TelegramInputMediaPhoto(photo.Url))
-                .Append(firstPhoto)
-                .ToFrozenSequence();
+            var photos = new Sequence<TelegramInputMediaPhoto> { firstPhoto };
+
+            foreach (var (index, photoAttachment) in photoFactory.Index().Skip(1))
+            {
+                var photoAttachmentPair = GetImageAttachment(photoAttachment, index);
+
+                if (photoAttachmentPair.Streamable)
+                {
+                    streams.Add(photoAttachmentPair.Stream);
+                }
+
+                photos.Add(new TelegramInputMediaPhoto(photoAttachmentPair.Alias));
+            }
 
             var sendMessage = new TelegramSendMediaGroupRequest
             (
@@ -100,7 +131,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             var sentRawMessage = await platform.Client.SendMediaGroupAsync
             (
                 sendMessage,
-                FrozenSequence.Empty<TelegramStream>(),
+                streams.ToFrozenSequence(),
                 cancellationToken
             );
 
@@ -136,6 +167,23 @@ public sealed class TelegramMessageController(ISignalFlow flow,
         flow.Publish(sentMessage.ToMessagePublishedSignal(), cancellationToken);
 
         return sentMessage;
+    }
+
+    private (string Alias, bool Streamable, TelegramStream Stream) GetImageAttachment(TelegramMessageImageAttachmentFactory factory, int index)
+    {
+        if (factory.Stream is not null)
+        {
+            var stream = new TelegramStream(index, factory.Stream, factory.Alias);
+
+            return (stream.ToAttach(), true, stream);
+        }
+
+        if (factory.Alias is not null)
+        {
+            return (factory.Alias, false, default);
+        }
+
+        throw new ArgumentException("Image attachment factory is invalid.");
     }
 
     public async Task<IIncomingMessage> ExchangeMessageAsync
