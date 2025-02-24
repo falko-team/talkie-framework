@@ -34,7 +34,7 @@ public sealed class TelegramClient : ITelegramClient
         _client = BuildHttpClient(configuration);
     }
 
-    public Task<TResponse> SendAsync<TResponse, TRequest>
+    public Task<TResponse> SendRequestAsync<TResponse, TRequest>
     (
         string methodName,
         TRequest request,
@@ -54,7 +54,7 @@ public sealed class TelegramClient : ITelegramClient
         );
     }
 
-    public Task<TResponse> SendAsync<TResponse, TRequest>
+    public Task<TResponse> SendRequestAsync<TResponse, TRequest>
     (
         string methodName,
         TRequest request,
@@ -65,55 +65,28 @@ public sealed class TelegramClient : ITelegramClient
         ArgumentNullException.ThrowIfNull(streams);
         ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
 
-        return streams.Count is 0
-            ? SendAsync<TResponse, TRequest>(methodName, request, cancellationToken)
-            : SendAsyncWithStreams();
-
-        async Task<TResponse> SendAsyncWithStreams()
+        if (streams.Count is 0)
         {
-            using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
-
-            var content = new MultipartFormDataContent();
-
-            foreach (var stream in streams)
-            {
-                if (stream.Stream.CanRead is false)
-                {
-                    throw new TelegramException
-                    (
-                        client: this,
-                        methodName: methodName,
-                        description: "Stream is not readable"
-                    );
-                }
-
-                content.Add(new StreamContent(stream.Stream), $"attach://{stream.Name}", stream.Name);
-            }
-
-            var requestJson = JsonSerializer.SerializeToDocument
+            return SendRequestAsync<TResponse, TRequest>
             (
-                request,
-                typeof(TRequest),
-                ModelsJsonSerializerContext.Default
+                methodName: methodName,
+                request: request,
+                cancellationToken: cancellationToken
             );
-
-            foreach (var requestJsonPart in requestJson.RootElement.EnumerateObject())
-            {
-                content.Add(new StringContent(requestJsonPart.Value.ToString(), Encoding.UTF8), requestJsonPart.Name);
-            }
-
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, methodName)
-            {
-                Content = content
-            };
-
-            using var httpResponse = await _client.SendAsync(httpRequest, cancellationToken);
-
-            return await ParseHttpResponseAsync<TResponse>(methodName, httpResponse, cancellationToken);
         }
+
+        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
+
+        return SendRepeatableRequestAsync<TResponse, TRequest>
+        (
+            methodName: methodName,
+            request: request,
+            streams: streams,
+            cancellationToken: cancellationTokenSource.Token
+        );
     }
 
-    public Task<TResult> SendAsync<TResult>
+    public Task<TResult> SendRequestAsync<TResult>
     (
         string methodName,
         CancellationToken cancellationToken = default
@@ -131,7 +104,7 @@ public sealed class TelegramClient : ITelegramClient
         );
     }
 
-    public async Task<Stream> DownloadAsync
+    public async Task<Stream> DownloadRequestAsync
     (
         string file,
         CancellationToken cancellationToken
@@ -154,6 +127,39 @@ public sealed class TelegramClient : ITelegramClient
 
                 await WaitRetryDelayAsync(exception, cancellationToken);
             }
+        }
+    }
+
+    private async Task<TResponse> SendCoreAsync<TResponse>
+    (
+        string methodName,
+        HttpRequestMessage request,
+        CancellationToken cancellationToken = default
+    ) where TResponse : notnull
+    {
+        try
+        {
+            using var httpResponse = await _client.SendAsync(request, cancellationToken);
+
+            return await ParseHttpResponseAsync<TResponse>(methodName, httpResponse, cancellationToken);
+        }
+        catch (TelegramException)
+        {
+            throw;
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            throw new TelegramException
+            (
+                client: this,
+                methodName: methodName,
+                description: "Unknown error occurred while sending request",
+                innerException: exception
+            );
         }
     }
 
@@ -228,15 +234,18 @@ public sealed class TelegramClient : ITelegramClient
     private async Task<TResponse> SendRepeatableRequestAsync<TResponse, TRequest>
     (
         string methodName,
-        TRequest? request,
+        TRequest request,
+        FrozenSequence<TelegramStream> streams,
         CancellationToken cancellationToken
-    )
+    ) where TRequest : ITelegramRequest<TResponse> where TResponse : notnull
     {
+        using var httpRequest = BuildHttpRequest(methodName, request, streams, cancellationToken);
+
         while (true)
         {
             try
             {
-                return await SendRequestAsync<TResponse, TRequest>(methodName, request, cancellationToken);
+                return await SendCoreAsync<TResponse>(methodName, httpRequest, cancellationToken);
             }
             catch (TelegramException exception)
             {
@@ -250,22 +259,47 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    private async Task<TResponse> SendRequestAsync<TResponse, TRequest>
+    private async Task<TResponse> SendRepeatableRequestAsync<TResponse, TRequest>
     (
-        string method,
+        string methodName,
         TRequest? request,
         CancellationToken cancellationToken
-    )
+    ) where TRequest : ITelegramRequest<TResponse> where TResponse : notnull
+    {
+        using var httpRequest = await BuildHttpRequestAsync(methodName, request, cancellationToken);
+
+        while (true)
+        {
+            try
+            {
+                return await SendCoreRequestAsync<TResponse>(methodName, httpRequest, cancellationToken);
+            }
+            catch (TelegramException exception)
+            {
+                if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
+                {
+                    throw;
+                }
+
+                await WaitRetryDelayAsync(exception, cancellationToken);
+            }
+        }
+    }
+
+    private async Task<TResponse> SendCoreRequestAsync<TResponse>
+    (
+        string methodName,
+        HttpRequestMessage httpRequest,
+        CancellationToken cancellationToken
+    ) where TResponse : notnull
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         try
         {
-            using var httpRequest = await BuildHttpRequestAsync(method, request, cancellationToken);
-
             using var httpResponse = await _client.SendAsync(httpRequest, cancellationToken);
 
-            return await ParseHttpResponseAsync<TResponse>(method, httpResponse, cancellationToken);
+            return await ParseHttpResponseAsync<TResponse>(methodName, httpResponse, cancellationToken);
         }
         catch (TelegramException)
         {
@@ -280,7 +314,7 @@ public sealed class TelegramClient : ITelegramClient
             throw new TelegramException
             (
                 client: this,
-                methodName: method,
+                methodName: methodName,
                 description: "Unknown error occurred while sending request",
                 innerException: exception
             );
@@ -340,34 +374,141 @@ public sealed class TelegramClient : ITelegramClient
         return result;
     }
 
+    private HttpRequestMessage BuildHttpRequest<TRequest>
+    (
+        string methodName,
+        TRequest request,
+        FrozenSequence<TelegramStream> streams,
+        CancellationToken cancellationToken
+    )
+    {
+        try
+        {
+            var content = new MultipartFormDataContent();
+
+            foreach (var stream in streams)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var internalStream = stream.Stream;
+
+                if (internalStream.CanRead is false)
+                {
+                    throw new TelegramException
+                    (
+                        client: this,
+                        methodName: methodName,
+                        description: $"Stream with name '{stream.Name}' is not readable"
+                    );
+                }
+
+                if (internalStream.Position is not 0)
+                {
+                    if (internalStream.CanSeek)
+                    {
+                        internalStream.Position = 0;
+                    }
+                    else
+                    {
+                        throw new TelegramException
+                        (
+                            client: this,
+                            methodName: methodName,
+                            description: $"Stream with name '{stream.Name}' is not seekable and its position is not 0"
+                        );
+                    }
+                }
+
+                if (stream.Name is { } streamName)
+                {
+                    content.Add(new StreamContent(stream.Stream), stream.ToAttach(), streamName);
+                }
+                else
+                {
+                    content.Add(new StreamContent(stream.Stream), stream.ToAttach());
+                }
+            }
+
+            var requestJson = JsonSerializer.SerializeToDocument
+            (
+                request,
+                typeof(TRequest),
+                ModelsJsonSerializerContext.Default
+            );
+
+            foreach (var requestJsonPart in requestJson.RootElement.EnumerateObject())
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                content.Add(new StringContent(requestJsonPart.Value.ToString(), Encoding.UTF8), requestJsonPart.Name);
+            }
+
+            return new HttpRequestMessage(HttpMethod.Post, methodName)
+            {
+                Content = content
+            };
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            throw new TelegramException
+            (
+                client: this,
+                methodName: methodName,
+                description: "Unknown error occurred while building request",
+                innerException: exception
+            );
+        }
+    }
+
     private async Task<HttpRequestMessage> BuildHttpRequestAsync<TRequest>
     (
-        string method,
+        string methodName,
         TRequest? request,
         CancellationToken cancellationToken
     )
     {
-        var httpRequest = new HttpRequestMessage(HttpMethod.Post, method);
-
-        if (request is null) return httpRequest;
-
-        var requestJson = JsonSerializer.Serialize
-        (
-            request,
-            typeof(TRequest),
-            ModelsJsonSerializerContext.Default
-        );
-
-        if (_configuration.ClientConfiguration.UseGzipCompression)
+        try
         {
-            await AddGzipJsonContentAsync(httpRequest, requestJson, cancellationToken);
-        }
-        else
-        {
-            AddJsonContent(httpRequest, requestJson);
-        }
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, methodName);
 
-        return httpRequest;
+            if (request is null) return httpRequest;
+
+            var requestJson = JsonSerializer.Serialize
+            (
+                request,
+                typeof(TRequest),
+                ModelsJsonSerializerContext.Default
+            );
+
+            if (_configuration.ClientConfiguration.UseGzipCompression)
+            {
+                await AddGzipJsonContentAsync(httpRequest, requestJson, cancellationToken);
+            }
+            else
+            {
+                AddJsonContent(httpRequest, requestJson);
+            }
+
+            return httpRequest;
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            throw new TelegramException
+            (
+                client: this,
+                methodName: methodName,
+                description: "Unknown error occurred while building request",
+                innerException: exception
+            );
+        }
     }
 
     private static void AddJsonContent(HttpRequestMessage httpRequest, string requestJson)

@@ -13,7 +13,7 @@ public static partial class TelegramClientExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return client.SendAsync<IReadOnlyList<TelegramUpdate>, TelegramGetUpdatesRequest>
+        return client.SendRequestAsync<IReadOnlyList<TelegramUpdate>, TelegramGetUpdatesRequest>
         (
             methodName: "getUpdates",
             request: getUpdates,
@@ -27,7 +27,7 @@ public static partial class TelegramClientExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return client.SendAsync<TelegramUser>
+        return client.SendRequestAsync<TelegramUser>
         (
             methodName: "getMe",
             cancellationToken: cancellationToken
@@ -41,7 +41,7 @@ public static partial class TelegramClientExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return client.SendAsync<TelegramMessage, TelegramSendMessageRequest>
+        return client.SendRequestAsync<TelegramMessage, TelegramSendMessageRequest>
         (
             methodName: "sendMessage",
             request: request,
@@ -56,7 +56,7 @@ public static partial class TelegramClientExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return client.SendAsync<bool, TelegramDeleteMessageRequest>
+        return client.SendRequestAsync<bool, TelegramDeleteMessageRequest>
         (
             methodName: "deleteMessage",
             request: request,
@@ -71,7 +71,7 @@ public static partial class TelegramClientExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return client.SendAsync<TelegramMessage, TelegramEditMessageTextRequest>
+        return client.SendRequestAsync<TelegramMessage, TelegramEditMessageTextRequest>
         (
             methodName: "editMessageText",
             request: request,
@@ -87,7 +87,7 @@ public static partial class TelegramClientExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return client.SendAsync<TelegramMessage, TelegramSendPhotoRequest>
+        return client.SendRequestAsync<TelegramMessage, TelegramSendPhotoRequest>
         (
             methodName: "sendPhoto",
             request: request,
@@ -104,7 +104,7 @@ public static partial class TelegramClientExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return client.SendAsync<IReadOnlyList<TelegramMessage>, TelegramSendMediaGroupRequest>
+        return client.SendRequestAsync<IReadOnlyList<TelegramMessage>, TelegramSendMediaGroupRequest>
         (
             methodName: "sendMediaGroup",
             request: request,
@@ -120,7 +120,7 @@ public static partial class TelegramClientExtensions
         CancellationToken cancellationToken = default
     )
     {
-        return client.SendAsync<TelegramFile, TelegramGetFileRequest>
+        return client.SendRequestAsync<TelegramFile, TelegramGetFileRequest>
         (
             methodName: "getFile",
             request: request,

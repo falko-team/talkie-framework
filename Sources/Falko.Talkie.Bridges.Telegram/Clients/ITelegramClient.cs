@@ -6,14 +6,14 @@ namespace Talkie.Bridges.Telegram.Clients;
 
 public interface ITelegramClient : IDisposable
 {
-    Task<TResult> SendAsync<TResult, TRequest>
+    Task<TResult> SendRequestAsync<TResult, TRequest>
     (
         string methodName,
         TRequest request,
         CancellationToken cancellationToken = default
     ) where TRequest : ITelegramRequest<TResult> where TResult : notnull;
 
-    Task<TResult> SendAsync<TResult, TRequest>
+    Task<TResult> SendRequestAsync<TResult, TRequest>
     (
         string methodName,
         TRequest request,
@@ -21,13 +21,13 @@ public interface ITelegramClient : IDisposable
         CancellationToken cancellationToken = default
     ) where TRequest : ITelegramRequest<TResult> where TResult : notnull;
 
-    Task<TResult> SendAsync<TResult>
+    Task<TResult> SendRequestAsync<TResult>
     (
         string methodName,
         CancellationToken cancellationToken = default
     ) where TResult : notnull;
 
-    Task<Stream> DownloadAsync
+    Task<Stream> DownloadRequestAsync
     (
         string file,
         CancellationToken cancellationToken = default
