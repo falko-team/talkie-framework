@@ -77,7 +77,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 sentRawMessage = await platform.Client.SendPhotoAsync
                 (
                     sendPhoto,
-                    FrozenSequence.Empty<TelegramStream>(),
+                    default,
                     cancellationToken
                 );
             }

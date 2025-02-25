@@ -18,6 +18,8 @@ public sealed class TelegramClient : ITelegramClient
 
     private const string Utf8 = "utf-8";
 
+    private const string UnknownName = "unknown";
+
     private const string ApplicationJson = "application/json";
 
     private readonly HttpClient _client;
@@ -419,14 +421,7 @@ public sealed class TelegramClient : ITelegramClient
                     }
                 }
 
-                if (stream.Name is { } streamName)
-                {
-                    content.Add(new StreamContent(stream.Stream), stream.Identifier.ToString(), streamName);
-                }
-                else
-                {
-                    content.Add(new StreamContent(stream.Stream), stream.Identifier.ToString());
-                }
+                content.Add(new StreamContent(stream.Stream), stream.Identifier.ToString(), stream.Name ?? UnknownName);
             }
 
             var requestJson = JsonSerializer.SerializeToDocument
