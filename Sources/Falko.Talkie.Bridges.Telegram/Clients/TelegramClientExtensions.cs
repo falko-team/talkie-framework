@@ -83,7 +83,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramSendPhotoRequest request,
-        FrozenSequence<TelegramStream> streams,
+        TelegramStream stream = default,
         CancellationToken cancellationToken = default
     )
     {
@@ -91,7 +91,9 @@ public static partial class TelegramClientExtensions
         (
             methodName: "sendPhoto",
             request: request,
-            streams: streams,
+            streams: stream == default
+                ? FrozenSequence.Empty<TelegramStream>()
+                : stream,
             cancellationToken: cancellationToken
         );
     }
