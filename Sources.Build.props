@@ -3,6 +3,10 @@
 
     <PropertyGroup Label="Assembly">
         <IsPackable>true</IsPackable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IncludeSource>true</IncludeSource>
+        <IncludeSymbols>true</IncludeSymbols>
+        <DebugType>portable</DebugType>
         <EnablePackageValidation>true</EnablePackageValidation>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <OutputType>Library</OutputType>
