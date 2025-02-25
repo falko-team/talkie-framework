@@ -7,7 +7,7 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <IncludeSource>true</IncludeSource>
-        <IsDeterministic>true</IsDeterministic>
+        <Deterministic>true</Deterministic>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <EnablePackageValidation>true</EnablePackageValidation>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
