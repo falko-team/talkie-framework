@@ -1,7 +1,8 @@
 <Project>
     <PropertyGroup Label="Assembly">
-        <SolutionDir Condition="$(SolutionDir) == ''">../../</SolutionDir>
         <DirectoryBuildPropsImported>true</DirectoryBuildPropsImported>
+        <SolutionDir Condition="$(SolutionDir) == ''">../../</SolutionDir>
+        <PackageOutputPath>$(SolutionDir)Packages</PackageOutputPath>
         <OutputPath>$(SolutionDir)Output/$(MSBuildProjectName)/Binaries/$(Configuration)/</OutputPath>
         <MSBuildProjectExtensionsPath>$(SolutionDir)Output/$(MSBuildProjectName)/Artifacts/</MSBuildProjectExtensionsPath>
         <BaseIntermediateOutputPath>$(SolutionDir)Output/$(MSBuildProjectName)/Artifacts/</BaseIntermediateOutputPath>
