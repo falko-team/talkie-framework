@@ -31,13 +31,13 @@ jobs:
           if [[ -d "$dir" ]]; then
             cd "$dir"
             if [[ ${{ github.event_name }} == "release" ]]; then
-              dotnet publish -c Release --no-restore -p:Version=${{ env.VERSION }} -p:PackageVersion=${{ env.VERSION }}
+              dotnet publish -c Release --no-restore -p:Version=${{ env.VERSION }} -p:PackageVersion=${{ env.VERSION }} -p:ContinuousIntegrationBuild=true
             else
-              dotnet publish -c Release --no-restore -p:Version=${{ env.VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ env.VERSION }}.${{ github.run_number }}-preview
+              dotnet publish -c Release --no-restore -p:Version=${{ env.VERSION }}.${{ github.run_number }} -p:PackageVersion=${{ env.VERSION }}.${{ github.run_number }}-preview -p:ContinuousIntegrationBuild=true
             fi
             cd -
           fi
         done
     - name: Deploying
       run: |
-        dotnet nuget push --source https://api.nuget.org/v3/index.json ./Sources/*/Packages/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget push --source https://api.nuget.org/v3/index.json ./Packages/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }}

@@ -6,6 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup Label="Dependencies">
-        <ProjectReference Include="..\Falko.Talkie.Signals.Connections\Falko.Talkie.Signals.Connections.csproj" />
+        <ProjectReference Include="..\Falko.Talkie.Core\Falko.Talkie.Core.csproj" />
     </ItemGroup>
 </Project>
