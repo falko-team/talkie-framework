@@ -5,7 +5,7 @@
         <Version>1.12.0</Version>
         <TargetFramework>net9.0</TargetFramework>
         <IsAotCompatible>true</IsAotCompatible>
-        <SolutionDir Condition="$(SolutionDir) == ''">$(MSBuildThisFileDirectory)../../</SolutionDir>
+        <SolutionDir>$(MSBuildThisFileDirectory)../../</SolutionDir>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
 
