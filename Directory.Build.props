@@ -1,5 +1,6 @@
 <Project>
     <PropertyGroup Label="Assembly">
+        <SolutionDir Condition="$(SolutionDir) == ''">$(MSBuildThisFileDirectory)../../</SolutionDir>
         <DirectoryBuildPropsImported>true</DirectoryBuildPropsImported>
         <OutputPath>$(SolutionDir)Output/$(MSBuildProjectName)/Binaries/$(Configuration)/</OutputPath>
         <MSBuildProjectExtensionsPath>$(SolutionDir)Output/$(MSBuildProjectName)/Artifacts/</MSBuildProjectExtensionsPath>
