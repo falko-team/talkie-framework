@@ -1,11 +1,11 @@
 <Project>
-    <Import Project="Directory.Build.props" Condition="$(SolutionDir) != ''" />
+    <Import Project="Directory.Build.props" Condition="$(SolutionDir) == ''" />
 
     <PropertyGroup Label="Assembly">
         <Version>1.12.0</Version>
         <TargetFramework>net9.0</TargetFramework>
         <IsAotCompatible>true</IsAotCompatible>
-        <SolutionDir>$(MSBuildThisFileDirectory)../../</SolutionDir>
+        <SolutionDir Condition="$(SolutionDir) == ''">$(MSBuildThisFileDirectory)../../</SolutionDir>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
 
