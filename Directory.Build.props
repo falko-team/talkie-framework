@@ -1,5 +1,6 @@
 <Project>
     <PropertyGroup Label="Assembly">
+        <DirectoryBuildPropsImported>true</DirectoryBuildPropsImported>
         <OutputPath>$(SolutionDir)Output/$(MSBuildProjectName)/Binaries/$(Configuration)/</OutputPath>
         <MSBuildProjectExtensionsPath>$(SolutionDir)Output/$(MSBuildProjectName)/Artifacts/</MSBuildProjectExtensionsPath>
         <BaseIntermediateOutputPath>$(SolutionDir)Output/$(MSBuildProjectName)/Artifacts/</BaseIntermediateOutputPath>

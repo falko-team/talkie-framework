@@ -1,5 +1,5 @@
 <Project>
-    <Import Project="Directory.Build.props" Condition="$(SolutionDir) == ''" />
+    <Import Project="Directory.Build.props" Condition="!$(DirectoryBuildPropsImported)" />
 
     <PropertyGroup Label="Assembly">
         <Version>1.12.0</Version>
