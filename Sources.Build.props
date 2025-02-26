@@ -8,6 +8,7 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <IncludeSource>true</IncludeSource>
         <Deterministic>true</Deterministic>
+        <NoWarn>$(NoWarn);1591</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <EnablePackageValidation>true</EnablePackageValidation>
@@ -16,7 +17,6 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Description">
-        <PackageOutputPath>$(SolutionDir)Packages</PackageOutputPath>
         <PackageIcon>Assets/Icon512.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/falko-team/talkie-framework/main/Icon512.png</PackageIconUrl>
         <PackageProjectUrl>https://github.com/falko-team/talkie-framework</PackageProjectUrl>
