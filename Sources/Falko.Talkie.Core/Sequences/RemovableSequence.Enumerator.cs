@@ -11,7 +11,7 @@ public partial class RemovableSequence<T>
 
         private Node? _current;
 
-        private T _currentValue;
+        private T _currentValue = default!;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal Enumerator(Node? first) => _current = _first = first;
