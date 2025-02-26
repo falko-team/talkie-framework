@@ -1,4 +1,6 @@
 <Project>
+    <Import Project="Core.Build.props" />
+
     <PropertyGroup Label="Assembly">
         <Version>1.12.0</Version>
         <TargetFramework>net9.0</TargetFramework>
