@@ -6,10 +6,10 @@
 .vscode/
 
 # BUILD
-[Bb]uilds/
+[Oo]utput/
+[Pp]ackages/
 [Bb]in/
 [Oo]bj/
-[Pp]ackages/
 
 # SYSTEM
 .DS_Store
