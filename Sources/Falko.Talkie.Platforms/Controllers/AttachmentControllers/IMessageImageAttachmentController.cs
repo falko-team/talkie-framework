@@ -4,7 +4,7 @@ using Talkie.Models.Messages.Attachments.Factories;
 
 namespace Talkie.Controllers.AttachmentControllers;
 
-public interface IImageAttachmentController : IController<Unit>
+public interface IMessageImageAttachmentController : IController<Unit>
 {
     IMessageImageAttachmentFactory Build(IMessageAttachmentIdentifier identifier);
 

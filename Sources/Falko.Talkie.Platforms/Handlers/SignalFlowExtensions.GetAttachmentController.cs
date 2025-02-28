@@ -7,7 +7,7 @@ namespace Talkie.Handlers;
 
 public static class SignalFlowExtensions
 {
-    public static IAttachmentController GetAttachmentController(this ISignalContext<MessagePublishedSignal> context)
+    public static IMessageAttachmentController GetAttachmentController(this ISignalContext<MessagePublishedSignal> context)
     {
         return context
             .GetMessage()
@@ -16,7 +16,7 @@ public static class SignalFlowExtensions
             .Create(Unit.Default);
     }
 
-    public static IAttachmentController GetAttachmentController(this ISignalContext<MessageExchangedSignal> context)
+    public static IMessageAttachmentController GetAttachmentController(this ISignalContext<MessageExchangedSignal> context)
     {
         return context
             .GetMessage()
