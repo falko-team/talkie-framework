@@ -3,7 +3,7 @@ using Talkie.Models.Messages.Attachments.Factories;
 
 namespace Talkie.Controllers.AttachmentControllers;
 
-public sealed class TelegramImageAttachmentController : IImageAttachmentController
+public sealed class TelegramMessageImageAttachmentController : IMessageImageAttachmentController
 {
     public IMessageImageAttachmentFactory Build(IMessageAttachmentIdentifier identifier)
     {

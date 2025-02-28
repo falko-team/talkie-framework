@@ -41,14 +41,46 @@ public sealed class TelegramMessageController(ISignalFlow flow,
 
         TelegramIncomingMessage? sentMessage;
 
-        var photoFactory = message
+        var stickerFactory = message
+            .Attachments
+            .OfType<TelegramMessageStickerAttachmentFactory>()
+            .SingleOrDefault();
+
+        if (stickerFactory is not null)
+        {
+            var sendSticker = new TelegramSendStickerRequest
+            (
+                chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier,
+                sticker: stickerFactory.Alias,
+                businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
+                disableNotification: message.Features.Any(t => t is SilenceMessageFeature),
+                replyParameters: GetReplyParameters(message)
+            );
+
+            var sentRawMessage = await platform.Client.SendStickerAsync
+            (
+                sendSticker,
+                cancellationToken
+            );
+
+            if (sentRawMessage.TryGetIncomingMessage(platform, out sentMessage) is false)
+            {
+                throw new InvalidOperationException("Failed to convert sent message.");
+            }
+
+            flow.Publish(sentMessage.ToMessagePublishedSignal(), cancellationToken);
+
+            return sentMessage;
+        }
+
+        var photoFactories = message
             .Attachments
             .OfType<TelegramMessageImageAttachmentFactory>()
             .ToFrozenSequence();
 
-        if (photoFactory.Count is 1)
+        if (photoFactories.Count is 1)
         {
-            var photoAttachmentPair = GetImageAttachment(photoFactory.First(), 0);
+            var photoAttachmentPair = GetImageAttachment(photoFactories.First(), 0);
 
             var sendPhoto = new TelegramSendPhotoRequest
             (
@@ -87,11 +119,11 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 throw new InvalidOperationException("Failed to convert sent message.");
             }
         }
-        else if (photoFactory.Count > 1)
+        else if (photoFactories.Count > 1)
         {
             var streams = new Sequence<TelegramStream>();
 
-            var firstPhotoAttachmentPair = GetImageAttachment(photoFactory.First(), 0);
+            var firstPhotoAttachmentPair = GetImageAttachment(photoFactories.First(), 0);
 
             if (firstPhotoAttachmentPair.Streamable)
             {
@@ -107,7 +139,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
 
             var photos = new Sequence<TelegramInputMediaPhoto> { firstPhoto };
 
-            foreach (var (index, photoAttachment) in photoFactory.Index().Skip(1))
+            foreach (var (index, photoAttachment) in photoFactories.Index().Skip(1))
             {
                 var photoAttachmentPair = GetImageAttachment(photoAttachment, index);
 
