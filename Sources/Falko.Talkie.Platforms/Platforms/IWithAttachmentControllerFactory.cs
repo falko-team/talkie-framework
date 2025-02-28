@@ -3,4 +3,4 @@ using Talkie.Controllers.AttachmentControllers;
 
 namespace Talkie.Platforms;
 
-public interface IWithAttachmentControllerFactory : IWithControllerFactory<IAttachmentController, Unit>;
+public interface IWithAttachmentControllerFactory : IWithControllerFactory<IMessageAttachmentController, Unit>;

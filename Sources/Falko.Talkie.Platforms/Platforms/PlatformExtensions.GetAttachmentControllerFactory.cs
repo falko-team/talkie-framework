@@ -6,11 +6,11 @@ namespace Talkie.Platforms;
 
 public static partial class PlatformExtensions
 {
-    public static IControllerFactory<IAttachmentController, Unit> GetAttachmentControllerFactory
+    public static IControllerFactory<IMessageAttachmentController, Unit> GetAttachmentControllerFactory
     (
         this IPlatform platform
     )
     {
-        return platform.GetControllerFactory<IAttachmentController, Unit>();
+        return platform.GetControllerFactory<IMessageAttachmentController, Unit>();
     }
 }
