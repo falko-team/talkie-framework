@@ -98,6 +98,21 @@ public static partial class TelegramClientExtensions
         );
     }
 
+    public static Task<TelegramMessage> SendStickerAsync
+    (
+        this ITelegramClient client,
+        TelegramSendStickerRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return client.SendRequestAsync<TelegramMessage, TelegramSendStickerRequest>
+        (
+            methodName: "sendSticker",
+            request: request,
+            cancellationToken: cancellationToken
+        );
+    }
+
     public static Task<IReadOnlyList<TelegramMessage>> SendMediaGroupAsync
     (
         this ITelegramClient client,
