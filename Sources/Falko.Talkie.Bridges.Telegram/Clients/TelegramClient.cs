@@ -268,12 +268,14 @@ public sealed class TelegramClient : ITelegramClient
         CancellationToken cancellationToken
     ) where TRequest : ITelegramRequest<TResponse> where TResponse : notnull
     {
-        using var httpRequest = await BuildHttpRequestAsync(methodName, request, cancellationToken);
+        using var httpRequestContent = await BuildHttpRequestContentAsync(methodName, request, cancellationToken);
 
         while (true)
         {
             try
             {
+                var httpRequest = BuildRequest(methodName, httpRequestContent);
+
                 return await SendCoreRequestAsync<TResponse>(methodName, httpRequest, cancellationToken);
             }
             catch (TelegramException exception)
@@ -459,7 +461,7 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    private async Task<HttpRequestMessage> BuildHttpRequestAsync<TRequest>
+    private async Task<HttpContent?> BuildHttpRequestContentAsync<TRequest>
     (
         string methodName,
         TRequest? request,
@@ -468,9 +470,7 @@ public sealed class TelegramClient : ITelegramClient
     {
         try
         {
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, methodName);
-
-            if (request is null) return httpRequest;
+            if (request is null) return null;
 
             var requestJson = JsonSerializer.Serialize
             (
@@ -481,14 +481,10 @@ public sealed class TelegramClient : ITelegramClient
 
             if (_configuration.ClientConfiguration.UseGzipCompression)
             {
-                await AddGzipJsonContentAsync(httpRequest, requestJson, cancellationToken);
-            }
-            else
-            {
-                AddJsonContent(httpRequest, requestJson);
+                return await BuildGzipJsonContentAsync(requestJson, cancellationToken);
             }
 
-            return httpRequest;
+            return BuildJsonContent(requestJson);
         }
         catch (OperationCanceledException)
         {
@@ -506,14 +502,21 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    private static void AddJsonContent(HttpRequestMessage httpRequest, string requestJson)
+    private static StringContent BuildJsonContent(string requestJson)
     {
-        httpRequest.Content = new StringContent(requestJson, Encoding.UTF8, ApplicationJson);
+        return new StringContent(requestJson, Encoding.UTF8, ApplicationJson);
     }
 
-    private async Task AddGzipJsonContentAsync
+    private static HttpRequestMessage BuildRequest(string methodName, HttpContent? content = null)
+    {
+        return new HttpRequestMessage(HttpMethod.Post, methodName)
+        {
+            Content = content
+        };
+    }
+
+    private async Task<HttpContent> BuildGzipJsonContentAsync
     (
-        HttpRequestMessage httpRequest,
         string requestJson,
         CancellationToken cancellationToken
     )
@@ -533,9 +536,11 @@ public sealed class TelegramClient : ITelegramClient
         gzipStream.Close();
         memoryStream.Close();
 
-        httpRequest.Content = new ByteArrayContent(memoryStream.ToArray());
-        httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue(ApplicationJson);
-        httpRequest.Content.Headers.ContentEncoding.Add(Gzip);
+        var content = new ByteArrayContent(memoryStream.ToArray());
+        content.Headers.ContentType = new MediaTypeHeaderValue(ApplicationJson);
+        content.Headers.ContentEncoding.Add(Gzip);
+
+        return content;
     }
 
     private async Task WaitRetryDelayAsync(TelegramException exception, CancellationToken cancellationToken)
