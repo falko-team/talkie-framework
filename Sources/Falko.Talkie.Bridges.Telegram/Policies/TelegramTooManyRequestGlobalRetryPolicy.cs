@@ -9,7 +9,7 @@ public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan defaultDela
 
     private const int IsNotDelaying = 0;
 
-    private readonly TimeSpan _defaultDelay = defaultDelay == TimeSpan.Zero
+    private readonly TimeSpan _defaultDelay = defaultDelay <= TimeSpan.Zero
         ? TimeSpan.FromSeconds(3)
         : defaultDelay;
 
