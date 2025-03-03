@@ -39,14 +39,14 @@ public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan defaultDela
                 }
 
                 await Task.Delay(currentDelay, cancellationToken);
-
-                return true;
             }
             finally
             {
                 _delaySource.SetResult(true);
                 Interlocked.Exchange(ref _delayingState, IsNotDelaying);
             }
+
+            return true;
         }
 
         await _delaySource.Task;
