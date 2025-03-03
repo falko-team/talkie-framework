@@ -1,6 +1,8 @@
 using System.Net;
 using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Configurations;
+using Talkie.Bridges.Telegram.Exceptions;
+using Talkie.Bridges.Telegram.Policies;
 using Talkie.Bridges.Telegram.Requests;
 using Talkie.Converters;
 using Talkie.Flows;
@@ -17,7 +19,10 @@ public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlat
 
     private readonly CancellationTokenSource _executingCts = new();
 
+    private readonly TelegramTooManyRequestLocalRetryPolicy _retryPolicy;
+
     private TelegramPlatform _platform = null!;
+
     private Task _executingTask = null!;
 
     internal TelegramSignalConnection(ISignalFlow flow, TelegramConfiguration configuration)
@@ -27,6 +32,11 @@ public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlat
 
         _flow = flow;
         _configuration = configuration;
+
+        _retryPolicy = new TelegramTooManyRequestLocalRetryPolicy
+        (
+            defaultDelay: configuration.ServerConfiguration.DefaultRetryDelay
+        );
     }
 
     public IPlatform? Platform => IsInitialized ? _platform : null;
@@ -37,7 +47,7 @@ public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlat
 
         var self = await GetSelfAsync(client, cancellationToken);
 
-        _platform = new TelegramPlatform(_flow, client, self);
+        _platform = new TelegramPlatform(_flow, client, self, _configuration.ServerConfiguration.DefaultRetryDelay);
 
         _executingTask = Task
             .Factory
@@ -61,7 +71,7 @@ public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlat
             {
                 var updates = await _platform
                     .Client
-                    .GetUpdatesAsync(new TelegramGetUpdatesRequest(offset), cancellationToken);
+                    .GetUpdatesAsync(new TelegramGetUpdatesRequest(offset), _retryPolicy, cancellationToken);
 
                 publisher.Handle(updates, cancellationToken);
 
@@ -87,11 +97,11 @@ public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlat
         _platform.Dispose();
     }
 
-    private static async Task<IBotProfile> GetSelfAsync(TelegramClient client, CancellationToken cancellationToken)
+    private async Task<IBotProfile> GetSelfAsync(TelegramClient client, CancellationToken cancellationToken)
     {
         try
         {
-            return (await client.GetMeAsync(cancellationToken)).ToBotProfile();
+            return (await client.GetMeAsync(cancellationToken: cancellationToken)).ToBotProfile();
         }
         catch (TelegramException exception)
         {

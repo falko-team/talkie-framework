@@ -60,7 +60,7 @@ internal static class TelegramConverters
 
         foreach (var telegramMessage in messages)
         {
-            if (telegramMessage.TryGetImageAttachment(platform.Client, out var messageImageAttachment) is false)
+            if (telegramMessage.TryGetImageAttachment(platform, out var messageImageAttachment) is false)
             {
                 continue;
             }
@@ -115,7 +115,7 @@ internal static class TelegramConverters
             return true;
         }
 
-        if (message.TryGetImageAttachment(platform.Client, out var imageAttachment))
+        if (message.TryGetImageAttachment(platform, out var imageAttachment))
         {
             var attachments = FrozenSequence.Wrap<IMessageAttachment>(imageAttachment);
 
@@ -124,7 +124,7 @@ internal static class TelegramConverters
             return true;
         }
 
-        if (message.TryGetStickerAttachment(platform.Client, out var stickerAttachment))
+        if (message.TryGetStickerAttachment(platform, out var stickerAttachment))
         {
             var attachments = FrozenSequence.Wrap<IMessageAttachment>(stickerAttachment);
 
@@ -169,7 +169,7 @@ internal static class TelegramConverters
     public static bool TryGetImageAttachment
     (
         this TelegramMessage message,
-        ITelegramClient client,
+        TelegramPlatform platform,
         [NotNullWhen(true)] out IMessageImageAttachment? attachment
     )
     {
@@ -183,7 +183,7 @@ internal static class TelegramConverters
 
         foreach (var size in photo)
         {
-            variants.Add(size.ToImageVariant(client));
+            variants.Add(size.ToImageVariant(platform));
         }
 
         var identifier = message.MediaGroupId is not null
@@ -214,7 +214,7 @@ internal static class TelegramConverters
     public static bool TryGetStickerAttachment
     (
         this TelegramMessage message,
-        ITelegramClient client,
+        TelegramPlatform platform,
         [NotNullWhen(true)] out IMessageStickerAttachment? attachment
     )
     {
@@ -226,12 +226,12 @@ internal static class TelegramConverters
 
         var variants = new Sequence<IMessageImageVariant>
         {
-            sticker.ToImageVariant(client)
+            sticker.ToImageVariant(platform)
         };
 
         if (sticker.Thumbnail is { } thumbnail)
         {
-            variants.Add(thumbnail.ToImageVariant(client));
+            variants.Add(thumbnail.ToImageVariant(platform));
         }
 
         attachment = new MessageStickerAttachment
@@ -376,16 +376,16 @@ internal static class TelegramConverters
         return style is not null;
     }
 
-    public static IMessageImageVariant ToImageVariant(this TelegramPhotoSize photo, ITelegramClient client)
+    public static IMessageImageVariant ToImageVariant(this TelegramPhotoSize photo, TelegramPlatform platform)
     {
         // TODO: Refactor 'streamFactory' to use controllers.
         return new MessageImageVariant(async cancellation =>
         {
-            var file = await client.GetFileAsync(new TelegramGetFileRequest(photo.FileId), cancellation);
+            var file = await platform.Client.GetFileAsync(new TelegramGetFileRequest(photo.FileId), platform.Policy, cancellation);
 
             if (file.FilePath is null) throw new InvalidOperationException();
 
-            return await client.DownloadRequestAsync(file.FilePath, cancellation);
+            return await platform.Client.DownloadRequestAsync(file.FilePath, platform.Policy, cancellation);
         })
         {
             Identifier = new TelegramMessageFileAttachmentIdentifier(photo.FileUniqueId, photo.FileId),

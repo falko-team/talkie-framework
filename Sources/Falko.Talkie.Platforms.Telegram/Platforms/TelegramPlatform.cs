@@ -1,5 +1,6 @@
 using System.Runtime.Serialization;
 using Talkie.Bridges.Telegram.Clients;
+using Talkie.Bridges.Telegram.Policies;
 using Talkie.Common;
 using Talkie.Controllers;
 using Talkie.Controllers.AttachmentControllers;
@@ -18,13 +19,16 @@ public sealed record TelegramPlatform : IPlatform, IWithMessageControllerFactory
     (
         ISignalFlow flow,
         ITelegramClient client,
-        IBotProfile profile
+        IBotProfile profile,
+        TimeSpan defaultRetryDelay
     )
     {
         Client = client;
         Profile = profile;
 
         _messageControllerFactory = new TelegramMessageControllerFactory(flow, this);
+
+        Policy = new TelegramTooManyRequestGlobalRetryPolicy(defaultRetryDelay);
     }
 
     public IIdentifier Identifier => Profile.Identifier;
@@ -33,6 +37,9 @@ public sealed record TelegramPlatform : IPlatform, IWithMessageControllerFactory
 
     [IgnoreDataMember]
     internal ITelegramClient Client { get; }
+
+    [IgnoreDataMember]
+    internal ITelegramRetryPolicy Policy { get; }
 
     public void Dispose()
     {

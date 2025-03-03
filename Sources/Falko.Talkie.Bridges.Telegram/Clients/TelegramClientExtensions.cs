@@ -1,4 +1,5 @@
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Policies;
 using Talkie.Bridges.Telegram.Requests;
 using Talkie.Sequences;
 
@@ -10,6 +11,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramGetUpdatesRequest getUpdates,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -17,6 +19,7 @@ public static partial class TelegramClientExtensions
         (
             methodName: "getUpdates",
             request: getUpdates,
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
@@ -24,12 +27,14 @@ public static partial class TelegramClientExtensions
     public static Task<TelegramUser> GetMeAsync
     (
         this ITelegramClient client,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
         return client.SendRequestAsync<TelegramUser>
         (
             methodName: "getMe",
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
@@ -38,6 +43,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramSendMessageRequest request,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -45,6 +51,7 @@ public static partial class TelegramClientExtensions
         (
             methodName: "sendMessage",
             request: request,
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
@@ -53,6 +60,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramDeleteMessageRequest request,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -60,6 +68,7 @@ public static partial class TelegramClientExtensions
         (
             methodName: "deleteMessage",
             request: request,
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
@@ -68,6 +77,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramEditMessageTextRequest request,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -75,6 +85,7 @@ public static partial class TelegramClientExtensions
         (
             methodName: "editMessageText",
             request: request,
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
@@ -84,6 +95,7 @@ public static partial class TelegramClientExtensions
         this ITelegramClient client,
         TelegramSendPhotoRequest request,
         TelegramStream stream = default,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -94,6 +106,7 @@ public static partial class TelegramClientExtensions
             streams: stream == default
                 ? FrozenSequence.Empty<TelegramStream>()
                 : stream,
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
@@ -102,6 +115,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramSendStickerRequest request,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -109,6 +123,7 @@ public static partial class TelegramClientExtensions
         (
             methodName: "sendSticker",
             request: request,
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
@@ -118,6 +133,7 @@ public static partial class TelegramClientExtensions
         this ITelegramClient client,
         TelegramSendMediaGroupRequest request,
         FrozenSequence<TelegramStream> streams,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -126,6 +142,7 @@ public static partial class TelegramClientExtensions
             methodName: "sendMediaGroup",
             request: request,
             streams: streams,
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
@@ -134,6 +151,7 @@ public static partial class TelegramClientExtensions
     (
         this ITelegramClient client,
         TelegramGetFileRequest request,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -141,6 +159,7 @@ public static partial class TelegramClientExtensions
         (
             methodName: "getFile",
             request: request,
+            policy: policy,
             cancellationToken: cancellationToken
         );
     }
