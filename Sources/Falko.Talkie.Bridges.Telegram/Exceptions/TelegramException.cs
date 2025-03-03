@@ -1,10 +1,11 @@
 using System.Collections.Frozen;
 using System.Net;
 using System.Text;
+using Talkie.Bridges.Telegram.Clients;
 using Talkie.Bridges.Telegram.Models;
 using Talkie.Validation;
 
-namespace Talkie.Bridges.Telegram.Clients;
+namespace Talkie.Bridges.Telegram.Exceptions;
 
 public sealed partial class TelegramException
 (

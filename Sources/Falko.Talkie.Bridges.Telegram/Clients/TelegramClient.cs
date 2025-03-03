@@ -4,7 +4,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Talkie.Bridges.Telegram.Configurations;
+using Talkie.Bridges.Telegram.Exceptions;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Bridges.Telegram.Policies;
 using Talkie.Bridges.Telegram.Requests;
 using Talkie.Bridges.Telegram.Responses;
 using Talkie.Bridges.Telegram.Serialization;
@@ -14,6 +16,8 @@ namespace Talkie.Bridges.Telegram.Clients;
 
 public sealed class TelegramClient : ITelegramClient
 {
+    private const string DownloadMethodName = "download";
+
     private const string Gzip = "gzip";
 
     private const string Utf8 = "utf-8";
@@ -36,11 +40,12 @@ public sealed class TelegramClient : ITelegramClient
         _client = BuildHttpClient(configuration);
     }
 
-    public Task<TResponse> SendRequestAsync<TResponse, TRequest>
+    public async Task<TResponse> SendRequestAsync<TResponse, TRequest>
     (
         string methodName,
         TRequest request,
-        CancellationToken cancellationToken
+        ITelegramRetryPolicy? policy = null,
+        CancellationToken cancellationToken = default
     ) where TRequest : ITelegramRequest<TResponse> where TResponse : notnull
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -48,49 +53,77 @@ public sealed class TelegramClient : ITelegramClient
 
         using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
 
-        return SendRepeatableRequestAsync<TResponse, TRequest>
+        using var httpRequestContent = await BuildRequestContentAsync
+        (
+            methodName,
+            request,
+            cancellationTokenSource.Token
+        );
+
+        return await SendRepeatableRequestAsync<TResponse>
         (
             methodName: methodName,
-            request: request,
+            httpRequestContent: httpRequestContent,
+            policy: policy,
             cancellationToken: cancellationTokenSource.Token
         );
     }
 
-    public Task<TResponse> SendRequestAsync<TResponse, TRequest>
+    public async Task<TResponse> SendRequestAsync<TResponse, TRequest>
     (
         string methodName,
         TRequest request,
         FrozenSequence<TelegramStream> streams,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     ) where TRequest : ITelegramRequest<TResponse> where TResponse : notnull
     {
         ArgumentNullException.ThrowIfNull(streams);
         ArgumentException.ThrowIfNullOrWhiteSpace(methodName);
 
-        if (streams.Count is 0)
+        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
+
+        if (streams.Count is not 0)
         {
-            return SendRequestAsync<TResponse, TRequest>
+            using var httpRequestContent = BuildRequestContent
             (
                 methodName: methodName,
                 request: request,
-                cancellationToken: cancellationToken
+                streams: streams,
+                cancellationToken: cancellationTokenSource.Token
+            );
+
+            return await SendRepeatableRequestAsync<TResponse>
+            (
+                methodName: methodName,
+                httpRequestContent: httpRequestContent,
+                policy: policy,
+                cancellationToken: cancellationTokenSource.Token
             );
         }
+        else
+        {
+            using var httpRequestContent = await BuildRequestContentAsync
+            (
+                methodName,
+                request,
+                cancellationTokenSource.Token
+            );
 
-        using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
-
-        return SendRepeatableRequestAsync<TResponse, TRequest>
-        (
-            methodName: methodName,
-            request: request,
-            streams: streams,
-            cancellationToken: cancellationTokenSource.Token
-        );
+            return await SendRepeatableRequestAsync<TResponse>
+            (
+                methodName: methodName,
+                httpRequestContent: httpRequestContent,
+                policy: policy,
+                cancellationToken: cancellationTokenSource.Token
+            );
+        }
     }
 
     public Task<TResult> SendRequestAsync<TResult>
     (
         string methodName,
+        ITelegramRetryPolicy? policy = null,
         CancellationToken cancellationToken = default
     ) where TResult : notnull
     {
@@ -98,10 +131,11 @@ public sealed class TelegramClient : ITelegramClient
 
         using var cancellationTokenSource = CreateGlobalLinkedTokenSource(cancellationToken);
 
-        return SendRepeatableRequestAsync<TResult, TelegramRequest<TResult>>
+        return SendRepeatableRequestAsync<TResult>
         (
             methodName: methodName,
-            request: null,
+            httpRequestContent: null,
+            policy: policy,
             cancellationToken: cancellationTokenSource.Token
         );
     }
@@ -109,74 +143,65 @@ public sealed class TelegramClient : ITelegramClient
     public async Task<Stream> DownloadRequestAsync
     (
         string file,
-        CancellationToken cancellationToken
+        ITelegramRetryPolicy? policy = null,
+        CancellationToken cancellationToken = default
     )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(file);
+
+        var serverConfiguration = _configuration.ServerConfiguration;
+
+        var fileHttpUri = new Uri($"https://{serverConfiguration.Domain}/file/bot{serverConfiguration.Token}/{file}");
+
+        if (policy is null)
+        {
+            return await DownloadCoreAsync(fileHttpUri, cancellationToken);
+        }
 
         while (true)
         {
             try
             {
-                return await DownloadCoreAsync(file, cancellationToken);
+                return await DownloadCoreAsync(fileHttpUri, cancellationToken);
             }
             catch (TelegramException exception)
             {
-                if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
+                try
+                {
+                    if (await policy.EvaluateAsync(exception, cancellationToken) is not true)
+                    {
+                        throw;
+                    }
+                }
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
-
-                await WaitRetryDelayAsync(exception, cancellationToken);
+                catch (TelegramException)
+                {
+                    throw;
+                }
+                catch (Exception policyException)
+                {
+                    throw new TelegramException
+                    (
+                        client: this,
+                        methodName: DownloadMethodName,
+                        description: "Unknown error occurred while evaluating policy",
+                        innerException: new AggregateException(policyException, exception)
+                    );
+                }
             }
         }
     }
 
-    private async Task<TResponse> SendCoreAsync<TResponse>
-    (
-        string methodName,
-        HttpRequestMessage request,
-        CancellationToken cancellationToken = default
-    ) where TResponse : notnull
-    {
-        try
-        {
-            using var httpResponse = await _client.SendAsync(request, cancellationToken);
-
-            return await ParseHttpResponseAsync<TResponse>(methodName, httpResponse, cancellationToken);
-        }
-        catch (TelegramException)
-        {
-            throw;
-        }
-        catch (OperationCanceledException)
-        {
-            throw;
-        }
-        catch (Exception exception)
-        {
-            throw new TelegramException
-            (
-                client: this,
-                methodName: methodName,
-                description: "Unknown error occurred while sending request",
-                innerException: exception
-            );
-        }
-    }
-
-    private async Task<Stream> DownloadCoreAsync(string file, CancellationToken cancellationToken)
+    private async Task<Stream> DownloadCoreAsync(Uri fileHttpUri, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         try
         {
-            var serverConfiguration = _configuration.ServerConfiguration;
-
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, file)
-            {
-                RequestUri = new Uri($"https://{serverConfiguration.Domain}/file/bot{serverConfiguration.Token}/{file}")
-            };
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, fileHttpUri);
 
             var httpResponse = await _client.SendAsync(httpRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
@@ -199,7 +224,7 @@ public sealed class TelegramClient : ITelegramClient
                 throw new TelegramException
                 (
                     client: this,
-                    methodName: "download",
+                    methodName: DownloadMethodName,
                     description: "Failed to deserialize response"
                 );
             }
@@ -207,7 +232,7 @@ public sealed class TelegramClient : ITelegramClient
             throw new TelegramException
             (
                 client: this,
-                methodName: "download",
+                methodName: DownloadMethodName,
                 statusCode: (HttpStatusCode?)response.ErrorCode,
                 description: response.Description,
                 parameters: response.Parameters
@@ -233,42 +258,20 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    private async Task<TResponse> SendRepeatableRequestAsync<TResponse, TRequest>
+    private async Task<TResponse> SendRepeatableRequestAsync<TResponse>
     (
         string methodName,
-        TRequest request,
-        FrozenSequence<TelegramStream> streams,
+        HttpContent? httpRequestContent,
+        ITelegramRetryPolicy? policy,
         CancellationToken cancellationToken
-    ) where TRequest : ITelegramRequest<TResponse> where TResponse : notnull
+    ) where TResponse : notnull
     {
-        using var httpRequest = BuildHttpRequest(methodName, request, streams, cancellationToken);
-
-        while (true)
+        if (policy is null)
         {
-            try
-            {
-                return await SendCoreAsync<TResponse>(methodName, httpRequest, cancellationToken);
-            }
-            catch (TelegramException exception)
-            {
-                if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
-                {
-                    throw;
-                }
+            var httpRequest = BuildRequest(methodName, httpRequestContent);
 
-                await WaitRetryDelayAsync(exception, cancellationToken);
-            }
+            return await SendCoreRequestAsync<TResponse>(methodName, httpRequest, cancellationToken);
         }
-    }
-
-    private async Task<TResponse> SendRepeatableRequestAsync<TResponse, TRequest>
-    (
-        string methodName,
-        TRequest? request,
-        CancellationToken cancellationToken
-    ) where TRequest : ITelegramRequest<TResponse> where TResponse : notnull
-    {
-        using var httpRequestContent = await BuildHttpRequestContentAsync(methodName, request, cancellationToken);
 
         while (true)
         {
@@ -280,12 +283,31 @@ public sealed class TelegramClient : ITelegramClient
             }
             catch (TelegramException exception)
             {
-                if (exception.StatusCode is null or not HttpStatusCode.TooManyRequests)
+                try
+                {
+                    if (await policy.EvaluateAsync(exception, cancellationToken) is not true)
+                    {
+                        throw;
+                    }
+                }
+                catch (OperationCanceledException)
                 {
                     throw;
                 }
-
-                await WaitRetryDelayAsync(exception, cancellationToken);
+                catch (TelegramException)
+                {
+                    throw;
+                }
+                catch (Exception policyException)
+                {
+                    throw new TelegramException
+                    (
+                        client: this,
+                        methodName: methodName,
+                        description: "Unknown error occurred while evaluating policy",
+                        innerException: new AggregateException(policyException, exception)
+                    );
+                }
             }
         }
     }
@@ -378,7 +400,7 @@ public sealed class TelegramClient : ITelegramClient
         return result;
     }
 
-    private HttpRequestMessage BuildHttpRequest<TRequest>
+    private HttpContent BuildRequestContent<TRequest>
     (
         string methodName,
         TRequest request,
@@ -394,34 +416,7 @@ public sealed class TelegramClient : ITelegramClient
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var internalStream = stream.Stream;
-
-                if (internalStream.CanRead is false)
-                {
-                    throw new TelegramException
-                    (
-                        client: this,
-                        methodName: methodName,
-                        description: $"Stream with name '{stream.Name}' is not readable"
-                    );
-                }
-
-                if (internalStream.Position is not 0)
-                {
-                    if (internalStream.CanSeek)
-                    {
-                        internalStream.Position = 0;
-                    }
-                    else
-                    {
-                        throw new TelegramException
-                        (
-                            client: this,
-                            methodName: methodName,
-                            description: $"Stream with name '{stream.Name}' is not seekable and its position is not 0"
-                        );
-                    }
-                }
+                ThrowIfStreamIsUnreadable(stream, methodName);
 
                 content.Add(new StreamContent(stream.Stream), stream.Identifier.ToString(), stream.Name ?? UnknownName);
             }
@@ -440,10 +435,7 @@ public sealed class TelegramClient : ITelegramClient
                 content.Add(new StringContent(requestJsonPart.Value.ToString(), Encoding.UTF8), requestJsonPart.Name);
             }
 
-            return new HttpRequestMessage(HttpMethod.Post, methodName)
-            {
-                Content = content
-            };
+            return content;
         }
         catch (OperationCanceledException)
         {
@@ -461,17 +453,27 @@ public sealed class TelegramClient : ITelegramClient
         }
     }
 
-    private async Task<HttpContent?> BuildHttpRequestContentAsync<TRequest>
+    private void ThrowIfStreamIsUnreadable(TelegramStream stream, string methodName)
+    {
+        if (stream.Stream.CanRead) return;
+
+        throw new TelegramException
+        (
+            client: this,
+            methodName: methodName,
+            description: $"Stream with name '{stream.Name}' is not readable"
+        );
+    }
+
+    private async Task<HttpContent> BuildRequestContentAsync<TRequest>
     (
         string methodName,
-        TRequest? request,
+        TRequest request,
         CancellationToken cancellationToken
     )
     {
         try
         {
-            if (request is null) return null;
-
             var requestJson = JsonSerializer.Serialize
             (
                 request,
@@ -507,11 +509,11 @@ public sealed class TelegramClient : ITelegramClient
         return new StringContent(requestJson, Encoding.UTF8, ApplicationJson);
     }
 
-    private static HttpRequestMessage BuildRequest(string methodName, HttpContent? content = null)
+    private static HttpRequestMessage BuildRequest(string methodName, HttpContent? httpRequestContent = null)
     {
         return new HttpRequestMessage(HttpMethod.Post, methodName)
         {
-            Content = content
+            Content = httpRequestContent
         };
     }
 
@@ -541,21 +543,6 @@ public sealed class TelegramClient : ITelegramClient
         content.Headers.ContentEncoding.Add(Gzip);
 
         return content;
-    }
-
-    private async Task WaitRetryDelayAsync(TelegramException exception, CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-
-        if (exception.Parameters.TryGetValue(TelegramException.ParameterNames.RetryAfter, out var delay)
-            && delay.TryGetNumber(out var delaySeconds))
-        {
-            await Task.Delay(TimeSpan.FromSeconds(delaySeconds), cancellationToken);
-        }
-        else
-        {
-            await Task.Delay(_configuration.ServerConfiguration.DefaultRetryDelay, cancellationToken);
-        }
     }
 
     private CancellationTokenSource CreateGlobalLinkedTokenSource(CancellationToken cancellationToken)

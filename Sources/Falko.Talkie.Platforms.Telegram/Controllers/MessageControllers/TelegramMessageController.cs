@@ -14,9 +14,12 @@ using Talkie.Sequences;
 
 namespace Talkie.Controllers.MessageControllers;
 
-public sealed class TelegramMessageController(ISignalFlow flow,
+public sealed class TelegramMessageController
+(
+    ISignalFlow flow,
     TelegramPlatform platform,
-    GlobalMessageIdentifier identifier) : IMessageController
+    GlobalMessageIdentifier identifier
+) : IMessageController
 {
     public async Task<IIncomingMessage> PublishMessageAsync
     (
@@ -60,6 +63,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             var sentRawMessage = await platform.Client.SendStickerAsync
             (
                 sendSticker,
+                platform.Policy,
                 cancellationToken
             );
 
@@ -101,6 +105,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 (
                     sendPhoto,
                     photoAttachmentPair.Stream,
+                    platform.Policy,
                     cancellationToken
                 );
             }
@@ -110,6 +115,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
                 (
                     sendPhoto,
                     default,
+                    platform.Policy,
                     cancellationToken
                 );
             }
@@ -164,6 +170,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             (
                 sendMessage,
                 streams.ToFrozenSequence(),
+                platform.Policy,
                 cancellationToken
             );
 
@@ -187,6 +194,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             var sentRawMessage = await platform.Client.SendMessageAsync
             (
                 sendMessage,
+                platform.Policy,
                 cancellationToken
             );
 
@@ -240,15 +248,21 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             throw new ArgumentException("Message id is required.");
         }
 
-        var editMessageText = new TelegramEditMessageTextRequest(
-            message.Content.Text,
+        var editMessageText = new TelegramEditMessageTextRequest
+        (
+            text: message.Content.Text,
             entities: GetEntities(message.Content.Styles),
             messageId: telegramMessageIdentifier.MessageIdentifier,
             businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
-            chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier);
+            chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier
+        );
 
-        var sentMessage = await platform.Client.EditMessageTextAsync(editMessageText,
-            cancellationToken: cancellationToken);
+        var sentMessage = await platform.Client.EditMessageTextAsync
+        (
+            request: editMessageText,
+            policy: platform.Policy,
+            cancellationToken: cancellationToken
+        );
 
         if (sentMessage.TryGetIncomingMessage(platform, out var incomingMessage) is false)
         {
@@ -287,7 +301,7 @@ public sealed class TelegramMessageController(ISignalFlow flow,
             telegramEnvironmentProfileIdentifier.ProfileIdentifier
         );
 
-        if (await platform.Client.DeleteMessageAsync(deleteMessage, cancellationToken) is false)
+        if (await platform.Client.DeleteMessageAsync(deleteMessage, platform.Policy, cancellationToken) is false)
         {
             throw new InvalidOperationException("Message was not found.");
         }
