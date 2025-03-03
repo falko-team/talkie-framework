@@ -3,15 +3,19 @@ using Talkie.Bridges.Telegram.Exceptions;
 
 namespace Talkie.Bridges.Telegram.Policies;
 
-public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan defaultDelay) : ITelegramRetryPolicy
+public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan defaultDelay = default) : ITelegramRetryPolicy
 {
     private const int IsDelaying = 1;
 
     private const int IsNotDelaying = 0;
 
-    private static TaskCompletionSource<bool> _delaySource = new();
+    private readonly TimeSpan _defaultDelay = defaultDelay == TimeSpan.Zero
+        ? TimeSpan.FromSeconds(3)
+        : defaultDelay;
 
-    private static int _delayingState = IsNotDelaying;
+    private TaskCompletionSource<bool> _delaySource = new();
+
+    private int _delayingState = IsNotDelaying;
 
     public async ValueTask<bool> EvaluateAsync(TelegramException exception, CancellationToken cancellationToken)
     {
@@ -28,14 +32,14 @@ public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan defaultDela
             {
                 _delaySource = new TaskCompletionSource<bool>();
 
-                var currentDelay = defaultDelay;
+                var currentDelay = _defaultDelay;
 
                 if (exception.Parameters.TryGetValue(TelegramException.ParameterNames.RetryAfter, out var delay)
                     && delay.TryGetNumber(out var delaySeconds))
                 {
                     currentDelay = TimeSpan.FromSeconds(delaySeconds);
 
-                    if (currentDelay < defaultDelay) currentDelay = defaultDelay;
+                    if (currentDelay < _defaultDelay) currentDelay = _defaultDelay;
                 }
 
                 await Task.Delay(currentDelay, cancellationToken);
