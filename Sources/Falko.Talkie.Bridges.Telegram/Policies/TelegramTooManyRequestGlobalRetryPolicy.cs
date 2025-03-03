@@ -55,8 +55,6 @@ public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan defaultDela
 
         await _delaySource.Task;
 
-        cancellationToken.ThrowIfCancellationRequested();
-
         return true;
     }
 }

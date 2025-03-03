@@ -3,7 +3,7 @@ using Talkie.Bridges.Telegram.Exceptions;
 
 namespace Talkie.Bridges.Telegram.Policies;
 
-public sealed class TelegramTooManyRequestLocalRetryPolicy(TimeSpan defaultDelay) : ITelegramRetryPolicy
+public sealed class TelegramTooManyRequestLocalRetryPolicy(TimeSpan defaultDelay = default) : ITelegramRetryPolicy
 {
     private readonly TimeSpan _defaultDelay = defaultDelay == TimeSpan.Zero
         ? TimeSpan.FromSeconds(3)
