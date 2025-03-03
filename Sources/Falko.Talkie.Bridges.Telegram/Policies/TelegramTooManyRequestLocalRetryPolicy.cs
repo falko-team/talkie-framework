@@ -5,6 +5,10 @@ namespace Talkie.Bridges.Telegram.Policies;
 
 public sealed class TelegramTooManyRequestLocalRetryPolicy(TimeSpan defaultDelay) : ITelegramRetryPolicy
 {
+    private readonly TimeSpan _defaultDelay = defaultDelay == TimeSpan.Zero
+        ? TimeSpan.FromSeconds(3)
+        : defaultDelay;
+
     public async ValueTask<bool> EvaluateAsync(TelegramException exception, CancellationToken cancellationToken)
     {
         if (exception.StatusCode is not HttpStatusCode.TooManyRequests)
@@ -14,14 +18,14 @@ public sealed class TelegramTooManyRequestLocalRetryPolicy(TimeSpan defaultDelay
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        var currentDelay = defaultDelay;
+        var currentDelay = _defaultDelay;
 
         if (exception.Parameters.TryGetValue(TelegramException.ParameterNames.RetryAfter, out var delay)
             && delay.TryGetNumber(out var delaySeconds))
         {
             currentDelay = TimeSpan.FromSeconds(delaySeconds);
 
-            if (currentDelay < defaultDelay) currentDelay = defaultDelay;
+            if (currentDelay < _defaultDelay) currentDelay = _defaultDelay;
         }
 
         await Task.Delay(currentDelay, cancellationToken);
