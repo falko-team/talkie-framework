@@ -2,7 +2,7 @@
     <Import Project="Directory.Build.props" Condition="!$(DirectoryBuildPropsImported)" />
 
     <PropertyGroup Label="Assembly">
-        <Version>1.12.0</Version>
+        <Version>1.13.0</Version>
         <TargetFramework>net9.0</TargetFramework>
         <IsAotCompatible>true</IsAotCompatible>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
