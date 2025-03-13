@@ -44,7 +44,7 @@ Or watch simple example of code:
 await new HostBuilder()
     .UseTalkie(configuration => configuration)
     .ConfigureServices(services => services
-        .AddIntegrationSubscriber<TelegramSubscriber>()
+        .AddIntegrationsSubscriber<TelegramSubscriber>()
         .AddBehaviorsSubscriber<HelloWorldSubscriber>())
     .RunConsoleAsync();
 
