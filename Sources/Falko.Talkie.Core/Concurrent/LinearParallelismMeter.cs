@@ -1,17 +1,21 @@
 namespace Talkie.Concurrent;
 
-public sealed class ParallelismMeter
+/// <summary>
+/// The linear parallelism meter implementation.
+/// <inheritdoc cref="IParallelismMeter"/>
+/// </summary>
+public sealed class LinearParallelismMeter : IParallelismMeter
 {
-    private int _parallels;
+    private int _currentParallels;
 
-    private long _duration;
+    private long _lastDurationTicks;
 
-    public ParallelismMeter(int minimumParallels = 1, int maximumParallels = int.MaxValue)
+    public LinearParallelismMeter(int minimumParallels = 1, int maximumParallels = int.MaxValue)
     {
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(minimumParallels, 0);
         ArgumentOutOfRangeException.ThrowIfLessThan(maximumParallels, minimumParallels);
 
-        _parallels = minimumParallels;
+        _currentParallels = minimumParallels;
 
         maximumParallels = Math.Min(maximumParallels, Environment.ProcessorCount);
 
@@ -23,22 +27,22 @@ public sealed class ParallelismMeter
 
     public int MaximumParallels { get; }
 
-    public int CurrentParallels => _parallels;
+    public int CurrentParallels => _currentParallels;
 
     public void Measure(long durationTicks, int maximumParallels = int.MaxValue)
     {
         maximumParallels = Math.Min(maximumParallels, MaximumParallels);
 
-        if (_parallels >= maximumParallels) return;
+        if (_currentParallels >= maximumParallels) return;
 
         if (durationTicks <= 0) return;
 
-        var previousDuration = _duration;
+        var previousDuration = _lastDurationTicks;
 
         if (previousDuration > 0 && previousDuration < durationTicks) return;
 
-        Interlocked.CompareExchange(ref _duration, durationTicks, previousDuration);
+        Interlocked.CompareExchange(ref _lastDurationTicks, durationTicks, previousDuration);
 
-        Interlocked.Increment(ref _parallels);
+        Interlocked.Increment(ref _currentParallels);
     }
 }
