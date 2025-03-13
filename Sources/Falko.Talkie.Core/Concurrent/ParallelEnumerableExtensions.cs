@@ -18,7 +18,7 @@ public static partial class ParallelEnumerableExtensions
     public static SequenceParallelismCoordinator<T>.Dynamic Parallelize<T>
     (
         this IReadOnlySequence<T> sequence,
-        ParallelismMeter meter
+        IParallelismMeter meter
     )
     {
         return new SequenceParallelismCoordinator<T>.Dynamic(sequence, meter);
