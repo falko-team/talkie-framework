@@ -5,6 +5,10 @@ namespace Talkie.Controllers.AttachmentControllers;
 
 public sealed class TelegramMessageStickerAttachmentController : IMessageSickerAttachmentController
 {
+    public static readonly TelegramMessageStickerAttachmentController Instance = new();
+
+    private TelegramMessageStickerAttachmentController() { }
+
     public IMessageStickerAttachmentFactory Build(IMessageAttachmentIdentifier identifier)
     {
         if (identifier is not TelegramMessageFileAttachmentIdentifier fileIdentifier)

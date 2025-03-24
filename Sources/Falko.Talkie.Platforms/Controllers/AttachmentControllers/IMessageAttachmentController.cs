@@ -7,4 +7,6 @@ public interface IMessageAttachmentController : IController<Unit>
     IMessageImageAttachmentController ImageAttachment { get; }
 
     IMessageSickerAttachmentController SickerAttachment { get; }
+
+    IMessageAudioAttachmentController AudioAttachment { get; }
 }
