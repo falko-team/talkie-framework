@@ -9,4 +9,6 @@ public sealed record TelegramMessageAudioAttachmentFactory : IMessageAudioAttach
     public string? Title { get; init; }
 
     public string? Performer { get; init; }
+
+    public TelegramMessageImageAttachmentFactory? Thumbnail { get; init; }
 }
