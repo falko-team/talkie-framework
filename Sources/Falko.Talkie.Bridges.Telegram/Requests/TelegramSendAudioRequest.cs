@@ -2,12 +2,15 @@ using Talkie.Bridges.Telegram.Models;
 
 namespace Talkie.Bridges.Telegram.Requests;
 
-public sealed class TelegramSendPhotoRequest
+public sealed class TelegramSendAudioRequest
 (
     long chatId,
-    string photo,
+    string audio,
     long? messageThreadId = null,
     string? businessConnectionId = null,
+    string? title = null,
+    string? performer = null,
+    string? thumbnail = null,
     TelegramReplyParameters? replyParameters = null,
     string? caption = null,
     IReadOnlyCollection<TelegramMessageEntity>? captionEntities = null,
@@ -16,11 +19,17 @@ public sealed class TelegramSendPhotoRequest
 {
     public long ChatId => chatId;
 
-    public string Photo => photo;
+    public string Audio => audio;
 
     public long? MessageThreadId => messageThreadId;
 
     public string? BusinessConnectionId => businessConnectionId;
+
+    public string? Title => title;
+
+    public string? Performer => performer;
+
+    public string? Thumbnail => thumbnail;
 
     public TelegramReplyParameters? ReplyParameters => replyParameters;
 

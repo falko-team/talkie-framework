@@ -111,6 +111,29 @@ public static partial class TelegramClientExtensions
         );
     }
 
+    public static Task<TelegramMessage> SendAudioAsync
+    (
+        this ITelegramClient client,
+        TelegramSendAudioRequest request,
+        TelegramStream audioStream = default,
+        TelegramStream thumbnailStream = default,
+        ITelegramRetryPolicy? policy = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return client.SendRequestAsync<TelegramMessage, TelegramSendAudioRequest>
+        (
+            methodName: "sendAudio",
+            request: request,
+            streams: FrozenSequence
+                .Wrap(audioStream, thumbnailStream)
+                .Where(stream => stream != default)
+                .ToFrozenSequence(),
+            policy: policy,
+            cancellationToken: cancellationToken
+        );
+    }
+
     public static Task<TelegramMessage> SendStickerAsync
     (
         this ITelegramClient client,
