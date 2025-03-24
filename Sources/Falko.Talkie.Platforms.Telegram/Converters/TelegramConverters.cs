@@ -249,14 +249,22 @@ internal static class TelegramConverters
         out MessageContent content
     )
     {
-        if (message.Text is not { } text)
+        if (message.Text is { } text)
         {
-            content = MessageContent.Empty;
-            return false;
+            content = new MessageContent(text, message.Entities.GetMessageTextStyles());
+
+            return true;
         }
 
-        content = new MessageContent(text, message.Entities.GetMessageTextStyles());
-        return true;
+        if (message.Caption is { } caption)
+        {
+            content = new MessageContent(caption, message.CaptionEntities.GetMessageTextStyles());
+
+            return true;
+        }
+
+        content = MessageContent.Empty;
+        return false;
     }
 
     public static bool TryGetMessageCaptionContent

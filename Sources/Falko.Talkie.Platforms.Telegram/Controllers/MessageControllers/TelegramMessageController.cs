@@ -77,6 +77,63 @@ public sealed class TelegramMessageController
             return sentMessage;
         }
 
+        var audioFactory = message
+            .Attachments
+            .OfType<TelegramMessageAudioAttachmentFactory>()
+            .SingleOrDefault();
+
+        if (audioFactory is not null)
+        {
+            var audioAttachmentPair = GetAudioAttachment(audioFactory, 0);
+
+            var sendAudio = new TelegramSendAudioRequest
+            (
+                chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier,
+                audio: audioAttachmentPair.Alias,
+                title: audioFactory.Title,
+                performer: audioFactory.Performer,
+                businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
+                caption: message.Content,
+                captionEntities: GetEntities(message.Content.Styles),
+                disableNotification: message.Features.Any(t => t is SilenceMessageFeature),
+                replyParameters: GetReplyParameters(message)
+            );
+
+            TelegramMessage sentRawMessage;
+
+            if (audioAttachmentPair.Streamable)
+            {
+                sentRawMessage = await platform.Client.SendAudioAsync
+                (
+                    sendAudio,
+                    audioAttachmentPair.Stream,
+                    default,
+                    platform.Policy,
+                    cancellationToken
+                );
+            }
+            else
+            {
+                sentRawMessage = await platform.Client.SendAudioAsync
+                (
+                    sendAudio,
+                    default,
+                    default,
+                    platform.Policy,
+                    cancellationToken
+                );
+            }
+
+            if (sentRawMessage.TryGetIncomingMessage(platform, out sentMessage) is false)
+            {
+                throw new InvalidOperationException("Failed to convert sent message.");
+            }
+
+            flow.Publish(sentMessage.ToMessagePublishedSignal(), cancellationToken);
+
+            return sentMessage;
+        }
+
         var photoFactories = message
             .Attachments
             .OfType<TelegramMessageImageAttachmentFactory>()
@@ -210,6 +267,23 @@ public sealed class TelegramMessageController
     }
 
     private (string Alias, bool Streamable, TelegramStream Stream) GetImageAttachment(TelegramMessageImageAttachmentFactory factory, int index)
+    {
+        if (factory.Stream is not null)
+        {
+            var stream = new TelegramStream(index, factory.Stream, factory.Alias);
+
+            return (stream.ToAttach(), true, stream);
+        }
+
+        if (factory.Alias is not null)
+        {
+            return (factory.Alias, false, default);
+        }
+
+        throw new ArgumentException("Image attachment factory is invalid.");
+    }
+
+    private (string Alias, bool Streamable, TelegramStream Stream) GetAudioAttachment(TelegramMessageAudioAttachmentFactory factory, int index)
     {
         if (factory.Stream is not null)
         {
