@@ -28,7 +28,8 @@ public sealed class TelegramMessageAudioAttachmentController : IMessageAudioAtta
         {
             Alias = localFileIdentifier,
             Title = metadata.Title,
-            Performer = metadata.Performer
+            Performer = metadata.Performer,
+            Thumbnail = metadata.Thumbnail as TelegramMessageImageAttachmentFactory
         };
     }
 
@@ -50,7 +51,8 @@ public sealed class TelegramMessageAudioAttachmentController : IMessageAudioAtta
         {
             Stream = fileStream,
             Title = metadata.Title,
-            Performer = metadata.Performer
+            Performer = metadata.Performer,
+            Thumbnail = metadata.Thumbnail as TelegramMessageImageAttachmentFactory
         };
     }
 
@@ -76,7 +78,8 @@ public sealed class TelegramMessageAudioAttachmentController : IMessageAudioAtta
         {
             Stream = stream,
             Title = metadata.Title,
-            Performer = metadata.Performer
+            Performer = metadata.Performer,
+            Thumbnail = metadata.Thumbnail as TelegramMessageImageAttachmentFactory
         };
     }
 }

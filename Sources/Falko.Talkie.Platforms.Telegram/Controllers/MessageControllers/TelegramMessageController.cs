@@ -86,10 +86,18 @@ public sealed class TelegramMessageController
         {
             var audioAttachmentPair = GetAudioAttachment(audioFactory, 0);
 
+            (string Alias, bool Streamable, TelegramStream Stream)? imageAttachmentPair = null;
+
+            if (audioFactory.Thumbnail is not null)
+            {
+                imageAttachmentPair = GetImageAttachment(audioFactory.Thumbnail, 1);
+            }
+
             var sendAudio = new TelegramSendAudioRequest
             (
                 chatId: telegramEnvironmentProfileIdentifier.ProfileIdentifier,
                 audio: audioAttachmentPair.Alias,
+                thumbnail: imageAttachmentPair?.Alias,
                 title: audioFactory.Title,
                 performer: audioFactory.Performer,
                 businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
@@ -99,30 +107,14 @@ public sealed class TelegramMessageController
                 replyParameters: GetReplyParameters(message)
             );
 
-            TelegramMessage sentRawMessage;
-
-            if (audioAttachmentPair.Streamable)
-            {
-                sentRawMessage = await platform.Client.SendAudioAsync
-                (
-                    sendAudio,
-                    audioAttachmentPair.Stream,
-                    default,
-                    platform.Policy,
-                    cancellationToken
-                );
-            }
-            else
-            {
-                sentRawMessage = await platform.Client.SendAudioAsync
-                (
-                    sendAudio,
-                    default,
-                    default,
-                    platform.Policy,
-                    cancellationToken
-                );
-            }
+            var sentRawMessage = await platform.Client.SendAudioAsync
+            (
+                sendAudio,
+                audioAttachmentPair.Streamable ? audioAttachmentPair.Stream : default,
+                imageAttachmentPair?.Streamable is true ? imageAttachmentPair.Value.Stream : default,
+                platform.Policy,
+                cancellationToken
+            );
 
             if (sentRawMessage.TryGetIncomingMessage(platform, out sentMessage) is false)
             {
