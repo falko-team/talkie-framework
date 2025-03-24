@@ -24,7 +24,12 @@ public sealed class TelegramMessageAudioAttachmentController : IMessageAudioAtta
 
         ArgumentException.ThrowIfNullOrWhiteSpace(localFileIdentifier, nameof(localFileIdentifier));
 
-        return new TelegramMessageAudioAttachmentFactory { Alias = localFileIdentifier };
+        return new TelegramMessageAudioAttachmentFactory
+        {
+            Alias = localFileIdentifier,
+            Title = metadata.Title,
+            Performer = metadata.Performer
+        };
     }
 
     public IMessageAudioAttachmentFactory Build
@@ -41,7 +46,12 @@ public sealed class TelegramMessageAudioAttachmentController : IMessageAudioAtta
 
         var fileStream = File.OpenRead(filePath);
 
-        return new TelegramMessageAudioAttachmentFactory { Stream = fileStream };
+        return new TelegramMessageAudioAttachmentFactory
+        {
+            Stream = fileStream,
+            Title = metadata.Title,
+            Performer = metadata.Performer
+        };
     }
 
     public IMessageAudioAttachmentFactory Build
@@ -62,6 +72,11 @@ public sealed class TelegramMessageAudioAttachmentController : IMessageAudioAtta
             throw new ArgumentException("Stream is not at the beginning.");
         }
 
-        return new TelegramMessageAudioAttachmentFactory { Stream = stream };
+        return new TelegramMessageAudioAttachmentFactory
+        {
+            Stream = stream,
+            Title = metadata.Title,
+            Performer = metadata.Performer
+        };
     }
 }
