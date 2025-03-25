@@ -10,5 +10,7 @@ public sealed record TelegramMessageAudioAttachmentFactory : IMessageAudioAttach
 
     public string? Performer { get; init; }
 
+    public TimeSpan Duration { get; init; }
+
     public TelegramMessageImageAttachmentFactory? Thumbnail { get; init; }
 }

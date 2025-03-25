@@ -10,6 +10,7 @@ public sealed class TelegramSendAudioRequest
     string? businessConnectionId = null,
     string? title = null,
     string? performer = null,
+    int? duration = null,
     string? thumbnail = null,
     TelegramReplyParameters? replyParameters = null,
     string? caption = null,
@@ -28,6 +29,8 @@ public sealed class TelegramSendAudioRequest
     public string? Title => title;
 
     public string? Performer => performer;
+
+    public long? Duration => duration;
 
     public string? Thumbnail => thumbnail;
 
