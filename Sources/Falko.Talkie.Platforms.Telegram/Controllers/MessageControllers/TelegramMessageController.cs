@@ -100,6 +100,9 @@ public sealed class TelegramMessageController
                 thumbnail: imageAttachmentPair?.Alias,
                 title: audioFactory.Title,
                 performer: audioFactory.Performer,
+                duration: audioFactory.Duration >= TimeSpan.Zero
+                    ? (int)Math.Floor(audioFactory.Duration.TotalSeconds)
+                    : null,
                 businessConnectionId: telegramMessageIdentifier.ConnectionIdentifier,
                 caption: message.Content,
                 captionEntities: GetEntities(message.Content.Styles),
