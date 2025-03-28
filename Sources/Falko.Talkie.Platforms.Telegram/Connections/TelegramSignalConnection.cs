@@ -35,7 +35,7 @@ public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlat
 
         _retryPolicy = new TelegramTooManyRequestLocalRetryPolicy
         (
-            defaultDelay: configuration.ServerConfiguration.DefaultRetryDelay
+            minimumDelay: configuration.ServerConfiguration.DefaultRetryDelay
         );
     }
 
