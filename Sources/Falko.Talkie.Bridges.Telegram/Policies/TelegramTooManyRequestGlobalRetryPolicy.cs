@@ -13,7 +13,7 @@ public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan minimumDela
         ? TimeSpan.FromSeconds(3)
         : minimumDelay;
 
-    private TaskCompletionSource<bool> _delaySource = new();
+    private TaskCompletionSource _delaySource = new();
 
     private int _delayingState = IsNotDelayingState;
 
@@ -46,11 +46,11 @@ public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan minimumDela
             {
                 var delaySource = _delaySource;
 
-                _delaySource = new TaskCompletionSource<bool>();
+                _delaySource = new TaskCompletionSource();
 
                 Interlocked.Exchange(ref _delayingState, IsNotDelayingState);
 
-                delaySource.SetResult(true);
+                delaySource.SetResult();
             }
 
             return true;
