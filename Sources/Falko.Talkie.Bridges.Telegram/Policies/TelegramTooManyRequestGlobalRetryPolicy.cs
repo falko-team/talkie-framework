@@ -5,13 +5,17 @@ namespace Talkie.Bridges.Telegram.Policies;
 
 public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan minimumDelay = default) : ITelegramRetryPolicy
 {
+    private const int IsDelayingState = 1;
+
+    private const int IsNotDelayingState = 0;
+
     private readonly TimeSpan _minimumDelay = minimumDelay <= TimeSpan.Zero
         ? TimeSpan.FromSeconds(3)
         : minimumDelay;
 
-    private TaskCompletionSource<bool> _delaySource = null!;
+    private TaskCompletionSource<bool> _delaySource = new();
 
-    private bool _delayingState;
+    private int _delayingState = IsNotDelayingState;
 
     public ValueTask<bool> EvaluateAsync(TelegramException exception, CancellationToken cancellationToken)
     {
@@ -22,12 +26,10 @@ public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan minimumDela
 
     private async ValueTask<bool> ProcessExceptionAsync(TelegramException exception, CancellationToken cancellationToken)
     {
-        if (Interlocked.CompareExchange(ref _delayingState, true, false) is false)
+        if (Interlocked.CompareExchange(ref _delayingState, IsDelayingState, IsNotDelayingState) is IsNotDelayingState)
         {
             try
             {
-                _delaySource = new TaskCompletionSource<bool>();
-
                 var currentDelay = _minimumDelay;
 
                 if (exception.Parameters.TryGetValue(TelegramException.ParameterNames.RetryAfter, out var delayValue))
@@ -42,8 +44,13 @@ public sealed class TelegramTooManyRequestGlobalRetryPolicy(TimeSpan minimumDela
             }
             finally
             {
-                _delaySource.SetResult(true);
-                Interlocked.Exchange(ref _delayingState, false);
+                var delaySource = _delaySource;
+
+                _delaySource = new TaskCompletionSource<bool>();
+
+                Interlocked.Exchange(ref _delayingState, IsNotDelayingState);
+
+                delaySource.SetResult(true);
             }
 
             return true;
