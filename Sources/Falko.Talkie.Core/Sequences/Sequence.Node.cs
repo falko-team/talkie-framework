@@ -2,7 +2,7 @@ namespace Talkie.Sequences;
 
 public partial class Sequence<T>
 {
-    public sealed partial class Node
+    public sealed class Node
     {
         public readonly T Value;
 
