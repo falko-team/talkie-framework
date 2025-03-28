@@ -3,29 +3,29 @@ using Talkie.Bridges.Telegram.Exceptions;
 
 namespace Talkie.Bridges.Telegram.Policies;
 
-public sealed class TelegramTooManyRequestLocalRetryPolicy(TimeSpan defaultDelay = default) : ITelegramRetryPolicy
+public sealed class TelegramTooManyRequestLocalRetryPolicy(TimeSpan minimumDelay = default) : ITelegramRetryPolicy
 {
-    private readonly TimeSpan _defaultDelay = defaultDelay <= TimeSpan.Zero
+    private readonly TimeSpan _minimumDelay = minimumDelay <= TimeSpan.Zero
         ? TimeSpan.FromSeconds(3)
-        : defaultDelay;
+        : minimumDelay;
 
-    public async ValueTask<bool> EvaluateAsync(TelegramException exception, CancellationToken cancellationToken)
+    public ValueTask<bool> EvaluateAsync(TelegramException exception, CancellationToken cancellationToken)
     {
-        if (exception.StatusCode is not HttpStatusCode.TooManyRequests)
+        return exception.StatusCode is HttpStatusCode.TooManyRequests
+            ? ProcessExceptionAsync(exception, cancellationToken)
+            : ValueTask.FromResult(false);
+    }
+
+    private async ValueTask<bool> ProcessExceptionAsync(TelegramException exception, CancellationToken cancellationToken)
+    {
+        var currentDelay = _minimumDelay;
+
+        if (exception.Parameters.TryGetValue(TelegramException.ParameterNames.RetryAfter, out var delayValue))
+        if (delayValue.TryGetNumber(out var delaySeconds))
         {
-            return false;
-        }
+            var exceptionDelay = TimeSpan.FromSeconds(delaySeconds);
 
-        cancellationToken.ThrowIfCancellationRequested();
-
-        var currentDelay = _defaultDelay;
-
-        if (exception.Parameters.TryGetValue(TelegramException.ParameterNames.RetryAfter, out var delay)
-            && delay.TryGetNumber(out var delaySeconds))
-        {
-            currentDelay = TimeSpan.FromSeconds(delaySeconds);
-
-            if (currentDelay < _defaultDelay) currentDelay = _defaultDelay;
+            if (exceptionDelay > _minimumDelay) currentDelay = exceptionDelay;
         }
 
         await Task.Delay(currentDelay, cancellationToken);
