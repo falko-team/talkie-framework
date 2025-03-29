@@ -5,49 +5,51 @@ namespace Talkie.Bridges.Telegram.Models;
 
 public readonly struct TextOrNumberValue
 {
-    public static readonly TextOrNumberValue Empty = default;
+    private const string EmptyString = "empty";
 
-    private readonly string? _text;
+    private readonly string? _textValue;
 
-    private readonly long _number;
+    private readonly long _numberValue;
 
-    private readonly bool _containsTextOrNumber;
+    private readonly bool _hasValue;
 
-    public TextOrNumberValue(string text)
+    public TextOrNumberValue(string textValue)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(textValue);
 
-        _text = text;
-        _containsTextOrNumber = true;
+        _textValue = textValue;
+        _hasValue = true;
     }
 
-    public TextOrNumberValue(long number)
+    public TextOrNumberValue(long numberValue)
     {
-        _number = number;
-        _containsTextOrNumber = true;
+        _numberValue = numberValue;
+        _hasValue = true;
     }
 
-    public bool IsEmpty => _containsTextOrNumber is false;
+    public static TextOrNumberValue Empty => default;
 
-    [MemberNotNullWhen(true, nameof(_text))]
-    public bool ContainsText() => _text is not null;
+    public bool IsEmpty => _hasValue is false;
 
-    [MemberNotNullWhen(false, nameof(_text))]
-    public bool ContainsNumber() => _containsTextOrNumber && _text is null;
+    [MemberNotNullWhen(true, nameof(_textValue))]
+    public bool ContainsText() => _textValue is not null;
 
-    public string GetText() => ContainsText() ? _text : throw new InvalidOperationException("Text is not set.");
+    [MemberNotNullWhen(false, nameof(_textValue))]
+    public bool ContainsNumber() => _hasValue && _textValue is null;
 
-    public long GetNumber() => ContainsNumber() ? _number : throw new InvalidOperationException("Number is not set.");
+    public string GetText() => ContainsText() ? _textValue : throw new InvalidOperationException("Text is not set.");
+
+    public long GetNumber() => ContainsNumber() ? _numberValue : throw new InvalidOperationException("Number is not set.");
 
     public bool TryGetText([MaybeNullWhen(false)] out string text)
     {
-        text = _text;
+        text = _textValue;
         return ContainsText();
     }
 
     public bool TryGetNumber(out long number)
     {
-        number = _number;
+        number = _numberValue;
         return ContainsNumber();
     }
 
@@ -63,6 +65,6 @@ public readonly struct TextOrNumberValue
             return number.ToString(CultureInfo.InvariantCulture);
         }
 
-        return nameof(Empty);
+        return EmptyString;
     }
 }

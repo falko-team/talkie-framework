@@ -2,77 +2,84 @@ using System.Collections.Frozen;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Talkie.Bridges.Telegram.Models;
+using Talkie.Sequences;
 
 namespace Talkie.Bridges.Telegram.Serialization;
 
-internal sealed class TextOrNumberValueDictionaryConverter
-    : JsonConverter<IReadOnlyDictionary<string, TextOrNumberValue>>
+internal sealed class TextOrNumberValueDictionaryConverter : JsonConverter<IReadOnlyDictionary<string, TextOrNumberValue>>
 {
-    public override IReadOnlyDictionary<string, TextOrNumberValue> Read(ref Utf8JsonReader reader,
+    public override IReadOnlyDictionary<string, TextOrNumberValue> Read
+    (
+        ref Utf8JsonReader reader,
         Type typeToConvert,
-        JsonSerializerOptions options)
+        JsonSerializerOptions options
+    )
     {
         if (reader.TokenType is not JsonTokenType.StartObject)
         {
-            throw new JsonException("Expected start object");
+            throw new JsonException("Expected start object.");
         }
 
-        var dictionary = new Dictionary<string, TextOrNumberValue>();
+        var pairs = new Sequence<KeyValuePair<string, TextOrNumberValue>>();
 
         while (reader.Read())
         {
             if (reader.TokenType is JsonTokenType.EndObject)
             {
-                return dictionary.ToFrozenDictionary();
+                return pairs.ToFrozenDictionary();
             }
 
             if (reader.TokenType is not JsonTokenType.PropertyName)
             {
-                throw new JsonException("Expected property name");
+                throw new JsonException("Expected property name.");
             }
 
-            var key = reader.GetString() ?? throw new JsonException("Key is null");
+            var key = reader.GetString() ?? throw new JsonException("Key is null.");
 
             if (reader.Read() is false)
             {
-                throw new JsonException("Expected string value");
+                throw new JsonException("Expected property value.");
             }
 
-            if (reader.TokenType is JsonTokenType.String)
+            var value = reader.TokenType switch
             {
-                var value = new TextOrNumberValue(reader.GetString() ?? throw new JsonException("Value is null"));
+                // We don't check for null here, because it will be checked in the constructor
+                JsonTokenType.String => new TextOrNumberValue(reader.GetString()!),
+                JsonTokenType.Number => new TextOrNumberValue(reader.GetInt64()),
+                _ => throw new JsonException($"Unexpected value type for property '{key}', expected string or number.")
+            };
 
-                dictionary.Add(key, value);
-            }
-            else if (reader.TokenType is JsonTokenType.Number)
-            {
-                var value = new TextOrNumberValue(reader.GetInt64());
-
-                dictionary.Add(key, value);
-            }
+            pairs.Add(new KeyValuePair<string, TextOrNumberValue>(key, value));
         }
 
-        throw new JsonException("Expected end object");
+        throw new JsonException("Expected end object.");
     }
 
-    public override void Write(Utf8JsonWriter writer,
+    public override void Write
+    (
+        Utf8JsonWriter writer,
         IReadOnlyDictionary<string, TextOrNumberValue> dictionary,
-        JsonSerializerOptions options)
+        JsonSerializerOptions options
+    )
     {
         writer.WriteStartObject();
 
-        foreach (var (key, value) in dictionary)
+        foreach (var pair in dictionary)
         {
+            var value = pair.Value;
+
             if (value.TryGetNumber(out var number))
             {
-                writer.WriteNumber(key, number);
+                writer.WriteNumber(pair.Key, number);
             }
             else if (value.TryGetText(out var text))
             {
-                writer.WriteString(key, text);
+                writer.WriteString(pair.Key, text);
             }
-
-            throw new JsonException("Value is empty");
+            else
+            {
+                throw new JsonException($"Value for key '{pair.Key}' does not contain a number or text, or empty.");
+            }
         }
 
         writer.WriteEndObject();
