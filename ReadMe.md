@@ -42,7 +42,7 @@ Or watch simple example of code:
 
 ```C#
 await new HostBuilder()
-    .UseTalkie(configuration => configuration)
+    .UseTalkie()
     .ConfigureServices(services => services
         .AddIntegrationsSubscriber<TelegramSubscriber>()
         .AddBehaviorsSubscriber<HelloWorldSubscriber>())
