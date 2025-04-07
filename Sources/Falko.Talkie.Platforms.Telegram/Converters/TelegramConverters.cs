@@ -108,13 +108,6 @@ internal static class TelegramConverters
             reply: message.ReplyToMessage
         );
 
-        if (message.TryGetMessageTextContent(out var messageContent))
-        {
-            incomingMessage = context.ToIncomingMessage(messageContent);
-
-            return true;
-        }
-
         if (message.TryGetImageAttachment(platform, out var imageAttachment))
         {
             var attachments = FrozenSequence.Wrap<IMessageAttachment>(imageAttachment);
@@ -129,6 +122,13 @@ internal static class TelegramConverters
             var attachments = FrozenSequence.Wrap<IMessageAttachment>(stickerAttachment);
 
             incomingMessage = context.ToIncomingMessage(attachments: attachments);
+
+            return true;
+        }
+
+        if (message.TryGetMessageTextContent(out var messageContent))
+        {
+            incomingMessage = context.ToIncomingMessage(messageContent);
 
             return true;
         }
