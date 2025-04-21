@@ -52,8 +52,15 @@ public static partial class SequenceExtensions
         ArgumentNullException.ThrowIfNull(sequence);
         ArgumentNullException.ThrowIfNull(action);
 
-        if (sequence.Count is 0) return;
+        var sequenceCount = sequence.Count;
 
-        foreach (var value in sequence) action(value);
+        if (sequenceCount is 0) return;
+
+        var sequenceIndexer = sequence.AsIndexer();
+
+        for (var index = 0; index < sequenceCount; index++)
+        {
+            action(sequenceIndexer[index]);
+        }
     }
 }
