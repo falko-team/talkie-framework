@@ -4,7 +4,6 @@ using Talkie.Controllers.MessageControllers;
 using Talkie.Disposables;
 using Talkie.Flows;
 using Talkie.Handlers;
-using Talkie.Models.Messages;
 using Talkie.Models.Messages.Contents;
 using Talkie.Models.Messages.Contents.Styles;
 using Talkie.Models.Messages.Outgoing;
@@ -24,11 +23,7 @@ public sealed class StartSubscriber : IBehaviorsSubscriber
     public void Subscribe(ISignalFlow flow, IRegisterOnlyDisposableScope disposables, CancellationToken cancellationToken)
     {
         flow.Subscribe<MessagePublishedSignal>(signals => signals
-            .Where(signal => signal
-                .Message
-                .GetText()
-                .TrimStart()
-                .StartsWith("/start", StringComparison.InvariantCultureIgnoreCase))
+            .OnlyCommands("/start")
             .HandleAsync((context, cancellation) => context
                 .ToMessageController()
                 .PublishMessageAsync(message => message

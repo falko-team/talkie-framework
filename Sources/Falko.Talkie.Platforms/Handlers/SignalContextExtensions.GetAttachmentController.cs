@@ -5,7 +5,7 @@ using Talkie.Signals;
 
 namespace Talkie.Handlers;
 
-public static class SignalFlowExtensions
+public static partial class SignalContextExtensions
 {
     public static IMessageAttachmentController GetAttachmentController(this ISignalContext<MessagePublishedSignal> context)
     {
