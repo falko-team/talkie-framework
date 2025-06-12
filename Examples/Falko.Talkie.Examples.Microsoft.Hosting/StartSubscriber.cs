@@ -24,10 +24,12 @@ public sealed class StartSubscriber : IBehaviorsSubscriber
     {
         flow.Subscribe<MessagePublishedSignal>(signals => signals
             .OnlyCommands("/start")
-            .HandleAsync((context, cancellation) => MessageControllerExtensions.PublishMessageAsync(context
-                        .ToMessageController(), message => OutgoingMessageBuilderExtensions.SetReply(message, context.GetMessage())
+            .HandleAsync((context, cancellation) => context
+                .ToMessageController()
+                .PublishMessageAsync(message => message
+                    .SetReply(context.GetMessage())
                     .SetContent(content => content
-                        .AddText(nameof(global::Talkie), BoldTextStyle.FromTextRange)
+                        .AddText(nameof(Talkie), BoldTextStyle.FromTextRange)
                         .AddText(" is a library for building chatbots in .NET.", ItalicTextStyle.FromTextRange, BoldTextStyle.FromTextRange)),
                     cancellation)
                 .AsValueTask())
