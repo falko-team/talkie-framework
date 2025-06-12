@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages.Attachments;
+namespace Falko.Talkie.Models.Messages.Attachments;
 
 public static partial class MessageFileAttachmentExtensions
 {

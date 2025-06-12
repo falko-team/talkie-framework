@@ -1,6 +1,6 @@
-using Talkie.Flows;
+using Falko.Talkie.Flows;
 
-namespace Talkie.Signals;
+namespace Falko.Talkie.Signals;
 
 /// <summary>
 /// Represents a <see cref="Signal"/> that can publish on a <see cref="ISignalFlow"/>.

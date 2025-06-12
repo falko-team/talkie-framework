@@ -1,8 +1,8 @@
-using Talkie.Common;
-using Talkie.Models.Identifiers;
-using Talkie.Models.Messages.Attachments.Factories;
+using Falko.Talkie.Common;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Messages.Attachments.Factories;
 
-namespace Talkie.Controllers.AttachmentControllers;
+namespace Falko.Talkie.Controllers.AttachmentControllers;
 
 public interface IMessageAudioAttachmentController : IController<Unit>
 {

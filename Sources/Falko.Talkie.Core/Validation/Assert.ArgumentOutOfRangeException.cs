@@ -1,7 +1,7 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace Talkie.Validation;
+namespace Falko.Talkie.Validation;
 
 public static partial class Assert
 {

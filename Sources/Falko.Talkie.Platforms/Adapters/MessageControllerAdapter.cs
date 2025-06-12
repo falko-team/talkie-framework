@@ -1,10 +1,10 @@
-using Talkie.Controllers.MessageControllers;
-using Talkie.Handlers;
-using Talkie.Models.Messages.Incoming;
-using Talkie.Platforms;
-using Talkie.Signals;
+using Falko.Talkie.Controllers.MessageControllers;
+using Falko.Talkie.Handlers;
+using Falko.Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Platforms;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Adapters;
+namespace Falko.Talkie.Adapters;
 
 public sealed class MessageControllerAdapter : SignalContextAdapter<MessagePublishedSignal, IMessageController>
 {

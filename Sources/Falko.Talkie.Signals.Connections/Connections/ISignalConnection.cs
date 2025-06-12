@@ -1,4 +1,4 @@
-namespace Talkie.Connections;
+namespace Falko.Talkie.Connections;
 
 /// <summary>
 /// Represents a connection to a signal flow.

@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages.Features;
+namespace Falko.Talkie.Models.Messages.Features;
 
 public sealed class SilenceMessageFeature : IMessageFeature
 {

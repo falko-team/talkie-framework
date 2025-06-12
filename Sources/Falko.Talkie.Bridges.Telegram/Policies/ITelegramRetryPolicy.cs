@@ -1,6 +1,6 @@
-using Talkie.Bridges.Telegram.Exceptions;
+using Falko.Talkie.Bridges.Telegram.Exceptions;
 
-namespace Talkie.Bridges.Telegram.Policies;
+namespace Falko.Talkie.Bridges.Telegram.Policies;
 
 public interface ITelegramRetryPolicy
 {

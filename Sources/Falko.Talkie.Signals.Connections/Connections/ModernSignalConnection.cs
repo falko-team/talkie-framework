@@ -1,4 +1,4 @@
-namespace Talkie.Connections;
+namespace Falko.Talkie.Connections;
 
 public abstract class ModernSignalConnection : ISignalConnection
 {

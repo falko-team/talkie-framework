@@ -1,8 +1,8 @@
 using System.Collections.Immutable;
+using Falko.Talkie.Sequences;
 using NUnit.Framework;
-using Talkie.Sequences;
 
-namespace Talkie.Tests.Testers;
+namespace Falko.Talkie.Tests.Testers;
 
 public class FrozenSequenceTester
 {

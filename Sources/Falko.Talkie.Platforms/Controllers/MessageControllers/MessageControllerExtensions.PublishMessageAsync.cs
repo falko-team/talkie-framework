@@ -1,8 +1,8 @@
-using Talkie.Models.Messages.Contents;
-using Talkie.Models.Messages.Incoming;
-using Talkie.Models.Messages.Outgoing;
+using Falko.Talkie.Models.Messages.Contents;
+using Falko.Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Models.Messages.Outgoing;
 
-namespace Talkie.Controllers.MessageControllers;
+namespace Falko.Talkie.Controllers.MessageControllers;
 
 public static partial class MessageControllerExtensions
 {

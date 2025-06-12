@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Diagnostics;
-using Talkie.Concurrent;
+using Falko.Talkie.Concurrent;
 
-namespace Talkie.Sequences;
+namespace Falko.Talkie.Sequences;
 
 [DebuggerDisplay("Count = {Count}")]
 public partial class Sequence<T> : ISequence<T>

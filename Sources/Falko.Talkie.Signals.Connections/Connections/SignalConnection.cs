@@ -1,6 +1,6 @@
-using Talkie.Flows;
+using Falko.Talkie.Flows;
 
-namespace Talkie.Connections;
+namespace Falko.Talkie.Connections;
 
 public abstract class SignalConnection : ISignalConnection
 {

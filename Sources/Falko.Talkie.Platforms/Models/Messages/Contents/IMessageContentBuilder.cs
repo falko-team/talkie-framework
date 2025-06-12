@@ -1,6 +1,6 @@
-using Talkie.Models.Messages.Contents.Styles;
+using Falko.Talkie.Models.Messages.Contents.Styles;
 
-namespace Talkie.Models.Messages.Contents;
+namespace Falko.Talkie.Models.Messages.Contents;
 
 public interface IMessageContentBuilder
 {

@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages.Contents.Styles;
+namespace Falko.Talkie.Models.Messages.Contents.Styles;
 
 public sealed record ItalicTextStyle(int Offset, int Length) : IMessageTextStyle
 {

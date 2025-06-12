@@ -1,4 +1,4 @@
-namespace Talkie.Bridges.Telegram.Exceptions;
+namespace Falko.Talkie.Bridges.Telegram.Exceptions;
 
 public sealed partial class TelegramException
 {

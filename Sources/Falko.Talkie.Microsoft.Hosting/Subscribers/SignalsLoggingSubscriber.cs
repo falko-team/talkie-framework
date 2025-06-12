@@ -1,9 +1,9 @@
+using Falko.Talkie.Disposables;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Pipelines.Handling;
 using Microsoft.Extensions.Logging;
-using Talkie.Disposables;
-using Talkie.Flows;
-using Talkie.Pipelines.Handling;
 
-namespace Talkie.Subscribers;
+namespace Falko.Talkie.Subscribers;
 
 internal sealed class SignalsLoggingSubscriber(ILogger<SignalsLoggingSubscriber> logger) : IBehaviorsSubscriber
 {

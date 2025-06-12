@@ -1,6 +1,6 @@
-using Talkie.Validation;
+using Falko.Talkie.Validation;
 
-namespace Talkie.Bridges.Telegram.Configurations;
+namespace Falko.Talkie.Bridges.Telegram.Configurations;
 
 public readonly struct TelegramConfiguration
 (

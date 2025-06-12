@@ -1,7 +1,7 @@
-using Talkie.Controllers;
-using Talkie.Controllers.CommandControllers;
+using Falko.Talkie.Controllers;
+using Falko.Talkie.Controllers.CommandControllers;
 
-namespace Talkie.Platforms;
+namespace Falko.Talkie.Platforms;
 
 public static partial class PlatformExtensions
 {

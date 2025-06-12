@@ -1,6 +1,6 @@
-using Talkie.Signals;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Handlers;
+namespace Falko.Talkie.Handlers;
 
 public sealed class DelegatedSignalHandler<T>(Func<ISignalContext<T>, CancellationToken, ValueTask> handleAsync)
     : SignalHandler<T> where T : Signal

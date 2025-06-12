@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
 
-namespace Talkie.Concurrent;
+namespace Falko.Talkie.Concurrent;
 
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 internal struct ParallelEnumeratorAdapter<T>(IParallelEnumerator<T> parallelEnumerator) : IEnumerator<T>

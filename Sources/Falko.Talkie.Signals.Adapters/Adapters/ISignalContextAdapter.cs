@@ -1,6 +1,6 @@
-using Talkie.Handlers;
+using Falko.Talkie.Handlers;
 
-namespace Talkie.Adapters;
+namespace Falko.Talkie.Adapters;
 
 public interface ISignalContextAdapter<out T> where T : notnull
 {

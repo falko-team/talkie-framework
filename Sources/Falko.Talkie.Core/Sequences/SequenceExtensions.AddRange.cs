@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Talkie.Sequences;
+namespace Falko.Talkie.Sequences;
 
 public static partial class SequenceExtensions
 {

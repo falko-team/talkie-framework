@@ -1,4 +1,4 @@
-namespace Talkie.Bridges.Telegram.Configurations;
+namespace Falko.Talkie.Bridges.Telegram.Configurations;
 
 public sealed record TelegramServerConfiguration(string Token)
 {

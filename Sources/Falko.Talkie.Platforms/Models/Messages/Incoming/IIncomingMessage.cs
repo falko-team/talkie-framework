@@ -1,9 +1,9 @@
-using Talkie.Models.Identifiers;
-using Talkie.Models.Messages.Attachments;
-using Talkie.Models.Profiles;
-using Talkie.Platforms;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Messages.Attachments;
+using Falko.Talkie.Models.Profiles;
+using Falko.Talkie.Platforms;
 
-namespace Talkie.Models.Messages.Incoming;
+namespace Falko.Talkie.Models.Messages.Incoming;
 
 public interface IIncomingMessage : IMessage
 {

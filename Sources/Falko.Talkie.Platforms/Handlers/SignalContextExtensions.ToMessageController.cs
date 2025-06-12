@@ -1,8 +1,8 @@
-using Talkie.Adapters;
-using Talkie.Controllers.MessageControllers;
-using Talkie.Signals;
+using Falko.Talkie.Adapters;
+using Falko.Talkie.Controllers.MessageControllers;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Handlers;
+namespace Falko.Talkie.Handlers;
 
 public static partial class SignalContextExtensions
 {

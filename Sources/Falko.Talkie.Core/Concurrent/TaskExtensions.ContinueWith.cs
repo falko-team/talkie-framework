@@ -1,4 +1,4 @@
-namespace Talkie.Concurrent;
+namespace Falko.Talkie.Concurrent;
 
 public static partial class TaskExtensions
 {

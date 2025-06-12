@@ -1,7 +1,7 @@
-using Talkie.Common;
-using Talkie.Models.Messages.Contents.Styles;
+using Falko.Talkie.Common;
+using Falko.Talkie.Models.Messages.Contents.Styles;
 
-namespace Talkie.Models.Messages.Contents;
+namespace Falko.Talkie.Models.Messages.Contents;
 
 public readonly record struct MessageContent(string Text, IReadOnlyCollection<IMessageTextStyle> Styles)
 {

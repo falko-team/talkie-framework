@@ -1,8 +1,8 @@
 using BenchmarkDotNet.Attributes;
+using Falko.Talkie.Sequences;
 using Talkie.Models;
-using Talkie.Sequences;
 
-namespace Talkie.Benchmarks.Benchmarks;
+namespace Falko.Talkie.Benchmarks.Benchmarks;
 
 public class FrozenSequenceVsListGettingByIndexBenchmark
 {

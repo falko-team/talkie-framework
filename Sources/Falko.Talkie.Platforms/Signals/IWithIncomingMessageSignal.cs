@@ -1,7 +1,7 @@
-using Talkie.Mixins;
-using Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Mixins;
+using Falko.Talkie.Models.Messages.Incoming;
 
-namespace Talkie.Signals;
+namespace Falko.Talkie.Signals;
 
 public interface IWithIncomingMessageSignal : IWith<Signal>
 {

@@ -1,15 +1,14 @@
-using Talkie.Concurrent;
-using Talkie.Controllers.MessageControllers;
-using Talkie.Disposables;
-using Talkie.Flows;
-using Talkie.Handlers;
-using Talkie.Models.Messages;
-using Talkie.Pipelines.Handling;
-using Talkie.Pipelines.Intercepting;
-using Talkie.Signals;
-using Talkie.Subscribers;
+using Falko.Talkie.Concurrent;
+using Falko.Talkie.Controllers.MessageControllers;
+using Falko.Talkie.Disposables;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Models.Messages;
+using Falko.Talkie.Pipelines.Handling;
+using Falko.Talkie.Pipelines.Intercepting;
+using Falko.Talkie.Signals;
+using Falko.Talkie.Subscribers;
 
-namespace Talkie.Examples;
+namespace Falko.Talkie.Examples;
 
 public sealed class HelloSubscriber : IBehaviorsSubscriber
 {
@@ -24,9 +23,8 @@ public sealed class HelloSubscriber : IBehaviorsSubscriber
                 .GetText()
                 .TrimStart()
                 .StartsWith("/hello", StringComparison.InvariantCultureIgnoreCase))
-            .HandleAsync((context, cancellationToken) => context
-                .ToMessageController()
-                .PublishMessageAsync("Hi!", cancellationToken)
+            .HandleAsync((context, cancellationToken) => MessageControllerExtensions.PublishMessageAsync(context
+                    .ToMessageController(), "Hi!", cancellationToken)
                 .AsValueTask()))
             .UnsubscribeWith(disposables);
     }

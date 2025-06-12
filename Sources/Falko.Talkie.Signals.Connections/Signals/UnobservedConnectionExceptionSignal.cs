@@ -1,6 +1,6 @@
-using Talkie.Connections;
+using Falko.Talkie.Connections;
 
-namespace Talkie.Signals;
+namespace Falko.Talkie.Signals;
 
 /// <summary>
 /// Represents a <see cref="Signal"/> that indicates an connection unobserved exception.

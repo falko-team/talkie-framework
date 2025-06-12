@@ -1,4 +1,4 @@
-namespace Talkie.Bridges.Telegram.Models;
+namespace Falko.Talkie.Bridges.Telegram.Models;
 
 public sealed class TelegramFile
 (

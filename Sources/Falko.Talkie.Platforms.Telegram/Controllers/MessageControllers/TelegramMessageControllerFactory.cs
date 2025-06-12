@@ -1,8 +1,8 @@
-using Talkie.Flows;
-using Talkie.Models.Identifiers;
-using Talkie.Platforms;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Platforms;
 
-namespace Talkie.Controllers.MessageControllers;
+namespace Falko.Talkie.Controllers.MessageControllers;
 
 public sealed class TelegramMessageControllerFactory
 (

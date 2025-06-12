@@ -1,6 +1,6 @@
-using Talkie.Disposables;
+using Falko.Talkie.Disposables;
 
-namespace Talkie.Flows;
+namespace Falko.Talkie.Flows;
 
 public static partial class SubscriptionExtensions
 {

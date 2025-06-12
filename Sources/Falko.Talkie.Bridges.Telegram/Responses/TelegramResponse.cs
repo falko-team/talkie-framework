@@ -1,6 +1,6 @@
-using Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Bridges.Telegram.Models;
 
-namespace Talkie.Bridges.Telegram.Responses;
+namespace Falko.Talkie.Bridges.Telegram.Responses;
 
 public sealed class TelegramResponse
 (

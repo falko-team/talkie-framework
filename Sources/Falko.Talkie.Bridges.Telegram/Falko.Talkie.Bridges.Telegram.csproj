@@ -2,7 +2,7 @@
     <Import Project="../../Sources.Build.props" />
 
     <PropertyGroup Label="Description">
-        <RootNamespace>Talkie.Bridges.Telegram</RootNamespace>
+        <RootNamespace>Falko.Talkie.Bridges.Telegram</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup Label="Dependencies">

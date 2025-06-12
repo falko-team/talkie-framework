@@ -1,6 +1,6 @@
-using Talkie.Models.Messages.Contents.Styles;
+using Falko.Talkie.Models.Messages.Contents.Styles;
 
-namespace Talkie.Models.Messages;
+namespace Falko.Talkie.Models.Messages;
 
 public static class MessageExtensions
 {

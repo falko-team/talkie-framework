@@ -1,6 +1,6 @@
-using Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Bridges.Telegram.Models;
 
-namespace Talkie.Bridges.Telegram.Requests;
+namespace Falko.Talkie.Bridges.Telegram.Requests;
 
 public sealed class TelegramSendAudioRequest
 (

@@ -1,20 +1,20 @@
 using System.Diagnostics.CodeAnalysis;
-using Talkie.Bridges.Telegram.Clients;
-using Talkie.Bridges.Telegram.Models;
-using Talkie.Bridges.Telegram.Requests;
-using Talkie.Connections;
-using Talkie.Localizations;
-using Talkie.Models.Identifiers;
-using Talkie.Models.Messages.Attachments;
-using Talkie.Models.Messages.Attachments.Variants;
-using Talkie.Models.Messages.Contents;
-using Talkie.Models.Messages.Contents.Styles;
-using Talkie.Models.Messages.Incoming;
-using Talkie.Models.Profiles;
-using Talkie.Platforms;
-using Talkie.Sequences;
+using Falko.Talkie.Bridges.Telegram.Clients;
+using Falko.Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Bridges.Telegram.Requests;
+using Falko.Talkie.Connections;
+using Falko.Talkie.Localizations;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Messages.Attachments;
+using Falko.Talkie.Models.Messages.Attachments.Variants;
+using Falko.Talkie.Models.Messages.Contents;
+using Falko.Talkie.Models.Messages.Contents.Styles;
+using Falko.Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Models.Profiles;
+using Falko.Talkie.Platforms;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Converters;
+namespace Falko.Talkie.Converters;
 
 internal static class TelegramConverters
 {

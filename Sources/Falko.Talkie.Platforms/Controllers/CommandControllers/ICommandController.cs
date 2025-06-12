@@ -1,6 +1,6 @@
-using Talkie.Models.Profiles;
+using Falko.Talkie.Models.Profiles;
 
-namespace Talkie.Controllers.CommandControllers;
+namespace Falko.Talkie.Controllers.CommandControllers;
 
 public interface ICommandController : IController<string>
 {

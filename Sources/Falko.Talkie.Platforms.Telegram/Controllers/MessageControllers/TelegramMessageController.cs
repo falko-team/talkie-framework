@@ -1,18 +1,18 @@
-using Talkie.Bridges.Telegram.Clients;
-using Talkie.Bridges.Telegram.Models;
-using Talkie.Bridges.Telegram.Requests;
-using Talkie.Converters;
-using Talkie.Flows;
-using Talkie.Models.Identifiers;
-using Talkie.Models.Messages.Attachments.Factories;
-using Talkie.Models.Messages.Contents.Styles;
-using Talkie.Models.Messages.Features;
-using Talkie.Models.Messages.Incoming;
-using Talkie.Models.Messages.Outgoing;
-using Talkie.Platforms;
-using Talkie.Sequences;
+using Falko.Talkie.Bridges.Telegram.Clients;
+using Falko.Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Bridges.Telegram.Requests;
+using Falko.Talkie.Converters;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Messages.Attachments.Factories;
+using Falko.Talkie.Models.Messages.Contents.Styles;
+using Falko.Talkie.Models.Messages.Features;
+using Falko.Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Models.Messages.Outgoing;
+using Falko.Talkie.Platforms;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Controllers.MessageControllers;
+namespace Falko.Talkie.Controllers.MessageControllers;
 
 public sealed class TelegramMessageController
 (

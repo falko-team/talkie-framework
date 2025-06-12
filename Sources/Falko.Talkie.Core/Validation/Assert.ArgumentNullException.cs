@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Talkie.Validation;
+namespace Falko.Talkie.Validation;
 
 // ReSharper disable RedundantNameQualifier
 public static partial class Assert

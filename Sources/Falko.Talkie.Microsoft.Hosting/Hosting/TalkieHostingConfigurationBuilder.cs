@@ -1,4 +1,4 @@
-namespace Talkie.Hosting;
+namespace Falko.Talkie.Hosting;
 
 public sealed class TalkieHostingConfigurationBuilder
 {

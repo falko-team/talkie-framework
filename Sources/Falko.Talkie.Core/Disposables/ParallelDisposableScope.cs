@@ -1,7 +1,7 @@
-using Talkie.Concurrent;
-using Talkie.Sequences;
+using Falko.Talkie.Concurrent;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Disposables;
+namespace Falko.Talkie.Disposables;
 
 public sealed class ParallelDisposableScope : ElementaryDisposableScope
 {

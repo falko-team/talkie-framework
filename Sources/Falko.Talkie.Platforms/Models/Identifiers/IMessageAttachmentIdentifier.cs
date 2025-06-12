@@ -1,3 +1,3 @@
-namespace Talkie.Models.Identifiers;
+namespace Falko.Talkie.Models.Identifiers;
 
 public interface IMessageAttachmentIdentifier : IIdentifier;

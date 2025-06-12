@@ -1,4 +1,4 @@
-namespace Talkie.Concurrent;
+namespace Falko.Talkie.Concurrent;
 
 /// <summary>
 /// The linear parallelism meter implementation.

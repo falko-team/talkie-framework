@@ -1,7 +1,7 @@
-using Talkie.Flows;
-using Talkie.Signals;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Pipelines.Handling;
+namespace Falko.Talkie.Pipelines.Handling;
 
 public interface ISignalHandlingPipeline
 {

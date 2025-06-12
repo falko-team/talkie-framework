@@ -1,6 +1,6 @@
-using Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Identifiers;
 
-namespace Talkie.Platforms;
+namespace Falko.Talkie.Platforms;
 
 public interface IPlatform
 {

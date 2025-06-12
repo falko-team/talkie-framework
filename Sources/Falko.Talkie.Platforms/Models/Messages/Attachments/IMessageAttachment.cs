@@ -1,6 +1,6 @@
-using Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Identifiers;
 
-namespace Talkie.Models.Messages.Attachments;
+namespace Falko.Talkie.Models.Messages.Attachments;
 
 public interface IMessageAttachment
 {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Talkie.Sequences;
+namespace Falko.Talkie.Sequences;
 
 public partial class FrozenSequence<T>
 {

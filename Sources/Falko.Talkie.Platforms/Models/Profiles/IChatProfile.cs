@@ -1,4 +1,4 @@
-namespace Talkie.Models.Profiles;
+namespace Falko.Talkie.Models.Profiles;
 
 public interface IChatProfile : IProfile
 {

@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace Talkie.Bridges.Telegram.Models;
+namespace Falko.Talkie.Bridges.Telegram.Models;
 
 public readonly struct TextOrNumberValue
 {

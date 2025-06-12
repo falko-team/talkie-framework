@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages.Attachments.Variants;
+namespace Falko.Talkie.Models.Messages.Attachments.Variants;
 
 public readonly partial struct Area : IComparable<Area>, IComparable, IEquatable<Area>
 {

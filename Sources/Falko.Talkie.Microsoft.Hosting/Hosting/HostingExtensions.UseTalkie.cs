@@ -1,9 +1,9 @@
+using Falko.Talkie.Flows;
+using Falko.Talkie.Subscribers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Talkie.Flows;
-using Talkie.Subscribers;
 
-namespace Talkie.Hosting;
+namespace Falko.Talkie.Hosting;
 
 public static partial class HostingExtensions
 {

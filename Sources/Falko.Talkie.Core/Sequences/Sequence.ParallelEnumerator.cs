@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using Talkie.Concurrent;
+using Falko.Talkie.Concurrent;
 
-namespace Talkie.Sequences;
+namespace Falko.Talkie.Sequences;
 
 public partial class Sequence<T>
 {

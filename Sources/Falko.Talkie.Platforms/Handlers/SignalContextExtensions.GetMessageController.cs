@@ -1,10 +1,10 @@
-using Talkie.Controllers.MessageControllers;
-using Talkie.Models.Identifiers;
-using Talkie.Models.Messages.Incoming;
-using Talkie.Platforms;
-using Talkie.Signals;
+using Falko.Talkie.Controllers.MessageControllers;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Platforms;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Handlers;
+namespace Falko.Talkie.Handlers;
 
 public static partial class SignalContextExtensions
 {

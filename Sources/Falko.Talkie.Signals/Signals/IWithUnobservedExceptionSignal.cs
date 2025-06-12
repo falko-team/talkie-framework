@@ -1,6 +1,6 @@
-using Talkie.Mixins;
+using Falko.Talkie.Mixins;
 
-namespace Talkie.Signals;
+namespace Falko.Talkie.Signals;
 
 /// <summary>
 /// The mixin for <see cref="Signal"/> that have an unobserved exception.

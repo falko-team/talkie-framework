@@ -1,6 +1,6 @@
-using Talkie.Signals;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Subscribers;
+namespace Falko.Talkie.Subscribers;
 
 internal static class UnobservedExceptionSignalsExtensions
 {

@@ -1,4 +1,4 @@
-namespace Talkie.Sequences;
+namespace Falko.Talkie.Sequences;
 
 /// <summary>
 /// Represents a thread-safe, immutable sequence of elements.

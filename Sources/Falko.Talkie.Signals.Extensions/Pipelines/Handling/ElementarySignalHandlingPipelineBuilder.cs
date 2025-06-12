@@ -1,8 +1,8 @@
-using Talkie.Handlers;
-using Talkie.Pipelines.Intercepting;
-using Talkie.Sequences;
+using Falko.Talkie.Handlers;
+using Falko.Talkie.Pipelines.Intercepting;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Pipelines.Handling;
+namespace Falko.Talkie.Pipelines.Handling;
 
 public abstract class ElementarySignalHandlingPipelineBuilder : IReadOnlySignalHandlingPipelineBuilder
 {

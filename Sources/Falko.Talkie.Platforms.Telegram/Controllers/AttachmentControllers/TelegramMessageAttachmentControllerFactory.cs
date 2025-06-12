@@ -1,6 +1,6 @@
-using Talkie.Common;
+using Falko.Talkie.Common;
 
-namespace Talkie.Controllers.AttachmentControllers;
+namespace Falko.Talkie.Controllers.AttachmentControllers;
 
 public sealed class TelegramMessageAttachmentControllerFactory : IControllerFactory<IMessageAttachmentController, Unit>
 {

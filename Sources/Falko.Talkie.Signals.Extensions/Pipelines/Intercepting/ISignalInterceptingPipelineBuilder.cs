@@ -1,4 +1,4 @@
-namespace Talkie.Pipelines.Intercepting;
+namespace Falko.Talkie.Pipelines.Intercepting;
 
 public interface ISignalInterceptingPipelineBuilder : IReadOnlySignalInterceptingPipelineBuilder
 {

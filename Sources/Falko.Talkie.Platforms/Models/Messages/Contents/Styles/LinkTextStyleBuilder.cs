@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages.Contents.Styles;
+namespace Falko.Talkie.Models.Messages.Contents.Styles;
 
 public readonly struct LinkTextStyleBuilder(string link)
 {

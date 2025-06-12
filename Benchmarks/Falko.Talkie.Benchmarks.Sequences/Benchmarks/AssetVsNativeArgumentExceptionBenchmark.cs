@@ -1,9 +1,9 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
+using Falko.Talkie.Validation;
 using Talkie.Models;
-using Talkie.Validation;
 
-namespace Talkie.Benchmarks.Benchmarks;
+namespace Falko.Talkie.Benchmarks.Benchmarks;
 
 [SimpleJob(RunStrategy.Throughput)]
 public class AssetVsNativeArgumentExceptionBenchmark

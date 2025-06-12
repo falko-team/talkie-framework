@@ -1,10 +1,10 @@
 using System.Collections.Frozen;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Talkie.Bridges.Telegram.Models;
-using Talkie.Sequences;
+using Falko.Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Bridges.Telegram.Serialization;
+namespace Falko.Talkie.Bridges.Telegram.Serialization;
 
 internal sealed class TextOrNumberValueDictionaryConverter : JsonConverter<IReadOnlyDictionary<string, TextOrNumberValue>>
 {
