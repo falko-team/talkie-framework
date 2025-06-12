@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace Talkie.Pipelines.Intercepting;
+namespace Falko.Talkie.Pipelines.Intercepting;
 
 public sealed class SignalInterceptingPipelineBuilder(ImmutableStack<ISignalInterceptorFactory> interceptorFactories)
     : ElementarySignalInterceptingPipelineBuilder(interceptorFactories), ISignalInterceptingPipelineBuilder

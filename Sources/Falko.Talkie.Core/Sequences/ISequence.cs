@@ -1,4 +1,4 @@
-namespace Talkie.Sequences;
+namespace Falko.Talkie.Sequences;
 
 public interface ISequence<T> : IReadOnlySequence<T>
 {

@@ -1,4 +1,4 @@
-namespace Talkie.Bridges.Telegram.Requests;
+namespace Falko.Talkie.Bridges.Telegram.Requests;
 
 public sealed class TelegramDeleteMessageRequest
 (

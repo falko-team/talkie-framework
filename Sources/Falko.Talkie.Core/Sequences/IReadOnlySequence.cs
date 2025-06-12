@@ -1,5 +1,5 @@
-using Talkie.Concurrent;
+using Falko.Talkie.Concurrent;
 
-namespace Talkie.Sequences;
+namespace Falko.Talkie.Sequences;
 
 public interface IReadOnlySequence<T> : IReadOnlyCollection<T>, IParallelEnumerable<T>;

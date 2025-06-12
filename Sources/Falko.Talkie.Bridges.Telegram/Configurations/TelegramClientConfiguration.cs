@@ -1,7 +1,7 @@
 using System.IO.Compression;
-using Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Bridges.Telegram.Models;
 
-namespace Talkie.Bridges.Telegram.Configurations;
+namespace Falko.Talkie.Bridges.Telegram.Configurations;
 
 public sealed record TelegramClientConfiguration
 {

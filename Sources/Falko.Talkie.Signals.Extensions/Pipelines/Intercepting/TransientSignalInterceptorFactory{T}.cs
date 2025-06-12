@@ -1,7 +1,7 @@
-using Talkie.Interceptors;
-using Talkie.Signals;
+using Falko.Talkie.Interceptors;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Pipelines.Intercepting;
+namespace Falko.Talkie.Pipelines.Intercepting;
 
 public sealed class TransientSignalInterceptorFactory<T> : ISignalInterceptorFactory<T> where T : Signal
 {

@@ -1,4 +1,4 @@
-namespace Talkie.Concurrent;
+namespace Falko.Talkie.Concurrent;
 
 /// <summary>
 /// Represents a parallel enumerable. This enumerable can be enumerated in parallel.

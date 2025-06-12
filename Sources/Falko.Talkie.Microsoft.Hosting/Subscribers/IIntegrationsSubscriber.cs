@@ -1,7 +1,7 @@
-using Talkie.Disposables;
-using Talkie.Flows;
+using Falko.Talkie.Disposables;
+using Falko.Talkie.Flows;
 
-namespace Talkie.Subscribers;
+namespace Falko.Talkie.Subscribers;
 
 public interface IIntegrationsSubscriber
 {

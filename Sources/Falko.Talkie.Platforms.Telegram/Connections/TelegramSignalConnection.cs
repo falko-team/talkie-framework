@@ -1,15 +1,15 @@
 using System.Net;
-using Talkie.Bridges.Telegram.Clients;
-using Talkie.Bridges.Telegram.Configurations;
-using Talkie.Bridges.Telegram.Exceptions;
-using Talkie.Bridges.Telegram.Policies;
-using Talkie.Bridges.Telegram.Requests;
-using Talkie.Converters;
-using Talkie.Flows;
-using Talkie.Models.Profiles;
-using Talkie.Platforms;
+using Falko.Talkie.Bridges.Telegram.Clients;
+using Falko.Talkie.Bridges.Telegram.Configurations;
+using Falko.Talkie.Bridges.Telegram.Exceptions;
+using Falko.Talkie.Bridges.Telegram.Policies;
+using Falko.Talkie.Bridges.Telegram.Requests;
+using Falko.Talkie.Converters;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Models.Profiles;
+using Falko.Talkie.Platforms;
 
-namespace Talkie.Connections;
+namespace Falko.Talkie.Connections;
 
 public sealed class TelegramSignalConnection : ModernSignalConnection, IWithPlatformSignalConnection
 {

@@ -1,8 +1,8 @@
-using Talkie.Bridges.Telegram.Configurations;
-using Talkie.Connections;
-using Talkie.Connectors;
+using Falko.Talkie.Bridges.Telegram.Configurations;
+using Falko.Talkie.Connections;
+using Falko.Talkie.Connectors;
 
-namespace Talkie.Flows;
+namespace Falko.Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {

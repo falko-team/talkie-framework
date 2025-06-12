@@ -1,6 +1,6 @@
-using Talkie.Sequences;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Concurrent;
+namespace Falko.Talkie.Concurrent;
 
 public static partial class SequenceParallelismCoordinator<T>
 {

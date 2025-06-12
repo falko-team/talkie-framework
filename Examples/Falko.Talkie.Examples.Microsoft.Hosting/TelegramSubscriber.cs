@@ -1,9 +1,9 @@
+using Falko.Talkie.Disposables;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Subscribers;
 using Microsoft.Extensions.Configuration;
-using Talkie.Disposables;
-using Talkie.Flows;
-using Talkie.Subscribers;
 
-namespace Talkie.Examples;
+namespace Falko.Talkie.Examples;
 
 public sealed class TelegramSubscriber(IConfiguration configuration) : IIntegrationsSubscriber
 {

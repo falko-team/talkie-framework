@@ -1,6 +1,6 @@
-using Talkie.Exceptions;
+using Falko.Talkie.Exceptions;
 
-namespace Talkie.Signals;
+namespace Falko.Talkie.Signals;
 
 /// <summary>
 /// Represents a <see cref="Signal"/> that indicates an unobserved exception.

@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
-using Talkie.Interceptors;
-using Talkie.Sequences;
+using Falko.Talkie.Interceptors;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Pipelines.Intercepting;
+namespace Falko.Talkie.Pipelines.Intercepting;
 
 public static class SignalInterceptingPipelineFactory
 {

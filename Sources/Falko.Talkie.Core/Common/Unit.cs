@@ -1,4 +1,4 @@
-namespace Talkie.Common;
+namespace Falko.Talkie.Common;
 
 public readonly record struct Unit
 {

@@ -1,7 +1,7 @@
-using Talkie.Mixins;
-using Talkie.Platforms;
+using Falko.Talkie.Mixins;
+using Falko.Talkie.Platforms;
 
-namespace Talkie.Connections;
+namespace Falko.Talkie.Connections;
 
 /// <summary>
 /// Represents a <see cref="ISignalConnection"/> mixin that provides a <see cref="IPlatform"/> property.

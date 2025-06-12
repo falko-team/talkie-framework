@@ -1,6 +1,6 @@
-using Talkie.Flows;
+using Falko.Talkie.Flows;
 
-namespace Talkie.Exceptions;
+namespace Falko.Talkie.Exceptions;
 
 public sealed class SignalPublishingException(ISignalFlow flow, Exception innerException)
     : Exception(innerException.Message, innerException)

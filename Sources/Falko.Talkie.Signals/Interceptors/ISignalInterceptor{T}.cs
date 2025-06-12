@@ -1,6 +1,6 @@
-using Talkie.Signals;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Interceptors;
+namespace Falko.Talkie.Interceptors;
 
 public interface ISignalInterceptor<in T> : ISignalInterceptor where T : Signal
 {

@@ -1,6 +1,6 @@
-using Talkie.Signals;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Interceptors;
+namespace Falko.Talkie.Interceptors;
 
 internal sealed class SkipWhileSignalInterceptor<T>(Func<T, CancellationToken, bool> @while)
     : SignalInterceptor<T> where T : Signal

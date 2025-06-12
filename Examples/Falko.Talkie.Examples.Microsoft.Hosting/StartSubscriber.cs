@@ -1,19 +1,19 @@
-using Talkie.Concurrent;
-using Talkie.Controllers.AttachmentControllers;
-using Talkie.Controllers.MessageControllers;
-using Talkie.Disposables;
-using Talkie.Flows;
-using Talkie.Handlers;
-using Talkie.Models.Messages.Contents;
-using Talkie.Models.Messages.Contents.Styles;
-using Talkie.Models.Messages.Outgoing;
-using Talkie.Models.Profiles;
-using Talkie.Pipelines.Handling;
-using Talkie.Pipelines.Intercepting;
-using Talkie.Signals;
-using Talkie.Subscribers;
+using Falko.Talkie.Concurrent;
+using Falko.Talkie.Controllers.AttachmentControllers;
+using Falko.Talkie.Controllers.MessageControllers;
+using Falko.Talkie.Disposables;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Handlers;
+using Falko.Talkie.Models.Messages.Contents;
+using Falko.Talkie.Models.Messages.Contents.Styles;
+using Falko.Talkie.Models.Messages.Outgoing;
+using Falko.Talkie.Models.Profiles;
+using Falko.Talkie.Pipelines.Handling;
+using Falko.Talkie.Pipelines.Intercepting;
+using Falko.Talkie.Signals;
+using Falko.Talkie.Subscribers;
 
-namespace Talkie.Examples;
+namespace Falko.Talkie.Examples;
 
 public sealed class StartSubscriber : IBehaviorsSubscriber
 {
@@ -24,12 +24,10 @@ public sealed class StartSubscriber : IBehaviorsSubscriber
     {
         flow.Subscribe<MessagePublishedSignal>(signals => signals
             .OnlyCommands("/start")
-            .HandleAsync((context, cancellation) => context
-                .ToMessageController()
-                .PublishMessageAsync(message => message
-                    .SetReply(context.GetMessage())
+            .HandleAsync((context, cancellation) => MessageControllerExtensions.PublishMessageAsync(context
+                        .ToMessageController(), message => OutgoingMessageBuilderExtensions.SetReply(message, context.GetMessage())
                     .SetContent(content => content
-                        .AddText(nameof(Talkie), BoldTextStyle.FromTextRange)
+                        .AddText(nameof(global::Talkie), BoldTextStyle.FromTextRange)
                         .AddText(" is a library for building chatbots in .NET.", ItalicTextStyle.FromTextRange, BoldTextStyle.FromTextRange)),
                     cancellation)
                 .AsValueTask())

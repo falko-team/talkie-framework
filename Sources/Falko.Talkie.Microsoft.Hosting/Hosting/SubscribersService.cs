@@ -1,12 +1,12 @@
+using Falko.Talkie.Concurrent;
+using Falko.Talkie.Disposables;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Sequences;
+using Falko.Talkie.Subscribers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Talkie.Concurrent;
-using Talkie.Disposables;
-using Talkie.Flows;
-using Talkie.Sequences;
-using Talkie.Subscribers;
 
-namespace Talkie.Hosting;
+namespace Falko.Talkie.Hosting;
 
 internal sealed class SubscribersService
 (

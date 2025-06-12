@@ -1,6 +1,6 @@
-using Talkie.Adapters;
+using Falko.Talkie.Adapters;
 
-namespace Talkie.Handlers;
+namespace Falko.Talkie.Handlers;
 
 public static partial class SignalContextExtensions
 {

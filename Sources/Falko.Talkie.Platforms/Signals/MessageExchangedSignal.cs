@@ -1,5 +1,5 @@
-using Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Models.Messages.Incoming;
 
-namespace Talkie.Signals;
+namespace Falko.Talkie.Signals;
 
 public sealed record MessageExchangedSignal(IIncomingMessage Message) : Signal, IWithIncomingMessageSignal;

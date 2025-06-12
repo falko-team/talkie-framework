@@ -1,8 +1,8 @@
-using Talkie.Models.Messages;
-using Talkie.Platforms;
-using Talkie.Signals;
+using Falko.Talkie.Models.Messages;
+using Falko.Talkie.Platforms;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Pipelines.Intercepting;
+namespace Falko.Talkie.Pipelines.Intercepting;
 
 public static partial class SignalInterceptingPipelineBuilderExtensions
 {

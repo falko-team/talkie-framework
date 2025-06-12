@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Falko.Talkie.Examples;
+using Falko.Talkie.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Talkie.Examples;
-using Talkie.Hosting;
 
 // Please set 'Telegram:Token' environment variable before running 💚💚💚
 

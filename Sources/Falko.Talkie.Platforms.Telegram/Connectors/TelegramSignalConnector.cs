@@ -1,8 +1,8 @@
-using Talkie.Bridges.Telegram.Configurations;
-using Talkie.Connections;
-using Talkie.Flows;
+using Falko.Talkie.Bridges.Telegram.Configurations;
+using Falko.Talkie.Connections;
+using Falko.Talkie.Flows;
 
-namespace Talkie.Connectors;
+namespace Falko.Talkie.Connectors;
 
 public sealed class TelegramSignalConnector(TelegramConfiguration configuration) : ISignalConnector
 {

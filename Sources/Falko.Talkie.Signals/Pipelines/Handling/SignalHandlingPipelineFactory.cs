@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
-using Talkie.Handlers;
-using Talkie.Pipelines.Intercepting;
+using Falko.Talkie.Handlers;
+using Falko.Talkie.Pipelines.Intercepting;
 
-namespace Talkie.Pipelines.Handling;
+namespace Falko.Talkie.Pipelines.Handling;
 
 public static class SignalHandlingPipelineFactory
 {

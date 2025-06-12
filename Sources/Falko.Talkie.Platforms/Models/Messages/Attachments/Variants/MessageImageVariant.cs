@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
-using Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Identifiers;
 
-namespace Talkie.Models.Messages.Attachments.Variants;
+namespace Falko.Talkie.Models.Messages.Attachments.Variants;
 
 public sealed record MessageImageVariant : IMessageImageVariant
 {

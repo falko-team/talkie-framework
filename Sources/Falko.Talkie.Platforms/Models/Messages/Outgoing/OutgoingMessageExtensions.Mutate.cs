@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages.Outgoing;
+namespace Falko.Talkie.Models.Messages.Outgoing;
 
 public static partial class OutgoingMessageExtensions
 {

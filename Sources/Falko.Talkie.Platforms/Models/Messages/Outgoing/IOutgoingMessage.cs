@@ -1,7 +1,7 @@
-using Talkie.Models.Identifiers;
-using Talkie.Models.Messages.Attachments.Factories;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Messages.Attachments.Factories;
 
-namespace Talkie.Models.Messages.Outgoing;
+namespace Falko.Talkie.Models.Messages.Outgoing;
 
 public interface IOutgoingMessage : IMessage
 {

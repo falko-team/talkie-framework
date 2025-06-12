@@ -1,8 +1,8 @@
 using System.Text;
-using Talkie.Models.Messages.Contents.Styles;
-using Talkie.Sequences;
+using Falko.Talkie.Models.Messages.Contents.Styles;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Models.Messages.Contents;
+namespace Falko.Talkie.Models.Messages.Contents;
 
 public sealed class MessageContentBuilder : IMessageContentBuilder
 {

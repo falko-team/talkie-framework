@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Language">
-        <RootNamespace>Talkie</RootNamespace>
+        <RootNamespace>Falko.Talkie</RootNamespace>
         <LangVersion>13</LangVersion>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>

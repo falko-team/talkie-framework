@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Running;
-using Talkie.Benchmarks.Benchmarks;
+using Falko.Talkie.Benchmarks.Benchmarks;
 
 BenchmarkRunner.Run<AssetVsNativeArgumentExceptionBenchmark>();
 BenchmarkRunner.Run<FieldVsPropertyInstanceGettingBenchmark>();

@@ -1,6 +1,6 @@
-using Talkie.Signals;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Interceptors;
+namespace Falko.Talkie.Interceptors;
 
 internal sealed class WhereSignalInterceptor<T>(Func<T, CancellationToken, bool> where)
     : SignalInterceptor<T> where T : Signal

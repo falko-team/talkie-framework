@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Talkie.Controllers.MessageControllers;
+namespace Falko.Talkie.Controllers.MessageControllers;
 
 public static partial class TelegramMessageControllerExtensions
 {

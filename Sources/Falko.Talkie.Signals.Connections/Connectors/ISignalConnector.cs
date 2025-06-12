@@ -1,7 +1,7 @@
-using Talkie.Connections;
-using Talkie.Flows;
+using Falko.Talkie.Connections;
+using Falko.Talkie.Flows;
 
-namespace Talkie.Connectors;
+namespace Falko.Talkie.Connectors;
 
 public interface ISignalConnector
 {

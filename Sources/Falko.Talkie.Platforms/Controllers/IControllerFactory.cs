@@ -1,4 +1,4 @@
-namespace Talkie.Controllers;
+namespace Falko.Talkie.Controllers;
 
 public interface IControllerFactory<out TController, in TControllerContext>
     where TController : class, IController<TControllerContext>

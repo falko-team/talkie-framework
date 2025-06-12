@@ -1,7 +1,7 @@
-using Talkie.Flows;
-using Talkie.Signals;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Handlers;
+namespace Falko.Talkie.Handlers;
 
 public sealed class SignalContext(ISignalFlow flow, Signal signal) : ISignalContext
 {

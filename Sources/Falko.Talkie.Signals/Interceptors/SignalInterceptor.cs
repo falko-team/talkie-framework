@@ -1,6 +1,6 @@
-using Talkie.Signals;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Interceptors;
+namespace Falko.Talkie.Interceptors;
 
 public abstract class SignalInterceptor<T> : ISignalInterceptor<T> where T : Signal
 {

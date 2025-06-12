@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Talkie.Models.Messages.Contents;
+namespace Falko.Talkie.Models.Messages.Contents;
 
 public readonly struct MessageTextRange
 {

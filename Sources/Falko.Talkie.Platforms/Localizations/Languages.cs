@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Reflection;
 
-namespace Talkie.Localizations;
+namespace Falko.Talkie.Localizations;
 
 public static class Languages
 {

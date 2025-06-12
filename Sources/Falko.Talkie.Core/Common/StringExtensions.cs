@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Talkie.Common;
+namespace Falko.Talkie.Common;
 
 public static partial class StringExtensions
 {

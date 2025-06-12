@@ -1,4 +1,4 @@
-namespace Talkie.Localizations;
+namespace Falko.Talkie.Localizations;
 
 public enum Language
 {

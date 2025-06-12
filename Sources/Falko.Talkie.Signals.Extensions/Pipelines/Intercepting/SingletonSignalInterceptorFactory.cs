@@ -1,6 +1,6 @@
-using Talkie.Interceptors;
+using Falko.Talkie.Interceptors;
 
-namespace Talkie.Pipelines.Intercepting;
+namespace Falko.Talkie.Pipelines.Intercepting;
 
 public sealed class SingletonSignalInterceptorFactory : ISignalInterceptorFactory
 {

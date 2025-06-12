@@ -1,3 +1,3 @@
-namespace Talkie.Disposables;
+namespace Falko.Talkie.Disposables;
 
 public interface IDisposableScope : IRegisterOnlyDisposableScope, IAsyncDisposable;

@@ -1,6 +1,6 @@
-using Talkie.Signals;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Interceptors;
+namespace Falko.Talkie.Interceptors;
 
 internal sealed class SelectSignalInterceptor<TFrom, TTo>(Func<TFrom, CancellationToken, TTo> select)
     : SignalInterceptor<TFrom>

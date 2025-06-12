@@ -1,8 +1,8 @@
-using Talkie.Models.Identifiers;
-using Talkie.Models.Messages.Contents;
-using Talkie.Models.Messages.Features;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Messages.Contents;
+using Falko.Talkie.Models.Messages.Features;
 
-namespace Talkie.Models.Messages.Outgoing;
+namespace Falko.Talkie.Models.Messages.Outgoing;
 
 public sealed class OutgoingMessageMutator : IOutgoingMessageMutator
 {

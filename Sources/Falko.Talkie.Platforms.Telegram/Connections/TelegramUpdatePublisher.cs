@@ -1,11 +1,11 @@
-using Talkie.Bridges.Telegram.Models;
-using Talkie.Converters;
-using Talkie.Flows;
-using Talkie.Models.Messages.Incoming;
-using Talkie.Platforms;
-using Talkie.Sequences;
+using Falko.Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Converters;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Platforms;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Connections;
+namespace Falko.Talkie.Connections;
 
 public sealed class TelegramUpdatePublisher(ISignalFlow flow, TelegramPlatform platform)
 {

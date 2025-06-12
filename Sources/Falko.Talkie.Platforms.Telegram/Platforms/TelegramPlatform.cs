@@ -1,17 +1,17 @@
 using System.Runtime.Serialization;
-using Talkie.Bridges.Telegram.Clients;
-using Talkie.Bridges.Telegram.Policies;
-using Talkie.Common;
-using Talkie.Controllers;
-using Talkie.Controllers.AttachmentControllers;
-using Talkie.Controllers.CommandControllers;
-using Talkie.Controllers.CommandsControllers;
-using Talkie.Controllers.MessageControllers;
-using Talkie.Flows;
-using Talkie.Models.Identifiers;
-using Talkie.Models.Profiles;
+using Falko.Talkie.Bridges.Telegram.Clients;
+using Falko.Talkie.Bridges.Telegram.Policies;
+using Falko.Talkie.Common;
+using Falko.Talkie.Controllers;
+using Falko.Talkie.Controllers.AttachmentControllers;
+using Falko.Talkie.Controllers.CommandControllers;
+using Falko.Talkie.Controllers.CommandsControllers;
+using Falko.Talkie.Controllers.MessageControllers;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Profiles;
 
-namespace Talkie.Platforms;
+namespace Falko.Talkie.Platforms;
 
 public sealed record TelegramPlatform : IPlatform, IDisposable,
     IWithMessageControllerFactory,

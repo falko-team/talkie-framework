@@ -1,7 +1,7 @@
-using Talkie.Exceptions;
-using Talkie.Signals;
+using Falko.Talkie.Exceptions;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Flows;
+namespace Falko.Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {

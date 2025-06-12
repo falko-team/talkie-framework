@@ -1,8 +1,8 @@
-using Talkie.Common;
-using Talkie.Controllers;
-using Talkie.Controllers.AttachmentControllers;
+using Falko.Talkie.Common;
+using Falko.Talkie.Controllers;
+using Falko.Talkie.Controllers.AttachmentControllers;
 
-namespace Talkie.Platforms;
+namespace Falko.Talkie.Platforms;
 
 public static partial class PlatformExtensions
 {

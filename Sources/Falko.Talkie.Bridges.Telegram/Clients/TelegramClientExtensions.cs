@@ -1,9 +1,9 @@
-using Talkie.Bridges.Telegram.Models;
-using Talkie.Bridges.Telegram.Policies;
-using Talkie.Bridges.Telegram.Requests;
-using Talkie.Sequences;
+using Falko.Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Bridges.Telegram.Policies;
+using Falko.Talkie.Bridges.Telegram.Requests;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Bridges.Telegram.Clients;
+namespace Falko.Talkie.Bridges.Telegram.Clients;
 
 public static partial class TelegramClientExtensions
 {

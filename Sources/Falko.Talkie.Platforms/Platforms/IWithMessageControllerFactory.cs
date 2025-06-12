@@ -1,6 +1,6 @@
-using Talkie.Controllers.MessageControllers;
-using Talkie.Models.Identifiers;
+using Falko.Talkie.Controllers.MessageControllers;
+using Falko.Talkie.Models.Identifiers;
 
-namespace Talkie.Platforms;
+namespace Falko.Talkie.Platforms;
 
 public interface IWithMessageControllerFactory : IWithControllerFactory<IMessageController, GlobalMessageIdentifier>;

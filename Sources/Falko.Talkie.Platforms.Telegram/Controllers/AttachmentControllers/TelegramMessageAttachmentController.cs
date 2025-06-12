@@ -1,4 +1,4 @@
-namespace Talkie.Controllers.AttachmentControllers;
+namespace Falko.Talkie.Controllers.AttachmentControllers;
 
 public sealed class TelegramMessageAttachmentController : IMessageAttachmentController
 {

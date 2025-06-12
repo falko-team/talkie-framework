@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Talkie.Concurrent;
+namespace Falko.Talkie.Concurrent;
 
 internal sealed partial class ParallelEnumerablePartitioner<T>
 {

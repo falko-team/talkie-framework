@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Talkie.Concurrent;
+namespace Falko.Talkie.Concurrent;
 
 /// <summary>
 /// Represents a parallel enumerator. This enumerator can be enumerated in parallel.

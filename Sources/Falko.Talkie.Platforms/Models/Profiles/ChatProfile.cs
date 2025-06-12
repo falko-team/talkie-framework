@@ -1,7 +1,7 @@
-using Talkie.Localizations;
-using Talkie.Models.Identifiers;
+using Falko.Talkie.Localizations;
+using Falko.Talkie.Models.Identifiers;
 
-namespace Talkie.Models.Profiles;
+namespace Falko.Talkie.Models.Profiles;
 
 public sealed record ChatProfile : IChatProfile
 {

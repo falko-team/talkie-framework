@@ -1,4 +1,4 @@
-namespace Talkie.Models.Messages.Contents.Styles;
+namespace Falko.Talkie.Models.Messages.Contents.Styles;
 
 public sealed record LinkTextStyle(int Offset, int Length, string Link) : IMessageTextStyle
 {

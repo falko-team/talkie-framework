@@ -1,7 +1,7 @@
-using Talkie.Controllers;
-using Talkie.Mixins;
+using Falko.Talkie.Controllers;
+using Falko.Talkie.Mixins;
 
-namespace Talkie.Platforms;
+namespace Falko.Talkie.Platforms;
 
 public interface IWithControllerFactory<out TController, in TControllerContext> : IWith<IPlatform>
     where TController : class, IController<TControllerContext>

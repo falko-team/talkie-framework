@@ -1,8 +1,8 @@
-using Talkie.Models.Messages.Contents;
-using Talkie.Models.Messages.Incoming;
-using Talkie.Sequences;
+using Falko.Talkie.Models.Messages.Contents;
+using Falko.Talkie.Models.Messages.Incoming;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Models.Messages.Outgoing;
+namespace Falko.Talkie.Models.Messages.Outgoing;
 
 public static partial class OutgoingMessageBuilderExtensions
 {

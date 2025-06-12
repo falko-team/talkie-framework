@@ -1,4 +1,4 @@
-namespace Talkie.Models.Identifiers;
+namespace Falko.Talkie.Models.Identifiers;
 
 public sealed record TelegramMessageFileAttachmentIdentifier
 (

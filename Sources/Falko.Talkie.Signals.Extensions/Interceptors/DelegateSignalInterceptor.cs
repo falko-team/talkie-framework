@@ -1,6 +1,6 @@
-using Talkie.Signals;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Interceptors;
+namespace Falko.Talkie.Interceptors;
 
 internal sealed class DelegateSignalInterceptor(Func<Signal, CancellationToken, InterceptionResult> intercept)
     : ISignalInterceptor

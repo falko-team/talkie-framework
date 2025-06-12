@@ -3,16 +3,16 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Talkie.Bridges.Telegram.Configurations;
-using Talkie.Bridges.Telegram.Exceptions;
-using Talkie.Bridges.Telegram.Models;
-using Talkie.Bridges.Telegram.Policies;
-using Talkie.Bridges.Telegram.Requests;
-using Talkie.Bridges.Telegram.Responses;
-using Talkie.Bridges.Telegram.Serialization;
-using Talkie.Sequences;
+using Falko.Talkie.Bridges.Telegram.Configurations;
+using Falko.Talkie.Bridges.Telegram.Exceptions;
+using Falko.Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Bridges.Telegram.Policies;
+using Falko.Talkie.Bridges.Telegram.Requests;
+using Falko.Talkie.Bridges.Telegram.Responses;
+using Falko.Talkie.Sequences;
+using ModelsJsonSerializerContext = Talkie.Bridges.Telegram.Serialization.ModelsJsonSerializerContext;
 
-namespace Talkie.Bridges.Telegram.Clients;
+namespace Falko.Talkie.Bridges.Telegram.Clients;
 
 public sealed class TelegramClient : ITelegramClient
 {
@@ -593,7 +593,7 @@ public sealed class TelegramClient : ITelegramClient
             BaseAddress = new Uri($"https://{serverConfiguration.Domain}/bot{serverConfiguration.Token}/")
         };
 
-        client.DefaultRequestHeaders.UserAgent.ParseAdd(nameof(Talkie));
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(nameof(global::Talkie));
 
         if (clientConfiguration.UseGzipCompression)
         {

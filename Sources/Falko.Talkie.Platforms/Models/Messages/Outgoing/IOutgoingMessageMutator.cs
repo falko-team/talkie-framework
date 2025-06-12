@@ -1,6 +1,6 @@
-using Talkie.Models.Identifiers;
+using Falko.Talkie.Models.Identifiers;
 
-namespace Talkie.Models.Messages.Outgoing;
+namespace Falko.Talkie.Models.Messages.Outgoing;
 
 public interface IOutgoingMessageMutator : IMessageMutator<IOutgoingMessageMutator, IOutgoingMessage>
 {

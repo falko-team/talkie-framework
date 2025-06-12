@@ -1,7 +1,7 @@
-using Talkie.Controllers.CommandControllers;
-using Talkie.Models.Profiles;
+using Falko.Talkie.Controllers.CommandControllers;
+using Falko.Talkie.Models.Profiles;
 
-namespace Talkie.Controllers.CommandsControllers;
+namespace Falko.Talkie.Controllers.CommandsControllers;
 
 public sealed class WithTextTelegramCommandController(IProfile relatedProfile, ReadOnlyMemory<char> text) : ICommandController
 {

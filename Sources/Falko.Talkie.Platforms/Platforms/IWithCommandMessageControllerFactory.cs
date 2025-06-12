@@ -1,5 +1,5 @@
-using Talkie.Controllers.CommandControllers;
+using Falko.Talkie.Controllers.CommandControllers;
 
-namespace Talkie.Platforms;
+namespace Falko.Talkie.Platforms;
 
 public interface IWithCommandMessageControllerFactory : IWithControllerFactory<ICommandController, string>;

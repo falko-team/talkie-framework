@@ -1,8 +1,8 @@
-using Talkie.Models.Messages.Attachments.Variants;
-using Talkie.Models.Messages.Contents;
-using Talkie.Sequences;
+using Falko.Talkie.Models.Messages.Attachments.Variants;
+using Falko.Talkie.Models.Messages.Contents;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Models.Messages.Attachments;
+namespace Falko.Talkie.Models.Messages.Attachments;
 
 public interface IMessageImageAttachment : IMessageFileAttachment
 {

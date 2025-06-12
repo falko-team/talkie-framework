@@ -1,9 +1,9 @@
 using System.Runtime.CompilerServices;
-using Talkie.Concurrent;
-using Talkie.Pipelines.Intercepting;
-using Talkie.Signals;
+using Falko.Talkie.Concurrent;
+using Falko.Talkie.Pipelines.Intercepting;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Flows;
+namespace Falko.Talkie.Flows;
 
 public static partial class SignalFlowExtensions
 {

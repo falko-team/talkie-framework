@@ -1,4 +1,4 @@
-namespace Talkie.Mixins;
+namespace Falko.Talkie.Mixins;
 
 /// <summary>
 /// Represents a mixin for a target type

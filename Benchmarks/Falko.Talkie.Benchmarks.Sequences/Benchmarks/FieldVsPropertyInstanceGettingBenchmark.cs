@@ -1,7 +1,7 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 
-namespace Talkie.Benchmarks.Benchmarks;
+namespace Falko.Talkie.Benchmarks.Benchmarks;
 
 [SimpleJob(RunStrategy.Throughput)]
 public class FieldVsPropertyInstanceGettingBenchmark

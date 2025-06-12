@@ -1,6 +1,6 @@
-using Talkie.Common;
-using Talkie.Controllers.AttachmentControllers;
+using Falko.Talkie.Common;
+using Falko.Talkie.Controllers.AttachmentControllers;
 
-namespace Talkie.Platforms;
+namespace Falko.Talkie.Platforms;
 
 public interface IWithAttachmentControllerFactory : IWithControllerFactory<IMessageAttachmentController, Unit>;

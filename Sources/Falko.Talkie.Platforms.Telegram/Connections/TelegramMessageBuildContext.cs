@@ -1,8 +1,8 @@
-using Talkie.Bridges.Telegram.Models;
-using Talkie.Models.Profiles;
-using Talkie.Platforms;
+using Falko.Talkie.Bridges.Telegram.Models;
+using Falko.Talkie.Models.Profiles;
+using Falko.Talkie.Platforms;
 
-namespace Talkie.Connections;
+namespace Falko.Talkie.Connections;
 
 internal readonly ref struct TelegramMessageBuildContext
 {

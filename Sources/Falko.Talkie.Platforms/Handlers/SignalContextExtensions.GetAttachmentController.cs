@@ -1,9 +1,9 @@
-using Talkie.Common;
-using Talkie.Controllers.AttachmentControllers;
-using Talkie.Platforms;
-using Talkie.Signals;
+using Falko.Talkie.Common;
+using Falko.Talkie.Controllers.AttachmentControllers;
+using Falko.Talkie.Platforms;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Handlers;
+namespace Falko.Talkie.Handlers;
 
 public static partial class SignalContextExtensions
 {

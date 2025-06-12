@@ -1,7 +1,7 @@
-using Talkie.Models.Messages.Contents;
-using Talkie.Models.Messages.Features;
+using Falko.Talkie.Models.Messages.Contents;
+using Falko.Talkie.Models.Messages.Features;
 
-namespace Talkie.Models.Messages;
+namespace Falko.Talkie.Models.Messages;
 
 public interface IMessageMutator<out TMutator, out TMessage>
     where TMutator : IMessageMutator<TMutator, TMessage>

@@ -1,10 +1,10 @@
+using Falko.Talkie.Disposables;
+using Falko.Talkie.Flows;
+using Falko.Talkie.Pipelines.Handling;
+using Falko.Talkie.Pipelines.Intercepting;
 using Microsoft.Extensions.Logging;
-using Talkie.Disposables;
-using Talkie.Flows;
-using Talkie.Pipelines.Handling;
-using Talkie.Pipelines.Intercepting;
 
-namespace Talkie.Subscribers;
+namespace Falko.Talkie.Subscribers;
 
 internal sealed class UnobservedExceptionsLoggingSubscriber
 (
@@ -17,9 +17,9 @@ internal sealed class UnobservedExceptionsLoggingSubscriber
     public void Subscribe(ISignalFlow flow, IRegisterOnlyDisposableScope disposables, CancellationToken cancellationToken)
     {
         flow.Subscribe(signals => signals
-            .Where(signal => signal.IsUnobservedExceptionSignal())
+            .Where(signal => UnobservedExceptionSignalsExtensions.IsUnobservedExceptionSignal(signal))
             .Handle(context => logger
-                .LogError(context.Signal.GetUnobservedExceptionSignalException(),
+                .LogError(UnobservedExceptionSignalsExtensions.GetUnobservedExceptionSignalException(context.Signal),
                     UnobservedExceptionLogMessage)))
             .UnsubscribeWith(disposables);
     }

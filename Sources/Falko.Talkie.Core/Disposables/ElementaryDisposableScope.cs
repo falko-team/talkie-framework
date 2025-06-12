@@ -1,6 +1,6 @@
-using Talkie.Sequences;
+using Falko.Talkie.Sequences;
 
-namespace Talkie.Disposables;
+namespace Falko.Talkie.Disposables;
 
 public abstract class ElementaryDisposableScope : IDisposableScope
 {

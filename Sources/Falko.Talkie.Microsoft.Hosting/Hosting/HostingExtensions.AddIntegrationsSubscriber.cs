@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
+using Falko.Talkie.Subscribers;
 using Microsoft.Extensions.DependencyInjection;
-using Talkie.Subscribers;
 
-namespace Talkie.Hosting;
+namespace Falko.Talkie.Hosting;
 
 public static partial class HostingExtensions
 {

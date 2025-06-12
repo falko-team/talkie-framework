@@ -1,8 +1,8 @@
-using Talkie.Controllers.CommandControllers;
-using Talkie.Platforms;
-using Talkie.Signals;
+using Falko.Talkie.Controllers.CommandControllers;
+using Falko.Talkie.Platforms;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Handlers;
+namespace Falko.Talkie.Handlers;
 
 public static partial class SignalContextExtensions
 {

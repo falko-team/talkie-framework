@@ -1,6 +1,6 @@
-using Talkie.Models.Messages.Contents;
+using Falko.Talkie.Models.Messages.Contents;
 
-namespace Talkie.Models.Messages;
+namespace Falko.Talkie.Models.Messages;
 
 public static partial class MessageMutatorExtensions
 {

@@ -1,7 +1,7 @@
-using Talkie.Pipelines.Intercepting;
-using Talkie.Signals;
+using Falko.Talkie.Pipelines.Intercepting;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Interceptors;
+namespace Falko.Talkie.Interceptors;
 
 internal sealed class MergeSignalInterceptor<T>
 (

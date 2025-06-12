@@ -1,6 +1,6 @@
-using Talkie.Models.Messages.Attachments.Factories;
+using Falko.Talkie.Models.Messages.Attachments.Factories;
 
-namespace Talkie.Controllers.AttachmentControllers;
+namespace Falko.Talkie.Controllers.AttachmentControllers;
 
 public static partial class MessageAudioAttachmentControllerExtensions
 {

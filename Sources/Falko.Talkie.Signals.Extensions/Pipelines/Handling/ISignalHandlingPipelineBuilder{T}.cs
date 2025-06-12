@@ -1,7 +1,7 @@
-using Talkie.Handlers;
-using Talkie.Signals;
+using Falko.Talkie.Handlers;
+using Falko.Talkie.Signals;
 
-namespace Talkie.Pipelines.Handling;
+namespace Falko.Talkie.Pipelines.Handling;
 
 public interface ISignalHandlingPipelineBuilder<out T> : IReadOnlySignalHandlingPipelineBuilder where T : Signal
 {

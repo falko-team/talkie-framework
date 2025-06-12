@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using Talkie.Models.Profiles;
+using Falko.Talkie.Models.Profiles;
 
-namespace Talkie.Controllers.CommandControllers;
+namespace Falko.Talkie.Controllers.CommandControllers;
 
 public readonly ref struct CommandMetadata : IEquatable<CommandMetadata>, IEquatable<string>, IEquatable<IProfile>
 {

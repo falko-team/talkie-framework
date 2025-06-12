@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Talkie.Bridges.Telegram.Serialization;
+namespace Falko.Talkie.Bridges.Telegram.Serialization;
 
 internal sealed class DateTimeUnixConverter : JsonConverter<DateTime>
 {
