@@ -9,8 +9,8 @@ using Falko.Talkie.Bridges.Telegram.Models;
 using Falko.Talkie.Bridges.Telegram.Policies;
 using Falko.Talkie.Bridges.Telegram.Requests;
 using Falko.Talkie.Bridges.Telegram.Responses;
+using Falko.Talkie.Bridges.Telegram.Serialization;
 using Falko.Talkie.Sequences;
-using ModelsJsonSerializerContext = Talkie.Bridges.Telegram.Serialization.ModelsJsonSerializerContext;
 
 namespace Falko.Talkie.Bridges.Telegram.Clients;
 
@@ -593,7 +593,7 @@ public sealed class TelegramClient : ITelegramClient
             BaseAddress = new Uri($"https://{serverConfiguration.Domain}/bot{serverConfiguration.Token}/")
         };
 
-        client.DefaultRequestHeaders.UserAgent.ParseAdd(nameof(global::Talkie));
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(nameof(Talkie));
 
         if (clientConfiguration.UseGzipCompression)
         {
