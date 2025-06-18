@@ -19,4 +19,4 @@ Talkie is a framework for creating bots across messaging platforms. Write code o
 
 This project is licensed under the [BSD 2-Clause License](https://github.com/falko-team/talkie-framework/blob/main/License.md).
 
-**© 2024-2025, Falko Team**
+**© 2024-2025, Falko**

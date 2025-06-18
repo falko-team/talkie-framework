@@ -16,7 +16,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Description">
-        <Company>Falko Team</Company>
+        <Company>Falko</Company>
         <Authors>Rima Falko; Timur Falko</Authors>
         <Description>Talkie is a lightweight and modular framework for creating bots across messaging platforms (for Telegram, Discord, and more)</Description>
     </PropertyGroup>
