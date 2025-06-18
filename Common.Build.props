@@ -19,5 +19,6 @@
         <Company>Falko</Company>
         <Authors>Rima Falko; Timur Falko</Authors>
         <Description>Talkie is a lightweight and modular framework for creating bots across messaging platforms (for Telegram, Discord, and more)</Description>
+        <Copyright>Copyright (C) 2024-2025, Falko</Copyright>
     </PropertyGroup>
 </Project>
